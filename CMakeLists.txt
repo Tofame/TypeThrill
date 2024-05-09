@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(WordTyper)
+project(TypeThrill)
 
 set(CMAKE_CXX_STANDARD 20)
 set(BUILD_SHARED_LIBS FALSE)
@@ -22,8 +22,8 @@ FetchContent_MakeAvailable(SFML)
 FetchContent_MakeAvailable(fmt)
 
 
-add_executable(WordTyper
+add_executable(TypeThrill
         main.cpp
 )
-target_link_libraries(WordTyper sfml-graphics sfml-audio fmt)
+target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
 
