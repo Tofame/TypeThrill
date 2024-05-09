@@ -28,6 +28,8 @@ add_executable(TypeThrill
         main.cpp
         Game/Game.cpp
         Game/Game.h
+        Settings.cpp
+        Settings.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
 

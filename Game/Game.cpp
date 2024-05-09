@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "fmt/core.h"
 
-sf::Event event = sf::Event();
+auto event = sf::Event();
 Game::GameStates Game::gameState = Game::STATE_MENU;
 
 void Game::run() {

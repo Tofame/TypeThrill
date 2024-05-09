@@ -1,0 +1,16 @@
+// 1 = arial, 2 = comic sans, 3 = times new roman ... n <- fonts you imported into Resources/fonts
+// (in n's case if you exceed the number of fonts which is 3 + imported ones, then the arial font will be set)
+words_font=1
+
+// The frequency of words appearing one after another
+words_frequency=1.1
+
+// How quickly words move
+words_speed=0.4
+
+// A multiplier for size of the words
+words_size=2.0
+
+// If should search&&higlight a part of a word on a screen while you are typing
+// Possible: true,false
+words_highlight=true

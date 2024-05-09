@@ -3,6 +3,7 @@
 #include <chrono>
 
 #include "Globals.h"
+#include "Settings.h"
 #include "Game/Game.h"
 
 auto run() -> void;
@@ -10,6 +11,7 @@ auto run() -> void;
 int main() {
     fmt::println("Hello TypeThrill!");
     Game::setGameState(Game::STATE_MENU);
+    Settings::loadSettings();
 
     // Implement delta time (Game loop)
     // Source of knowledge - RyiSnow (https://youtu.be/VpH33Uw-_0E?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&t=1072)
