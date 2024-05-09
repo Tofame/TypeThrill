@@ -23,7 +23,11 @@ FetchContent_MakeAvailable(fmt)
 
 
 add_executable(TypeThrill
+        Globals.cpp
+        Globals.h
         main.cpp
+        Game/Game.cpp
+        Game/Game.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
 
