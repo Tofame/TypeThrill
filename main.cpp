@@ -1,6 +1,6 @@
-#include <iostream>
+#include <fmt/core.h>
 
 int main() {
-    std::cout << "Hello, WordTyper!" << std::endl;
+    fmt::println("Hello WordTyper!");
     return 0;
 }
