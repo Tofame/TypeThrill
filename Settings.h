@@ -11,15 +11,15 @@ private:
 public:
     void static loadSettings();
 
-    void static setWordFontId(std::string const& value);
-    void static setWordFrequency(std::string const& value);
-    void static setWordSpeed(std::string const& value);
-    void static setWordSize(std::string const& value);
-    void static setWordHighlight(std::string const& value);
+    void static setWordsFontId(std::string const& value);
+    void static setWordsFrequency(std::string const& value);
+    void static setWordsSpeed(std::string const& value);
+    void static setWordsSize(std::string const& value);
+    void static setWordsHighlight(std::string const& value);
 
-    int static getWordFontId();
-    double static getWordFrequency();
-    double static getWordSpeed();
-    double static getWordSize();
-    bool static isWordHighlightEnabled();
+    int static getWordsFontId();
+    double static getWordsFrequency();
+    double static getWordsSpeed();
+    double static getWordsSize();
+    bool static isWordsHighlightEnabled();
 };

@@ -33,15 +33,15 @@ void Settings::loadSettings() {
 
             // Switch does not support strings, so we use elseif.
             if (option == "words_font") {
-                Settings::setWordFontId(value);
+                Settings::setWordsFontId(value);
             } else if (option == "words_frequency") {
-                Settings::setWordFrequency(value);
+                Settings::setWordsFrequency(value);
             } else if (option == "words_speed") {
-                Settings::setWordSpeed(value);
+                Settings::setWordsSpeed(value);
             } else if (option == "words_size") {
-                Settings::setWordSize(value);
+                Settings::setWordsSize(value);
             } else if (option == "words_highlight") {
-                Settings::setWordHighlight(value);
+                Settings::setWordsHighlight(value);
             } else {
                 fmt::println("Unknown settings.txt option: {}.\\nThe full line is: {}", option, matches[0].str());
             }
@@ -51,7 +51,7 @@ void Settings::loadSettings() {
     }
 }
 
-void Settings::setWordFontId(std::string const& value) {
+void Settings::setWordsFontId(std::string const& value) {
     try {
         Settings::words_fontId = std::stoi(value);
     } catch (const std::invalid_argument& e) {
@@ -59,7 +59,7 @@ void Settings::setWordFontId(std::string const& value) {
     }
 }
 
-void Settings::setWordFrequency(std::string const& value) {
+void Settings::setWordsFrequency(std::string const& value) {
     try {
         Settings::words_frequency = std::stod(value);
     } catch (const std::invalid_argument& e) {
@@ -67,7 +67,7 @@ void Settings::setWordFrequency(std::string const& value) {
     }
 }
 
-void Settings::setWordSpeed(std::string const& value) {
+void Settings::setWordsSpeed(std::string const& value) {
     try {
         Settings::words_speed = std::stod(value);
     } catch (const std::invalid_argument& e) {
@@ -75,7 +75,7 @@ void Settings::setWordSpeed(std::string const& value) {
     }
 }
 
-void Settings::setWordSize(std::string const& value) {
+void Settings::setWordsSize(std::string const& value) {
     try {
         Settings::words_size = std::stod(value);
     } catch (const std::invalid_argument& e) {
@@ -83,26 +83,26 @@ void Settings::setWordSize(std::string const& value) {
     }
 }
 
-void Settings::setWordHighlight(std::string const& value) {
+void Settings::setWordsHighlight(std::string const& value) {
     Settings::words_highlight = (value == "true" || value == "True");
 }
 
-int Settings::getWordFontId() {
+int Settings::getWordsFontId() {
     return Settings::words_fontId;
 }
 
-double Settings::getWordFrequency() {
+double Settings::getWordsFrequency() {
     return Settings::words_frequency;
 }
 
-double Settings::getWordSpeed() {
+double Settings::getWordsSpeed() {
     return Settings::words_speed;
 }
 
-double Settings::getWordSize() {
+double Settings::getWordsSize() {
     return Settings::words_size;
 }
 
-bool Settings::isWordHighlightEnabled() {
+bool Settings::isWordsHighlightEnabled() {
     return Settings::words_highlight;
 }
