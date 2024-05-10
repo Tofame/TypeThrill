@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include "GameInterface.h"
+#include "../UI/ButtonFactory.h"
 #include "fmt/core.h"
 
 auto event = sf::Event();
@@ -46,6 +47,20 @@ void Game::run() {
                     // We will have text iput field handled here...
                     default:
                         break;
+                }
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                    Button* buttonClicked = nullptr;
+                    for (const auto& buttonPair : ButtonFactory::Buttons) {
+                        if(buttonPair.second->isClicked(mousePos) == true) {
+                            buttonClicked = buttonPair.second.get();
+                            break;
+                        }
+                    }
+                    if(buttonClicked) {
+                        buttonClicked->handleClick();
+                    }
                 }
             default:
                 break;
