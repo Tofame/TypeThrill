@@ -32,5 +32,11 @@ add_executable(TypeThrill
         Settings.h
         Game/GameInterface.cpp
         Game/GameInterface.h
+        UI/Button.cpp
+        UI/Button.h
+        UI/ButtonFactory.cpp
+        UI/ButtonFactory.h
+        UI/UIButton.cpp
+        UI/UIButton.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)

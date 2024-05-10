@@ -1,4 +1,6 @@
 #pragma once
+#include <map>
+#include "../UI/Button.h"
 
 class GameInterface {
 public:
