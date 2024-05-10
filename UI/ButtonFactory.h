@@ -2,12 +2,11 @@
 
 #include "Button.h"
 #include "UIButton.h"
-#include <memory>
 
 class ButtonFactory {
 public:
-    std::map<std::string, std::unique_ptr<Button>> static Buttons;
+    std::map<std::string, Button*> static Buttons;
 
     void static setupButtons();
-    std::unique_ptr<Button> static createUIButton();
+    void static createUIButton(std::string name);
 };
