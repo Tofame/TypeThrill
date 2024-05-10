@@ -1,10 +1,14 @@
 #include "GameInterface.h"
+#include "../UI/ButtonFactory.h"
 
 #include <stdexcept>
 
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
 
 void GameInterface::drawMenu() {
+    for (const auto& buttonPair : ButtonFactory::Buttons) {
+        buttonPair.second.draw();
+    }
 
 }
 

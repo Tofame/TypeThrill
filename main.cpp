@@ -5,12 +5,14 @@
 #include "Globals.h"
 #include "Settings.h"
 #include "Game/Game.h"
+#include "UI/ButtonFactory.h"
 
 auto run() -> void;
 
 int main() {
     fmt::println("Hello TypeThrill!");
     Game::setGameState(Game::STATE_MENU);
+    ButtonFactory::setupButtons();
     Settings::loadSettings();
 
     // Implement delta time (Game loop)

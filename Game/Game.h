@@ -6,6 +6,7 @@ class Game {
     public:
         void static run();
 
+        void static handleMouse(sf::Mouse::Button mouseButton);
         void static resetGame();
 
         enum GameStates {

@@ -1,17 +1,20 @@
 #include "Game.h"
+#include "GameInterface.h"
+#include "../UI/ButtonFactory.h"
 #include "fmt/core.h"
 
 auto event = sf::Event();
 Game::GameStates Game::gameState = Game::STATE_MENU;
 
 void Game::run() {
+    window.clear();
     // What is drawn depends on actual game state.
     switch(Game::getGameState()) {
         case STATE_PLAYING:
             // GameInterface here will draw && GameLogic will move everything (words etc)
             break;
         case STATE_MENU:
-            // GameInterface here will draw menu with buttons like play/settings/exit etc.
+            GameInterface::drawMenu();
             break;
         case STATE_PAUSED:
             // Unsure whether to implement it at all
@@ -44,8 +47,33 @@ void Game::run() {
                     default:
                         break;
                 }
+            case sf::Event::MouseButtonPressed:
+                handleMouse(event.mouseButton.button);
             default:
                 break;
+        }
+    }
+
+    window.display();
+}
+
+void Game::handleMouse(sf::Mouse::Button mouseButton) {
+    if (mouseButton == sf::Mouse::Left) {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+        Button buttonClicked;
+        bool buttonFound = false;
+
+        for (const auto& buttonPair : ButtonFactory::Buttons) {
+            if(buttonPair.second.isClicked(mousePos) == true) {
+                buttonClicked = buttonPair.second;
+                buttonFound = true;
+                break;
+            }
+        }
+
+        if(buttonFound) {
+            buttonClicked.handleClick();
         }
     }
 }
