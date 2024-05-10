@@ -1,20 +1,17 @@
 #include "Game.h"
-
-#include "GameInterface.h"
 #include "fmt/core.h"
 
 auto event = sf::Event();
 Game::GameStates Game::gameState = Game::STATE_MENU;
 
 void Game::run() {
-    window.clear();
     // What is drawn depends on actual game state.
     switch(Game::getGameState()) {
         case STATE_PLAYING:
             // GameInterface here will draw && GameLogic will move everything (words etc)
             break;
         case STATE_MENU:
-            GameInterface::drawMenu();
+            // GameInterface here will draw menu with buttons like play/settings/exit etc.
             break;
         case STATE_PAUSED:
             // Unsure whether to implement it at all
@@ -51,8 +48,6 @@ void Game::run() {
                 break;
         }
     }
-
-    window.display();
 }
 
 void Game::resetGame() {
