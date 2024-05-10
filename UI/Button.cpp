@@ -19,10 +19,6 @@ void Button::draw() const {
     window.draw(this->buttonRect);
 }
 
-bool Button::isClicked(const sf::Vector2i& mousePos) const {
-    return buttonRect.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
-}
-
 void Button::handleClick() const {
     this->onClick();
 }
