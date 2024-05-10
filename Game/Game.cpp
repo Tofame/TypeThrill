@@ -60,22 +60,22 @@ void Game::setGameState(GameStates state) {
     switch(state) {
         case STATE_MENU:
         {
-            gameState = state;
+            Game::gameState = state;
             break;
         }
         case STATE_PLAYING:
         {
-            gameState = state;
+            Game::gameState = state;
             break;
         }
         case STATE_PAUSED:
         {
-            gameState = state;
+            Game::gameState = state;
             break;
         }
         case STATE_GAMEOVER:
         {
-            gameState = state;
+            Game::gameState = state;
             break;
         }
         default:
