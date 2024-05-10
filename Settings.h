@@ -8,18 +8,22 @@ private:
     double static words_speed;
     double static words_size;
     bool static words_highlight;
+
+    float static ui_scale;
 public:
     void static loadSettings();
 
     void static setWordsFontId(std::string const& value);
-    void static setWordsFrequency(std::string const& value);
-    void static setWordsSpeed(std::string const& value);
-    void static setWordsSize(std::string const& value);
-    void static setWordsHighlight(std::string const& value);
-
     int static getWordsFontId();
+    void static setWordsFrequency(std::string const& value);
     double static getWordsFrequency();
+    void static setWordsSpeed(std::string const& value);
     double static getWordsSpeed();
+    void static setWordsSize(std::string const& value);
     double static getWordsSize();
+    void static setWordsHighlight(std::string const& value);
     bool static isWordsHighlightEnabled();
+
+    float static getUIScale();
+    void static setUIScale(std::string const& value);
 };

@@ -11,9 +11,10 @@ auto run() -> void;
 
 int main() {
     fmt::println("Hello TypeThrill!");
+    // Load Settings must always have priority
+    Settings::loadSettings();
     Game::setGameState(Game::STATE_MENU);
     ButtonFactory::setupButtons();
-    Settings::loadSettings();
 
     // Implement delta time (Game loop)
     // Source of knowledge - RyiSnow (https://youtu.be/VpH33Uw-_0E?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&t=1072)
