@@ -7,7 +7,8 @@ GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT
 
 void GameInterface::drawMenu() {
     for (const auto& buttonPair : ButtonFactory::Buttons) {
-        buttonPair.second.draw();
+        if(buttonPair.second.isVisible())
+            buttonPair.second.draw();
     }
 
 }

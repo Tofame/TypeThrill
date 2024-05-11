@@ -8,6 +8,7 @@ std::map<std::string, Button> ButtonFactory::Buttons;
 
 void ButtonFactory::setupButtons() {
     ButtonFactory::Buttons["Default1"] = ButtonFactory::createButton();
+    ButtonFactory::Buttons["Default1"].setVisible(false);
 }
 
 Button ButtonFactory::createButton() {

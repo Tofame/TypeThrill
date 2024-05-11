@@ -65,7 +65,7 @@ void Game::handleMouse(sf::Mouse::Button mouseButton) {
         bool buttonFound = false;
 
         for (const auto& buttonPair : ButtonFactory::Buttons) {
-            if(buttonPair.second.isClicked(mousePos) == true) {
+            if(buttonPair.second.isVisible() && (buttonPair.second.isClicked(mousePos) == true)) {
                 buttonClicked = buttonPair.second;
                 buttonFound = true;
                 break;
