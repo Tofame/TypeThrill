@@ -10,7 +10,7 @@ std::map<std::string, std::vector<Button>> ButtonFactory::Buttons;
 
 // I just don't want to construct the color every time in my create methods
 auto myBlue = sf::Color(52, 194, 199);
-auto myBlack = sf::Color(22, 22, 23);
+auto myWhite = sf::Color(255,255,255);
 
 void ButtonFactory::setupButtons() {
     auto menuButtons = std::vector<Button>();
@@ -46,15 +46,15 @@ Button ButtonFactory::createMenuButton(const std::string& name, const std::funct
 
     auto& rect = MenuButton.buttonRect;
     rect.setFillColor(myBlue);
-    rect.setOutlineColor(myBlack);
-    rect.setOutlineThickness(2);
+    rect.setOutlineColor(myWhite);
+    rect.setOutlineThickness(4);
 
     auto text = sf::Text();
     text.setFont(FontManager::Fonts["jaro"]);
     text.setCharacterSize(24 * Settings::getUIScale());
     text.setFillColor(sf::Color::White);
     text.setOutlineColor(sf::Color::Black);
-    text.setOutlineThickness(2);
+    text.setOutlineThickness(1);
     text.setString(name);
     text.setPosition(rect.getPosition());
     text.move(rect.getSize().x/2 - text.getGlobalBounds().width/2, rect.getSize().y/2 - text.getGlobalBounds().height + text.getGlobalBounds().height/3);

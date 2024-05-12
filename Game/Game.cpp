@@ -48,7 +48,7 @@ void Game::run() {
                         break;
                 }
             case sf::Event::MouseButtonPressed:
-                handleMouse(event.mouseButton.button);
+                handleMousePress(event.mouseButton.button);
             default:
                 break;
         }
@@ -57,15 +57,15 @@ void Game::run() {
     window.display();
 }
 
-void Game::handleMouse(sf::Mouse::Button mouseButton) {
+void Game::handleMousePress(sf::Mouse::Button mouseButton) {
     if (mouseButton == sf::Mouse::Left) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-        handleButtonClick(mousePos);
+        checkButtons(mousePos);
     }
 }
 
-void Game::handleButtonClick(sf::Vector2i mousePos) {
+void Game::checkButtons(sf::Vector2i mousePos) {
     std::string key;
     switch(GameInterface::getMenuState()) {
         case GameInterface::MENU_DEFAULT:
