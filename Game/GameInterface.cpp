@@ -21,11 +21,13 @@ void GameInterface::drawMenuBackground() {
 void GameInterface::drawMenuButtons() {
     switch(getMenuState()) {
         case MENU_DEFAULT:
-            for (const auto& buttonPair : ButtonFactory::Buttons) {
-                if(buttonPair.second.isVisible())
-                    buttonPair.second.draw();
+        {
+            for (const auto& button : ButtonFactory::Buttons["MenuDefault"]) {
+                if(button.isVisible())
+                    button.draw();
             }
-        break;
+            break;
+        }
         default:
             break;
     }

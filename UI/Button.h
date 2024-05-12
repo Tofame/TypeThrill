@@ -21,6 +21,10 @@ public:
     void draw() const;
     void handleClick() const;
     bool isClicked(const sf::Vector2i& mousePos) const;
+
+    sf::Text getText();
+    void setText(sf::Text& text);
 private:
     bool visibility;
+    sf::Text text;
 };

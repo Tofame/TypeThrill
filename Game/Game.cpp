@@ -61,19 +61,32 @@ void Game::handleMouse(sf::Mouse::Button mouseButton) {
     if (mouseButton == sf::Mouse::Left) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-        Button buttonClicked;
-        bool buttonFound = false;
+        handleButtonClick(mousePos);
+    }
+}
 
-        for (const auto& buttonPair : ButtonFactory::Buttons) {
-            if(buttonPair.second.isVisible() && (buttonPair.second.isClicked(mousePos) == true)) {
-                buttonClicked = buttonPair.second;
-                buttonFound = true;
-                break;
-            }
+void Game::handleButtonClick(sf::Vector2i mousePos) {
+    std::string key;
+    switch(GameInterface::getMenuState()) {
+        case GameInterface::MENU_DEFAULT:
+        {
+            key = "MenuDefault";
+            break;
         }
+        default:
+        {
+            break;
+        }
+    }
 
-        if(buttonFound) {
-            buttonClicked.handleClick();
+    if(key.empty()) {
+        return;
+    }
+
+    for (const auto& button : ButtonFactory::Buttons[key]) {
+        if(button.isVisible() && (button.isClicked(mousePos) == true)) {
+            button.handleClick();
+            break;
         }
     }
 }

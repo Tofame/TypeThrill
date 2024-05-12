@@ -4,7 +4,7 @@
 
 class ButtonFactory {
 public:
-    std::map<std::string, Button> static Buttons;
+    std::map<std::string, std::vector<Button>> static Buttons;
 
     void static setupButtons();
     Button static createButton();

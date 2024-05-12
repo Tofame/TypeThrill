@@ -33,5 +33,13 @@ bool Button::isClicked(const sf::Vector2i& mousePos) const {
     return buttonRect.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 
+sf::Text Button::getText() {
+    return this->text;
+}
+
+void Button::setText(sf::Text &text) {
+    this->text = text;
+}
+
 void Button::setVisible(bool value) { this->visibility = value; };
 bool Button::isVisible() const { return visibility; };
