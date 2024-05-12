@@ -8,5 +8,5 @@ public:
 
     void static setupButtons();
     Button static createButton();
-    Button static createMenuButton(const std::string& text, const std::function<void()>& onClick);
+    Button static createMenuButton(const std::string& name, const std::function<void()>& onClick);
 };

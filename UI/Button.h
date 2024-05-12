@@ -9,6 +9,7 @@ class Button {
 public:
     Button();
     Button(const sf::Vector2f& size, const sf::Vector2f& position, const std::function<void()>& onClick);
+    Button(const sf::Vector2f& size, const sf::Vector2f& position);
 
     sf::RectangleShape buttonRect;
     // Source of knowledge: https://stackoverflow.com/questions/20353210/what-is-the-purpose-of-stdfunction-and-how-do-i-use-it
@@ -22,7 +23,7 @@ public:
     void handleClick() const;
     bool isClicked(const sf::Vector2i& mousePos) const;
 
-    sf::Text getText();
+    sf::Text& getText();
     void setText(sf::Text& text);
 private:
     bool visibility;

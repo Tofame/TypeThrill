@@ -21,8 +21,15 @@ Button::Button(const sf::Vector2f& size, const sf::Vector2f& position, const std
     this->onClick = []() -> void { fmt::println("Default Button onClick"); };
 }
 
+Button::Button(const sf::Vector2f& size, const sf::Vector2f& position) {
+    this->buttonRect = sf::RectangleShape(size);
+    this->buttonRect.setPosition(position);
+    this->visibility = true;
+}
+
 void Button::draw() const {
     window.draw(this->buttonRect);
+    window.draw(this->text);
 }
 
 void Button::handleClick() const {
@@ -33,7 +40,7 @@ bool Button::isClicked(const sf::Vector2i& mousePos) const {
     return buttonRect.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 
-sf::Text Button::getText() {
+sf::Text& Button::getText() {
     return this->text;
 }
 

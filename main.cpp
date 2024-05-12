@@ -6,13 +6,15 @@
 #include "Settings.h"
 #include "Game/Game.h"
 #include "Game/GameInterface.h"
+#include "ResourceManagers/FontManager.h"
 #include "UI/ButtonFactory.h"
 
 auto run() -> void;
 
 int main() {
     fmt::println("Hello TypeThrill!");
-    // Load Settings must always have top priority
+    // Always place loadFonts first, then loadSettings second  (the following classes use them)
+    FontManager::loadFonts();
     Settings::loadSettings();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);
