@@ -7,20 +7,23 @@
 #include <fmt/core.h>
 #include <iostream>
 
-// Word's default values that we use when malformed settings or couldn't load one
-int defaultFontId = 1;
-double defaultFrequency = 1.1;
-double defaultSpeed = 0.4;
-double defaultSize = 0.4;
-float defaultScale = 1.0;
+#include "ResourceManagers/FontManager.h"
 
-int Settings::words_fontId = defaultFontId;
-double Settings::words_frequency = defaultFrequency;
-double Settings::words_speed = defaultSpeed;
-double Settings::words_size = defaultSize;
+// Settings's default values that we use when malformed settings or couldn't load one
+std::string defaultWordFontName = "arial";
+double defaultWordFrequency = 1.1;
+double defaultWordSpeed = 0.4;
+double defaultWordSize = 0.4;
+
+float defaultUIScale = 1.0;
+
+std::string Settings::words_fontName = defaultWordFontName;
+double Settings::words_frequency = defaultWordFrequency;
+double Settings::words_speed = defaultWordSpeed;
+double Settings::words_size = defaultWordSize;
 bool Settings::words_highlight = true;
 
-float Settings::ui_scale = 1.0;
+float Settings::ui_scale = defaultUIScale;
 
 void Settings::loadSettings() {
     auto file = std::fstream(projectPath + "/settings.txt");
@@ -42,7 +45,7 @@ void Settings::loadSettings() {
 
             // Switch does not support strings, so we use elseif.
             if (option == "words_font") {
-                Settings::setWordsFontId(value);
+                Settings::setWordsFontName(value);
             } else if (option == "words_frequency") {
                 Settings::setWordsFrequency(value);
             } else if (option == "words_speed") {
@@ -62,11 +65,11 @@ void Settings::loadSettings() {
     }
 }
 
-void Settings::setWordsFontId(std::string const& value) {
-    try {
-        Settings::words_fontId = std::stoi(value);
-    } catch (const std::invalid_argument& e) {
-        Settings::words_fontId = defaultFontId;
+void Settings::setWordsFontName(std::string const& value) {
+    if(FontManager::Fonts.contains(value)) {
+        Settings::words_fontName = value;
+    } else {
+        Settings::words_fontName = defaultWordFontName;
     }
 }
 
@@ -74,7 +77,7 @@ void Settings::setWordsFrequency(std::string const& value) {
     try {
         Settings::words_frequency = std::stod(value);
     } catch (const std::invalid_argument& e) {
-        Settings::words_frequency = defaultFrequency;
+        Settings::words_frequency = defaultWordFrequency;
     }
 }
 
@@ -82,7 +85,7 @@ void Settings::setWordsSpeed(std::string const& value) {
     try {
         Settings::words_speed = std::stod(value);
     } catch (const std::invalid_argument& e) {
-        Settings::words_speed = defaultSpeed;
+        Settings::words_speed = defaultWordSpeed;
     }
 }
 
@@ -90,7 +93,7 @@ void Settings::setWordsSize(std::string const& value) {
     try {
         Settings::words_size = std::stod(value);
     } catch (const std::invalid_argument& e) {
-        Settings::words_size = defaultSize;
+        Settings::words_size = defaultWordSize;
     }
 }
 
@@ -102,12 +105,12 @@ void Settings::setUIScale(std::string const& value) {
     try {
         Settings::ui_scale = std::stof(value);
     } catch (const std::invalid_argument& e) {
-        Settings::ui_scale = defaultScale;
+        Settings::ui_scale = defaultUIScale;
     }
 }
 
-int Settings::getWordsFontId() {
-    return Settings::words_fontId;
+std::string Settings::getWordsFontName() {
+    return Settings::words_fontName;
 }
 
 double Settings::getWordsFrequency() {

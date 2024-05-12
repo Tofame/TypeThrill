@@ -3,7 +3,7 @@
 
 class Settings {
 private:
-    int static words_fontId;
+    std::string static words_fontName;
     double static words_frequency;
     double static words_speed;
     double static words_size;
@@ -13,8 +13,8 @@ private:
 public:
     void static loadSettings();
 
-    void static setWordsFontId(std::string const& value);
-    int static getWordsFontId();
+    void static setWordsFontName(std::string const& value);
+    std::string static getWordsFontName();
     void static setWordsFrequency(std::string const& value);
     double static getWordsFrequency();
     void static setWordsSpeed(std::string const& value);

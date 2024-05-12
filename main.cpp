@@ -5,14 +5,16 @@
 #include "Globals.h"
 #include "Settings.h"
 #include "Game/Game.h"
+#include "Game/GameInterface.h"
 #include "UI/ButtonFactory.h"
 
 auto run() -> void;
 
 int main() {
     fmt::println("Hello TypeThrill!");
-    // Load Settings must always have priority
+    // Load Settings must always have top priority
     Settings::loadSettings();
+    GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);
     ButtonFactory::setupButtons();
 

@@ -36,5 +36,7 @@ add_executable(TypeThrill
         UI/Button.h
         UI/ButtonFactory.cpp
         UI/ButtonFactory.h
+        ResourceManagers/FontManager.cpp
+        ResourceManagers/FontManager.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)

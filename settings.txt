@@ -1,8 +1,9 @@
 // ============ Game Settings
 
-// 1 = arial, 2 = comic sans, 3 = times new roman ... n <- fonts you imported into Resources/fonts
-// (in n's case if you exceed the number of fonts which is 3 + imported ones, then the arial font will be set)
-words_font=1
+// A font that appearing words use. All fonts available are in /Resources/Fonts
+// The way you assign it is by writing the exact name of font file.
+// Example: cOOlLetteRS.ttf <-> words_font=cOOlLetteRS
+words_font=arial
 
 // The frequency of words appearing one after another
 words_frequency=1.1
