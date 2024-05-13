@@ -13,6 +13,7 @@ sf::Text GameInterface::gameTitle = sf::Text();
 
 void GameInterface::drawMenu() {
     GameInterface::drawMenuBackground();
+    GameInterface::drawMenuWindow();
     GameInterface::drawMenuButtons();
 }
 
@@ -20,6 +21,18 @@ void GameInterface::drawMenuBackground() {
     window.draw(GameInterface::getBackgroundSprite());
     window.draw(GameInterface::getGameTitle());
 }
+
+void GameInterface::drawMenuWindow() {
+    switch(getMenuState()) {
+        case MENU_SETTINGS:
+        {
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 
 void GameInterface::drawMenuButtons() {
     switch(getMenuState()) {
@@ -34,7 +47,6 @@ void GameInterface::drawMenuButtons() {
         default:
             break;
     }
-
 }
 
 void GameInterface::setMenuState(MenuStates state) {

@@ -13,6 +13,7 @@ public:
 
     void static drawMenu();
     void static drawMenuBackground();
+    void static drawMenuWindow();
     void static drawMenuButtons();
 
     void static setMenuState(MenuStates state);

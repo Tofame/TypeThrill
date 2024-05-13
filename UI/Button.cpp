@@ -48,5 +48,15 @@ void Button::setText(sf::Text &text) {
     this->text = text;
 }
 
+void Button::move(float x, float y) {
+    this->buttonRect.move(x, y);
+    this->text.move(x, y);
+}
+void Button::setPosition(float x, float y) {
+    this->buttonRect.setPosition(x, y);
+    this->text.setPosition(x, y);
+}
+
+
 void Button::setVisible(bool value) { this->visibility = value; };
 bool Button::isVisible() const { return visibility; };

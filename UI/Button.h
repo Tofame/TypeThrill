@@ -25,6 +25,9 @@ public:
 
     sf::Text& getText();
     void setText(sf::Text& text);
+
+    void move(float x, float y);
+    void setPosition(float x, float y);
 private:
     bool visibility;
     sf::Text text;

@@ -21,9 +21,8 @@ void ButtonFactory::setupButtons() {
     menuButtons.push_back(ButtonFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(GameInterface::MENU_SETTINGS); }));
     menuButtons.push_back(ButtonFactory::createMenuButton("Exit", []() -> void { exit(0); }));
     int moveCount = 1;
-    for(auto& B : menuButtons) {
-        B.buttonRect.move(0, moveCount * (15 + B.buttonRect.getSize().y));
-        B.getText().move(0, moveCount * (15 + B.buttonRect.getSize().y));
+    for(auto& button : menuButtons) {
+        button.move(0, moveCount * (15 + button.buttonRect.getSize().y));
         moveCount++;
     }
     ButtonFactory::Buttons["MenuDefault"] = menuButtons;
