@@ -4,8 +4,6 @@
 #include "../Globals.h"
 #include "../Settings.h"
 
-
-
 Button::Button() {
     //fmt::println("Default Button constructor called.");
     this->buttonRect = sf::RectangleShape({200 * Settings::getUIScale(), 50 * Settings::getUIScale()});
