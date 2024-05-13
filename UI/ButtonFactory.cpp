@@ -1,6 +1,8 @@
 #include "ButtonFactory.h"
 #include "../Globals.h"
 #include "../Settings.h"
+#include "../Game/GameInterface.h"
+#include "../Game/Game.h"
 
 #include <fmt/Core.h>
 
@@ -14,9 +16,9 @@ auto myWhite = sf::Color(255,255,255);
 
 void ButtonFactory::setupButtons() {
     auto menuButtons = std::vector<Button>();
-    menuButtons.push_back(ButtonFactory::createMenuButton("Play", []() -> void { fmt::println("Game Start!"); }));
-    menuButtons.push_back(ButtonFactory::createMenuButton("Load", []() -> void { fmt::println("Game Load!"); }));
-    menuButtons.push_back(ButtonFactory::createMenuButton("Settings", []() -> void { fmt::println("Settings!"); }));
+    menuButtons.push_back(ButtonFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
+    menuButtons.push_back(ButtonFactory::createMenuButton("Load", []() -> void { GameInterface::setMenuState(GameInterface::MENU_LOAD); }));
+    menuButtons.push_back(ButtonFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(GameInterface::MENU_SETTINGS); }));
     menuButtons.push_back(ButtonFactory::createMenuButton("Exit", []() -> void { exit(0); }));
     int moveCount = 1;
     for(auto& B : menuButtons) {

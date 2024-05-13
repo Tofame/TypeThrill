@@ -2,6 +2,8 @@
 
 #include "../UI/ButtonFactory.h"
 #include "../Globals.h"
+#include "../ResourceManagers/FontManager.h"
+#include "../Settings.h"
 #include "GameInterface.h"
 
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
@@ -16,6 +18,7 @@ void GameInterface::drawMenu() {
 
 void GameInterface::drawMenuBackground() {
     window.draw(GameInterface::getBackgroundSprite());
+    window.draw(GameInterface::getGameTitle());
 }
 
 void GameInterface::drawMenuButtons() {
@@ -95,14 +98,35 @@ void GameInterface::setupBackgroundSprite() {
     GameInterface::backgroundSprite.setTexture(GameInterface::backgroundTexture);
 }
 
+void GameInterface::setupGameTitle() {
+    auto text = sf::Text();
+    text.setFont(FontManager::Fonts["odeerik"]);
+    text.setCharacterSize(140 * Settings::getUIScale());
+    text.setFillColor(sf::Color::White);
+    text.setOutlineColor(sf::Color::Black);
+    text.setOutlineThickness(2);
+    text.setString("Type  Thrill");
+    text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, window.getSize().y * 0.1 + text.getGlobalBounds().height/2);
+    GameInterface::setGameTitle(text);
+}
+
 void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
     GameInterface::backgroundSprite = sprite;
 }
 
 sf::Sprite GameInterface::getBackgroundSprite() {
     return GameInterface::backgroundSprite;
+}
+
+void GameInterface::setGameTitle(sf::Text &text) {
+    GameInterface::gameTitle = text;
+}
+
+sf::Text GameInterface::getGameTitle() {
+    return GameInterface::gameTitle;
 };
 
 void GameInterface::setupUI() {
     GameInterface::setupBackgroundSprite();
+    GameInterface::setupGameTitle();
 }

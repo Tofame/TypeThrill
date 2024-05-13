@@ -20,9 +20,13 @@ public:
 
     void static setupUI();
     void static setupBackgroundSprite();
+    void static setupGameTitle();
 
     void static setBackgrundSprite(sf::Sprite& sprite);
     sf::Sprite static getBackgroundSprite();
+
+    void static setGameTitle(sf::Text& text);
+    sf::Text static getGameTitle();
 private:
     MenuStates static menuState;
     sf::Sprite static backgroundSprite;
