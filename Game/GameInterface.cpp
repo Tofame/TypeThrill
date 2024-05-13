@@ -100,13 +100,13 @@ void GameInterface::setupBackgroundSprite() {
 
 void GameInterface::setupGameTitle() {
     auto text = sf::Text();
-    text.setFont(FontManager::Fonts["odeerik"]);
+    text.setFont(FontManager::Fonts["voye"]);
     text.setCharacterSize(140 * Settings::getUIScale());
     text.setFillColor(sf::Color::White);
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
-    text.setString("Type  Thrill");
-    text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, window.getSize().y * 0.1 + text.getGlobalBounds().height/2);
+    text.setString("TYPE THRILL");
+    text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, window.getSize().y * 0.1);
     GameInterface::setGameTitle(text);
 }
 

@@ -16,8 +16,9 @@ TypeThrill is a fast-paced typing game designed to test your typing speed and ac
 
 The project uses default fonts from the Windows OS and the following custom fonts:
 
-- [ODE An Erik AH Font](https://fontesk.com/ode-an-erik-ah-font/)
+- [Abstante Font](https://fontesk.com/abstante-font/)
 - [Jaro Font](https://fontesk.com/jaro-font/)
+- [Voye Font](https://fontesk.com/voye-font/)
 
 The graphical assets used by the project are:
 - [Screaming Brain Studios - Seamless Space Backgrounds](https://screamingbrainstudios.itch.io/seamless-space-backgrounds)
