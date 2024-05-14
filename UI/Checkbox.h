@@ -3,14 +3,14 @@
 
 class Checkbox {
 public:
-    bool Checkbox::isEnabled() const;
-    void Checkbox::enable();
-    void Checkbox::disable();
+    bool isEnabled() const;
+    void enable();
+    void disable();
 
-    bool Checkbox::isVisible() const;
+    bool isVisible() const;
 
 
-    void Checkbox::onClick();
+    void onClick();
 private:
     sf::Sprite checkBoxSprite;
     bool enabled = false;

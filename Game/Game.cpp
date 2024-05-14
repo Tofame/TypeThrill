@@ -33,7 +33,9 @@ void Game::run() {
                 window.close();
                 break;
             case sf::Event::Resized:
-                window.setSize(originalSize);
+                window.setView(sf::View(
+                        sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
+                        ));
             case sf::Event::KeyPressed:
                 // Restart the game when gameover
                 if(Game::getGameState() == STATE_GAMEOVER) {
