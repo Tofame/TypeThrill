@@ -2,8 +2,9 @@
 
 #include <functional>
 #include <SFML/Graphics.hpp>
+#include "UIElement.h"
 
-class Button {
+class Button : public UIElement {
 public:
     Button();
     Button(const sf::Vector2f& size, const sf::Vector2f& position, const std::function<void()>& onClick);

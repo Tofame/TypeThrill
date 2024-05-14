@@ -28,14 +28,15 @@ void ButtonFactory::setupButtons() {
     ButtonFactory::Buttons["MenuDefault"] = menuButtons;
 }
 
-Button ButtonFactory::createButton() {
+UIElement* ButtonFactory::createButton() {
     const sf::Vector2f size = {200 * Settings::getUIScale(), 50 * Settings::getUIScale()};
     const sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
     auto clickLambda = []() -> void {
         fmt::println("Default Button Click");
     };
 
-    return Button(size, position, clickLambda);
+    return new Button();
+    //return Button(size, position, clickLambda);
 }
 
 Button ButtonFactory::createMenuButton(const std::string& name, const std::function<void()>& onClick) {
