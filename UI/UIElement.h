@@ -1,8 +1,13 @@
 #pragma once
+#include "SFML/System/Vector2.hpp"
 
 class UIElement {
-protected:
-    virtual void draw() = 0;
-    virtual void update() = 0;
-    virtual void handleClick() = 0;
+public:
+    virtual ~UIElement() = default;
+
+    virtual void draw() {};
+    virtual void update() {};
+    virtual void handleClick() {};
+
+    virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
 };

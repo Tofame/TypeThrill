@@ -34,17 +34,13 @@ add_executable(TypeThrill
         Game/GameInterface.h
         UI/Button.cpp
         UI/Button.h
-        UI/ButtonFactory.cpp
-        UI/ButtonFactory.h
         ResourceManagers/FontManager.cpp
         ResourceManagers/FontManager.h
         UI/Checkbox.cpp
         UI/Checkbox.h
-        UI/CheckboxFactory.cpp
-        UI/CheckboxFactory.h
-        UI/UIElement.cpp
         UI/UIElement.h
         UI/Panel.cpp
         UI/Panel.h
+        UI/UIElementFactory.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)

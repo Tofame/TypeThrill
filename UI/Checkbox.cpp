@@ -1,4 +1,5 @@
 #include "Checkbox.h"
+#include "../Globals.h"
 
 auto rectDisabled = sf::IntRect(0, 0, 32, 32);
 auto rectEnabled = sf::IntRect(32, 0, 32, 32);
@@ -19,6 +20,26 @@ void Checkbox::enable() {
 
 bool Checkbox::isVisible() const {
     return this->visibility;
+}
+
+void Checkbox::draw() {
+    window.draw(this->checkBoxSprite);
+}
+
+void Checkbox::handleClick() {
+    if(isEnabled()) {
+        this->disable();
+    } else {
+        this->disable();
+    }
+}
+
+void Checkbox::update() {
+    // Scale and position when window resize
+}
+
+bool Checkbox::isClicked(const sf::Vector2i& mousePos) {
+    return checkBoxSprite.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 
 void onClick();

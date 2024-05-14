@@ -1,7 +1,8 @@
 #pragma once
+#include "UIElement.h"
 #include "SFML/Graphics/Sprite.hpp"
 
-class Checkbox {
+class Checkbox : public UIElement {
 public:
     bool isEnabled() const;
     void enable();
@@ -9,8 +10,11 @@ public:
 
     bool isVisible() const;
 
+    void draw() override;
+    void handleClick() override;
+    void update() override;
 
-    void onClick();
+    bool isClicked(const sf::Vector2i& mousePos) override;
 private:
     sf::Sprite checkBoxSprite;
     bool enabled = false;

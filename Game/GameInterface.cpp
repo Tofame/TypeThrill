@@ -1,15 +1,19 @@
 #include <cmath>
 
-#include "../UI/ButtonFactory.h"
 #include "../Globals.h"
 #include "../ResourceManagers/FontManager.h"
 #include "../Settings.h"
 #include "GameInterface.h"
 
+#include "Game.h"
+#include "../UI/UIElementFactory.h"
+
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
 sf::Sprite GameInterface::backgroundSprite = sf::Sprite();
 sf::Texture GameInterface::backgroundTexture = sf::Texture();
 sf::Text GameInterface::gameTitle = sf::Text();
+
+std::vector<Panel> GameInterface::panels = std::vector<Panel>();
 
 void GameInterface::drawMenu() {
     GameInterface::drawMenuBackground();
@@ -35,17 +39,8 @@ void GameInterface::drawMenuWindow() {
 
 
 void GameInterface::drawMenuButtons() {
-    switch(getMenuState()) {
-        case MENU_DEFAULT:
-        {
-            for (const auto& button : ButtonFactory::Buttons["MenuDefault"]) {
-                if(button.isVisible())
-                    button.draw();
-            }
-            break;
-        }
-        default:
-            break;
+    for (auto& panel : GameInterface::panels) {
+        panel.draw();
     }
 }
 
@@ -122,6 +117,13 @@ void GameInterface::setupGameTitle() {
     GameInterface::setGameTitle(text);
 }
 
+void GameInterface::setupPanels() {
+    GameInterface::panels.push_back(Panel({500, 300}));
+
+    auto& elementVector = GameInterface::panels[0].UIElements;
+    elementVector.push_back(UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
+}
+
 void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
     GameInterface::backgroundSprite = sprite;
 }
@@ -139,6 +141,7 @@ sf::Text GameInterface::getGameTitle() {
 };
 
 void GameInterface::setupUI() {
+    GameInterface::setupPanels();
     GameInterface::setupBackgroundSprite();
     GameInterface::setupGameTitle();
 }

@@ -25,16 +25,20 @@ Button::Button(const sf::Vector2f& size, const sf::Vector2f& position) {
     this->visibility = true;
 }
 
-void Button::draw() const {
+void Button::draw() {
     window.draw(this->buttonRect);
     window.draw(this->text);
 }
 
-void Button::handleClick() const {
+void Button::handleClick() {
     this->onClick();
 }
 
-bool Button::isClicked(const sf::Vector2i& mousePos) const {
+void Button::update() {
+
+}
+
+bool Button::isClicked(const sf::Vector2i& mousePos) {
     return buttonRect.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 

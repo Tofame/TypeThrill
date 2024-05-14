@@ -7,7 +7,6 @@
 #include "Game/Game.h"
 #include "Game/GameInterface.h"
 #include "ResourceManagers/FontManager.h"
-#include "UI/ButtonFactory.h"
 
 auto run() -> void;
 
@@ -18,7 +17,6 @@ int main() {
     Settings::loadSettings();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);
-    ButtonFactory::setupButtons();
 
     // Implement delta time (Game loop)
     // Source of knowledge - RyiSnow (https://youtu.be/VpH33Uw-_0E?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&t=1072)

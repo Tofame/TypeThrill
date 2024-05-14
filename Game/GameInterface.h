@@ -1,9 +1,12 @@
 #pragma once
+#include "../UI/Panel.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
 
 class GameInterface {
 public:
+    std::vector<Panel> static panels;
+
     enum MenuStates {
         MENU_DEFAULT,
         MENU_SETTINGS,
@@ -22,6 +25,7 @@ public:
     void static setupUI();
     void static setupBackgroundSprite();
     void static setupGameTitle();
+    void static setupPanels();
 
     void static setBackgrundSprite(sf::Sprite& sprite);
     sf::Sprite static getBackgroundSprite();

@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "GameInterface.h"
-#include "../UI/ButtonFactory.h"
+#include "../UI/Panel.h"
 #include "fmt/core.h"
 
 auto event = sf::Event();
@@ -63,32 +63,18 @@ void Game::handleMousePress(sf::Mouse::Button mouseButton) {
     if (mouseButton == sf::Mouse::Left) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-        checkButtons(mousePos);
+        checkUIElements(mousePos);
     }
 }
 
-void Game::checkButtons(sf::Vector2i mousePos) {
-    std::string key;
-    switch(GameInterface::getMenuState()) {
-        case GameInterface::MENU_DEFAULT:
-        {
-            key = "MenuDefault";
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
-
-    if(key.empty()) {
-        return;
-    }
-
-    for (const auto& button : ButtonFactory::Buttons[key]) {
-        if(button.isVisible() && (button.isClicked(mousePos) == true)) {
-            button.handleClick();
-            break;
+void Game::checkUIElements(sf::Vector2i mousePos) {
+    for (auto& panel : GameInterface::panels) {
+        for(auto& uielement : panel.UIElements) {
+            // TO-FINISH: uielement->isVisible() &&
+            if((uielement->isClicked(mousePos) == true)) {
+                uielement->handleClick();
+                break;
+            }
         }
     }
 }

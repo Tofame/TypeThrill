@@ -18,9 +18,10 @@ public:
     bool isVisible() const;
     void setVisible(bool value);
 
-    void draw() const;
-    void handleClick() const;
-    bool isClicked(const sf::Vector2i& mousePos) const;
+    void draw() override;
+    void handleClick() override;
+    void update() override;
+    bool isClicked(const sf::Vector2i& mousePos) override;
 
     sf::Text& getText();
     void setText(sf::Text& text);
