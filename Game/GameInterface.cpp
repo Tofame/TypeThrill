@@ -109,12 +109,28 @@ void GameInterface::setupBackgroundSprite() {
 void GameInterface::setupGameTitle() {
     auto text = sf::Text();
     text.setFont(FontManager::Fonts["voye"]);
-    text.setCharacterSize(140 * Settings::getUIScale());
+    text.setCharacterSize(GameInterface::hugeCharacterSize * Settings::getUIScale());
     text.setFillColor(sf::Color::White);
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
     text.setString("TYPE THRILL");
     text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, window.getSize().y * 0.1);
+    GameInterface::setGameTitle(text);
+}
+
+void GameInterface::updateGameTitle() {
+    sf::Text text = GameInterface::getGameTitle();
+
+    unsigned int newCharacterSize = static_cast<unsigned int>(GameInterface::hugeCharacterSize * Settings::getUIScale() * (window.getSize().y / static_cast<float>(originalWindowSize.y)));
+    text.setCharacterSize(newCharacterSize);
+
+    // Recalculate the text bounds and update the origin to center the text
+    sf::FloatRect textBounds = text.getLocalBounds();
+    text.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+
+    // Update the position of the text to ensure it remains centered
+    text.setPosition(window.getSize().x / 2.0f, window.getSize().y * 0.1f);
+
     GameInterface::setGameTitle(text);
 }
 
@@ -152,32 +168,7 @@ void GameInterface::setupUI() {
 }
 
 void GameInterface::updatePanels() {
-    sf::Vector2f scale;
-
     for(Panel* panel : GameInterface::panels) {
-        if(panel->parent == nullptr) { // Window Panel
-            scale = {1.0, 1.0};
-            panel->body.setScale(scale);
-
-            if(panel->body.getGlobalBounds().width>window.getSize().x) {
-                panel->body.setScale(window.getSize().x / panel->body.getGlobalBounds().width, window.getSize().x / panel->body.getGlobalBounds().width);
-            }
-
-            if(panel->body.getGlobalBounds().height>window.getSize().y) {
-                panel->body.setScale(window.getSize().y / panel->body.getGlobalBounds().height , window.getSize().y / panel->body.getGlobalBounds().height);
-            }
-
-            panel->body.setPosition(panel->posXRatio * window.getSize().x - (scale.x * panel->body.getSize().x)/2, panel->posYRatio * (window.getSize().y - panel->body.getSize().y)/2);
-        } else {
-            scale = panel->parent->body.getScale();
-            panel->body.setScale(scale);
-
-            panel->body.setPosition((panel->posXRatio * window.getSize().x) - (scale.x * panel->body.getSize().x)/2, panel->posYRatio * window.getSize().y - (scale.y * panel->body.getSize().y)/2);
-        }
-
-        for(auto* uielement : panel->UIElements) {
-            uielement->body.setScale(scale);
-            uielement->body.setPosition(panel->body.getPosition().x + (uielement->posXRatio * scale.x * panel->body.getSize().x) - (scale.x * uielement->body.getSize().x)/2, panel->body.getPosition().y + uielement->posYRatio * scale.y * panel->body.getSize().y - (scale.y * uielement->body.getSize().y)/2);
-        }
+        panel->update();
     }
 }

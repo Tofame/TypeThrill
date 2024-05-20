@@ -35,7 +35,26 @@ void Button::handleClick() {
 }
 
 void Button::update() {
+    sf::Vector2f parentScale = parent->body.getScale();
+    this->body.setScale(parentScale);
 
+    sf::Vector2f newPosition(
+        parent->body.getPosition().x + (this->posXRatio * parent->body.getSize().x * parentScale.x) - (this->body.getSize().x * parentScale.x) / 2.0f,
+        parent->body.getPosition().y + (this->posYRatio * parent->body.getSize().y * parentScale.y) - (this->body.getSize().y * parentScale.y) / 2.0f
+    );
+
+    this->body.setPosition(newPosition);
+
+    sf::FloatRect textBounds = this->text.getLocalBounds();
+    this->text.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+
+    sf::Vector2f buttonCenter(
+        newPosition.x + (this->body.getSize().x * parentScale.x) / 2.0f,
+        newPosition.y + (this->body.getSize().y * parentScale.y) / 2.0f
+    );
+
+    this->text.setScale(parentScale);
+    this->text.setPosition(buttonCenter);
 }
 
 bool Button::isClicked(const sf::Vector2i& mousePos) {

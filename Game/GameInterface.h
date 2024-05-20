@@ -5,6 +5,9 @@
 
 class GameInterface {
 public:
+    int inline static hugeCharacterSize = 140;
+    int inline static smallCharacterSize = 24;
+
     std::vector<Panel*> static panels;
 
     enum MenuStates {
@@ -34,6 +37,7 @@ public:
 
     void static setGameTitle(sf::Text& text);
     sf::Text static getGameTitle();
+    void static updateGameTitle();
 private:
     MenuStates static menuState;
     sf::Sprite static backgroundSprite;

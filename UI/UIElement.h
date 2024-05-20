@@ -13,6 +13,10 @@ public:
     virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
 
     UIElement* parent = nullptr;
+
+    void setParent(UIElement* parent) { this->parent = parent; };
+    UIElement* getParent() { return parent; };
+
     float posXRatio = 0;
     float posYRatio = 0;
 

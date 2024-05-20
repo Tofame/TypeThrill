@@ -29,7 +29,7 @@ public:
 
         auto text = sf::Text();
         text.setFont(FontManager::Fonts["jaro"]);
-        text.setCharacterSize(24 * Settings::getUIScale());
+        text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
         text.setFillColor(sf::Color::White);
         text.setOutlineColor(sf::Color::Black);
         text.setOutlineThickness(1);

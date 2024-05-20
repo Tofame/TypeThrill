@@ -36,8 +36,9 @@ void Game::run() {
                 window.setView(sf::View(
                         sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
                         ));
-                fmt::println("bbb");
+
                 GameInterface::updatePanels();
+                GameInterface::updateGameTitle();
             case sf::Event::KeyPressed:
                 // Restart the game when gameover
                 if(Game::getGameState() == STATE_GAMEOVER) {
