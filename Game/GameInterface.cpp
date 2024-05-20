@@ -121,15 +121,18 @@ void GameInterface::setupGameTitle() {
 void GameInterface::updateGameTitle() {
     sf::Text text = GameInterface::getGameTitle();
 
-    unsigned int newCharacterSize = static_cast<unsigned int>(GameInterface::hugeCharacterSize * Settings::getUIScale() * (window.getSize().y / static_cast<float>(originalWindowSize.y)));
-    text.setCharacterSize(newCharacterSize);
+    auto parentScale = panels[0]->body.getScale();
+    text.setScale(parentScale);
 
-    // Recalculate the text bounds and update the origin to center the text
     sf::FloatRect textBounds = text.getLocalBounds();
     text.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
 
-    // Update the position of the text to ensure it remains centered
-    text.setPosition(window.getSize().x / 2.0f, window.getSize().y * 0.1f);
+    sf::Vector2f textCenter(
+        (window.getSize().x * 0.5),
+        (window.getSize().y * 0.15)
+    );
+
+    text.setPosition(textCenter);
 
     GameInterface::setGameTitle(text);
 }
@@ -165,6 +168,9 @@ void GameInterface::setupUI() {
     GameInterface::setupPanels();
     GameInterface::setupBackgroundSprite();
     GameInterface::setupGameTitle();
+
+    GameInterface::updatePanels();
+    GameInterface::updateGameTitle();
 }
 
 void GameInterface::addPanelToVector(Panel* panel) {

@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 
+#include "../Settings.h"
+
 auto UIElements = std::vector<UIElement*>();
 
 Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
@@ -13,7 +15,7 @@ Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
 
 Panel::Panel(UIElement* parent, sf::Vector2f size) {
     this->parent = parent;
-    this->body = sf::RectangleShape(size);
+    this->body = sf::RectangleShape(size * Settings::getUIScale());
     this->body.setScale(1.0, 1.0);
     this->posXRatio = 0.5;
     this->posYRatio = 0.4;
@@ -34,25 +36,20 @@ void Panel::update() {
     sf::Vector2f scale = {1.0f, 1.0f};
 
     if (this->parent == nullptr) { // panelWindow is a panel with no parent, its the "father" of all panels
-        this->body.setScale(scale);
-
         sf::FloatRect localBounds = this->body.getLocalBounds();
 
         if (localBounds.width > window.getSize().x) {
             scale.x = window.getSize().x / localBounds.width;
-            scale.y = scale.x; // Maintain aspect ratio
-            this->body.setScale(scale);
         }
 
         if (localBounds.height > window.getSize().y) {
             scale.y = window.getSize().y / localBounds.height;
-            scale.x = scale.y; // Maintain aspect ratio
-            this->body.setScale(scale);
         }
     } else {
         scale = this->parent->body.getScale();
-        this->body.setScale(scale);
     }
+
+    this->body.setScale(scale);
 
     sf::Vector2f newPosition(
         this->posXRatio * window.getSize().x - (scale.x * this->body.getLocalBounds().width) / 2,
