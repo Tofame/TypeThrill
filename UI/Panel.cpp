@@ -17,7 +17,7 @@ Panel::Panel(UIElement* parent, sf::Vector2f size) {
     this->body.setScale(1.0, 1.0);
     this->posXRatio = 0.5;
     this->posYRatio = 0.4;
-    this->body.setPosition(window.getSize().x * posXRatio - body.getSize().x/2, window.getSize().y * posYRatio);
+    this->body.setPosition(window.getSize().x * posXRatio - body.getSize().x/2, window.getSize().y * posYRatio - body.getSize().y/2);
 }
 
 void Panel::draw() {

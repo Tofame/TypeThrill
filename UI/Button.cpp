@@ -6,27 +6,27 @@
 
 Button::Button() {
     //fmt::println("Default Button constructor called.");
-    this->buttonRect = sf::RectangleShape({200 * Settings::getUIScale(), 50 * Settings::getUIScale()});
-    this->buttonRect.setPosition({ (float)(window.getSize().x/2 - buttonRect.getSize().x/2), (float)(window.getSize().y/2 - buttonRect.getSize().y/2) });
+    this->body = sf::RectangleShape({200 * Settings::getUIScale(), 50 * Settings::getUIScale()});
+    this->body.setPosition({ (float)(window.getSize().x/2 - body.getSize().x/2), (float)(window.getSize().y/2 - body.getSize().y/2) });
     this->visibility = true;
     this->onClick = []() -> void { fmt::println("Default Button onClick"); };
 }
 
-Button::Button(const sf::Vector2f& size, const sf::Vector2f& position, const std::function<void()>& onClick) {
-    this->buttonRect = sf::RectangleShape(size);
-    this->buttonRect.setPosition(position);
+Button::Button(sf::Vector2f& size, sf::Vector2f& position, const std::function<void()>& onClick) {
+    this->body = sf::RectangleShape(size);
+    this->body.setPosition(position);
     this->visibility = true;
     this->onClick = []() -> void { fmt::println("Default Button onClick"); };
 }
 
-Button::Button(const sf::Vector2f& size, const sf::Vector2f& position) {
-    this->buttonRect = sf::RectangleShape(size);
-    this->buttonRect.setPosition(position);
+Button::Button(sf::Vector2f& size, sf::Vector2f& position) {
+    this->body = sf::RectangleShape(size);
+    this->body.setPosition(position);
     this->visibility = true;
 }
 
 void Button::draw() {
-    window.draw(this->buttonRect);
+    window.draw(this->body);
     window.draw(this->text);
 }
 
@@ -39,7 +39,7 @@ void Button::update() {
 }
 
 bool Button::isClicked(const sf::Vector2i& mousePos) {
-    return buttonRect.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
+    return body.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 
 sf::Text& Button::getText() {
@@ -51,11 +51,11 @@ void Button::setText(sf::Text &text) {
 }
 
 void Button::move(float x, float y) {
-    this->buttonRect.move(x, y);
+    this->body.move(x, y);
     this->text.move(x, y);
 }
 void Button::setPosition(float x, float y) {
-    this->buttonRect.setPosition(x, y);
+    this->body.setPosition(x, y);
     this->text.setPosition(x, y);
 }
 

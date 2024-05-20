@@ -119,16 +119,14 @@ void GameInterface::setupGameTitle() {
 }
 
 void GameInterface::setupPanels() {
-    // Panel Window is a panel that ALWAYS covers whole window and its mandatory for whole UI.
-    auto panelWindow = Panel(nullptr, {(float)originalWindowSize.x, (float)originalWindowSize.y});
-    panelWindow.body.setPosition(0,0);
+    auto panelWindow = new Panel(nullptr, {(float)originalWindowSize.x, (float)originalWindowSize.y});
+    panelWindow->body.setPosition(0,0);
 
-    auto panelMenu = Panel(&panelWindow, {500, 300});
-    panelMenu.addElement(
-UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); })
-    );
-    GameInterface::panels.push_back(&panelWindow);
-    GameInterface::panels.push_back(&panelMenu);
+    auto panelMenu = new Panel(panelWindow, {500, 300});
+    panelMenu->addElement(UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
+
+    GameInterface::panels.push_back(panelWindow);
+    GameInterface::panels.push_back(panelMenu);
 }
 
 void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
@@ -154,26 +152,32 @@ void GameInterface::setupUI() {
 }
 
 void GameInterface::updatePanels() {
+    sf::Vector2f scale;
+
     for(Panel* panel : GameInterface::panels) {
         if(panel->parent == nullptr) { // Window Panel
-            panel->body.setScale(1.0,1.0);
+            scale = {1.0, 1.0};
+            panel->body.setScale(scale);
+
             if(panel->body.getGlobalBounds().width>window.getSize().x) {
                 panel->body.setScale(window.getSize().x / panel->body.getGlobalBounds().width, window.getSize().x / panel->body.getGlobalBounds().width);
             }
+
             if(panel->body.getGlobalBounds().height>window.getSize().y) {
-                panel->body.setScale(window.getSize().y /panel->body.getGlobalBounds().height , window.getSize().y / panel->body.getGlobalBounds().height);
+                panel->body.setScale(window.getSize().y / panel->body.getGlobalBounds().height , window.getSize().y / panel->body.getGlobalBounds().height);
             }
 
-            panel->body.setPosition(panel->posXRatio * window.getSize().x - panel->body.getSize().x/2, panel->posYRatio * window.getSize().y - panel->body.getSize().y/2);
-            std::cout<<"aha: "<<window.getSize().x / panel->body.getGlobalBounds().width<<" "<<window.getSize().x / panel->body.getGlobalBounds().width<<"\n";
-            std::cout<<"no parent:("<<panel->body.getScale().x<<", "<<panel->body.getScale().y<<")\n";
+            panel->body.setPosition(panel->posXRatio * window.getSize().x - (scale.x * panel->body.getSize().x)/2, panel->posYRatio * (window.getSize().y - panel->body.getSize().y)/2);
         } else {
-            auto scaleParent = panel->parent->body.getScale();
-            std::cout << "has parent: " << panel->parent->body.getScale().x << " " << panel->parent->body.getScale().y;
-            panel->body.setScale(scaleParent);
-            panel->body.setPosition(100,100);
-            std::cout<<panel->body.getPosition().x<<" "<<panel->body.getPosition().y<<"\n";
-            //panel.body.setPosition(panel.posXRatio * window.getSize().x - (panel.body.getSize().x * scaleParent.x)/2, panel.posYRatio * window.getSize().y - (panel.body.getSize().y * scaleParent.y)/2);
+            scale = panel->parent->body.getScale();
+            panel->body.setScale(scale);
+
+            panel->body.setPosition((panel->posXRatio * window.getSize().x) - (scale.x * panel->body.getSize().x)/2, panel->posYRatio * window.getSize().y - (scale.y * panel->body.getSize().y)/2);
+        }
+
+        for(auto* uielement : panel->UIElements) {
+            uielement->body.setScale(scale);
+            uielement->body.setPosition(panel->body.getPosition().x + (uielement->posXRatio * scale.x * panel->body.getSize().x) - (scale.x * uielement->body.getSize().x)/2, panel->body.getPosition().y + uielement->posYRatio * scale.y * panel->body.getSize().y - (scale.y * uielement->body.getSize().y)/2);
         }
     }
 }
