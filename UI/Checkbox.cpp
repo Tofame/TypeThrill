@@ -18,10 +18,6 @@ void Checkbox::enable() {
     this->checkBoxSprite.setTextureRect(rectEnabled);
 }
 
-bool Checkbox::isVisible() const {
-    return this->visibility;
-}
-
 void Checkbox::draw() {
     window.draw(this->checkBoxSprite);
 }

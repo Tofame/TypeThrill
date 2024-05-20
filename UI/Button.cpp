@@ -77,7 +77,3 @@ void Button::setPosition(float x, float y) {
     this->body.setPosition(x, y);
     this->text.setPosition(x, y);
 }
-
-
-void Button::setVisible(bool value) { this->visibility = value; };
-bool Button::isVisible() const { return visibility; };

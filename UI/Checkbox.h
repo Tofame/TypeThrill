@@ -8,8 +8,6 @@ public:
     void enable();
     void disable();
 
-    bool isVisible() const;
-
     void draw() override;
     void handleClick() override;
     void update() override;
@@ -18,5 +16,4 @@ public:
 private:
     sf::Sprite checkBoxSprite;
     bool enabled = false;
-    bool visibility = true;
 };

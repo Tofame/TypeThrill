@@ -19,7 +19,7 @@ std::vector<Panel*> GameInterface::panels = std::vector<Panel*>();
 void GameInterface::drawMenu() {
     GameInterface::drawMenuBackground();
     GameInterface::drawMenuWindow();
-    GameInterface::drawMenuButtons();
+    GameInterface::drawPanels();
 }
 
 void GameInterface::drawMenuBackground() {
@@ -39,7 +39,7 @@ void GameInterface::drawMenuWindow() {
 }
 
 
-void GameInterface::drawMenuButtons() {
+void GameInterface::drawPanels() {
     for (Panel* panel : GameInterface::panels) {
         panel->draw();
     }

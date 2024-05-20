@@ -21,4 +21,10 @@ public:
     float posYRatio = 0;
 
     sf::RectangleShape body;
+
+    bool isVisible() const { return visibility; };
+    void setVisibility(bool value) { visibility = value; };
+    void toggleVisibility(bool value) { visibility = !visibility; };
+
+    bool visibility = true;
 };

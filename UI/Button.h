@@ -14,9 +14,6 @@ public:
     // void <= doesn't return anything, () <= empty brackets, takes no parameters. We can now save such lambdas into onClick now.
     std::function<void()> onClick;
 
-    bool isVisible() const;
-    void setVisible(bool value);
-
     void draw() override;
     void handleClick() override;
     void update() override;
@@ -28,6 +25,5 @@ public:
     void move(float x, float y);
     void setPosition(float x, float y);
 private:
-    bool visibility;
     sf::Text text;
 };
