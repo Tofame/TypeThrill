@@ -5,7 +5,7 @@
 
 class GameInterface {
 public:
-    std::vector<Panel> static panels;
+    std::vector<Panel*> static panels;
 
     enum MenuStates {
         MENU_DEFAULT,
@@ -26,6 +26,8 @@ public:
     void static setupBackgroundSprite();
     void static setupGameTitle();
     void static setupPanels();
+
+    void static updatePanels();
 
     void static setBackgrundSprite(sf::Sprite& sprite);
     sf::Sprite static getBackgroundSprite();

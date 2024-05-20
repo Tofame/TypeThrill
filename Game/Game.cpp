@@ -36,6 +36,8 @@ void Game::run() {
                 window.setView(sf::View(
                         sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
                         ));
+                fmt::println("bbb");
+                GameInterface::updatePanels();
             case sf::Event::KeyPressed:
                 // Restart the game when gameover
                 if(Game::getGameState() == STATE_GAMEOVER) {
@@ -68,8 +70,8 @@ void Game::handleMousePress(sf::Mouse::Button mouseButton) {
 }
 
 void Game::checkUIElements(sf::Vector2i mousePos) {
-    for (auto& panel : GameInterface::panels) {
-        for(auto& uielement : panel.UIElements) {
+    for (auto panel : GameInterface::panels) {
+        for(auto uielement : panel->UIElements) {
             // TO-FINISH: uielement->isVisible() &&
             if((uielement->isClicked(mousePos) == true)) {
                 uielement->handleClick();

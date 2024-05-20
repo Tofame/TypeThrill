@@ -7,13 +7,14 @@
 
 #include "Game.h"
 #include "../UI/UIElementFactory.h"
+#include <iostream>
 
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
 sf::Sprite GameInterface::backgroundSprite = sf::Sprite();
 sf::Texture GameInterface::backgroundTexture = sf::Texture();
 sf::Text GameInterface::gameTitle = sf::Text();
 
-std::vector<Panel> GameInterface::panels = std::vector<Panel>();
+std::vector<Panel*> GameInterface::panels = std::vector<Panel*>();
 
 void GameInterface::drawMenu() {
     GameInterface::drawMenuBackground();
@@ -39,8 +40,8 @@ void GameInterface::drawMenuWindow() {
 
 
 void GameInterface::drawMenuButtons() {
-    for (auto& panel : GameInterface::panels) {
-        panel.draw();
+    for (Panel* panel : GameInterface::panels) {
+        panel->draw();
     }
 }
 
@@ -118,10 +119,16 @@ void GameInterface::setupGameTitle() {
 }
 
 void GameInterface::setupPanels() {
-    GameInterface::panels.push_back(Panel({500, 300}));
+    // Panel Window is a panel that ALWAYS covers whole window and its mandatory for whole UI.
+    auto panelWindow = Panel(nullptr, {(float)originalWindowSize.x, (float)originalWindowSize.y});
+    panelWindow.body.setPosition(0,0);
 
-    auto& elementVector = GameInterface::panels[0].UIElements;
-    elementVector.push_back(UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
+    auto panelMenu = Panel(&panelWindow, {500, 300});
+    panelMenu.addElement(
+UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); })
+    );
+    GameInterface::panels.push_back(&panelWindow);
+    GameInterface::panels.push_back(&panelMenu);
 }
 
 void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
@@ -144,4 +151,29 @@ void GameInterface::setupUI() {
     GameInterface::setupPanels();
     GameInterface::setupBackgroundSprite();
     GameInterface::setupGameTitle();
+}
+
+void GameInterface::updatePanels() {
+    for(Panel* panel : GameInterface::panels) {
+        if(panel->parent == nullptr) { // Window Panel
+            panel->body.setScale(1.0,1.0);
+            if(panel->body.getGlobalBounds().width>window.getSize().x) {
+                panel->body.setScale(window.getSize().x / panel->body.getGlobalBounds().width, window.getSize().x / panel->body.getGlobalBounds().width);
+            }
+            if(panel->body.getGlobalBounds().height>window.getSize().y) {
+                panel->body.setScale(window.getSize().y /panel->body.getGlobalBounds().height , window.getSize().y / panel->body.getGlobalBounds().height);
+            }
+
+            panel->body.setPosition(panel->posXRatio * window.getSize().x - panel->body.getSize().x/2, panel->posYRatio * window.getSize().y - panel->body.getSize().y/2);
+            std::cout<<"aha: "<<window.getSize().x / panel->body.getGlobalBounds().width<<" "<<window.getSize().x / panel->body.getGlobalBounds().width<<"\n";
+            std::cout<<"no parent:("<<panel->body.getScale().x<<", "<<panel->body.getScale().y<<")\n";
+        } else {
+            auto scaleParent = panel->parent->body.getScale();
+            std::cout << "has parent: " << panel->parent->body.getScale().x << " " << panel->parent->body.getScale().y;
+            panel->body.setScale(scaleParent);
+            panel->body.setPosition(100,100);
+            std::cout<<panel->body.getPosition().x<<" "<<panel->body.getPosition().y<<"\n";
+            //panel.body.setPosition(panel.posXRatio * window.getSize().x - (panel.body.getSize().x * scaleParent.x)/2, panel.posYRatio * window.getSize().y - (panel.body.getSize().y * scaleParent.y)/2);
+        }
+    }
 }

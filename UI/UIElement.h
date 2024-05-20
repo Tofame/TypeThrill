@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
 
 class UIElement {
 public:
@@ -10,4 +11,10 @@ public:
     virtual void handleClick() {};
 
     virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
+
+    UIElement* parent = nullptr;
+    float posXRatio = 0;
+    float posYRatio = 0;
+
+    sf::RectangleShape body;
 };

@@ -4,18 +4,19 @@
 #include "UIElement.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 
-class Panel {
+class Panel : public UIElement {
 public:
-    Panel(const sf::Vector2f& size, const sf::Vector2f& position);
-    Panel(const sf::Vector2f& size);
+    Panel(sf::Vector2f size, sf::Vector2f position);
+    Panel(UIElement* parent, sf::Vector2f size);
 
-    void draw();
-    void update();
+    void draw() override;
+    void update() override;
+    void handleClick() override {};
+
+    bool isClicked(const sf::Vector2i& mousePos) override { return false;};
 
     std::vector<UIElement*> UIElements;
 
     void addElement(UIElement* ptrUIElement);
     UIElement& getElement(int index) const;
-private:
-    sf::RectangleShape body;
 };

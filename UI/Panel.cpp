@@ -5,17 +5,24 @@
 
 auto UIElements = std::vector<UIElement*>();
 
-Panel::Panel(const sf::Vector2f &size, const sf::Vector2f &position) {
+Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
     this->body = sf::RectangleShape(size);
     this->body.setPosition(position);
+    this->body.setScale(1.0, 1.0);
 }
 
-Panel::Panel(const sf::Vector2f &size) {
+Panel::Panel(UIElement* parent, sf::Vector2f size) {
+    this->parent = parent;
     this->body = sf::RectangleShape(size);
-    this->body.setPosition(window.getSize().x * 0.5 - body.getSize().x/2, window.getSize().y * 0.4);
+    this->body.setScale(1.0, 1.0);
+    this->posXRatio = 0.5;
+    this->posYRatio = 0.4;
+    this->body.setPosition(window.getSize().x * posXRatio - body.getSize().x/2, window.getSize().y * posYRatio);
 }
 
 void Panel::draw() {
+    if(this->parent == nullptr) return;
+
     window.draw(this->body);
 
     for(UIElement* uielement : UIElements) {
