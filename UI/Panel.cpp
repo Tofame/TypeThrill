@@ -65,14 +65,15 @@ void Panel::update() {
     }
 }
 
-void Panel::addElement(UIElement* ptrUIElement) {
-    ptrUIElement->setParent(this);
-    this->UIElements.push_back(ptrUIElement);
+void Panel::addElement(UIElement* UIElement) {
+    UIElement->setParent(this);
+    UIElement->update();
+    this->UIElements.push_back(UIElement);
 }
 
-UIElement& Panel::getElement(int index) const {
+UIElement* Panel::getElement(int index) const {
     if (index < 0 || index >= UIElements.size()) {
         throw std::out_of_range("Index out of range in Panel::getElement");
     }
-    return *this->UIElements.at(index);
+    return this->UIElements.at(index);
 }

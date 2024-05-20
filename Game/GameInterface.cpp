@@ -138,11 +138,11 @@ void GameInterface::setupPanels() {
     auto panelWindow = new Panel(nullptr, {(float)originalWindowSize.x, (float)originalWindowSize.y});
     panelWindow->body.setPosition(0,0);
 
-    auto panelMenu = new Panel(panelWindow, {500, 300});
+    auto panelMenu = new Panel(panelWindow, {300, 400});
     panelMenu->addElement(UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
 
-    GameInterface::panels.push_back(panelWindow);
-    GameInterface::panels.push_back(panelMenu);
+    GameInterface::addPanelToVector(panelWindow);
+    GameInterface::addPanelToVector(panelMenu);
 }
 
 void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
@@ -165,6 +165,16 @@ void GameInterface::setupUI() {
     GameInterface::setupPanels();
     GameInterface::setupBackgroundSprite();
     GameInterface::setupGameTitle();
+}
+
+void GameInterface::addPanelToVector(Panel* panel) {
+    if(GameInterface::panels.empty()) {
+        if(panel->body.getPosition().x != 0 && panel->body.getPosition().y != 0) {
+            throw std::runtime_error("Tried to execute `addPanelToVector` on index 0, while the first panel must be panelWindow (the only one with pos 0,0)");
+        }
+    }
+
+    GameInterface::panels.push_back(panel);
 }
 
 void GameInterface::updatePanels() {

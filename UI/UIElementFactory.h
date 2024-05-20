@@ -18,7 +18,7 @@ public:
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto menuButton = new Button(size, position);
         menuButton->posXRatio = 0.5;
-        menuButton->posYRatio = 0.5;
+        menuButton->posYRatio = 0.15;
 
         menuButton->onClick = onClick;
 

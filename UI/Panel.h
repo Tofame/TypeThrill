@@ -18,5 +18,5 @@ public:
     std::vector<UIElement*> UIElements;
 
     void addElement(UIElement* ptrUIElement);
-    UIElement& getElement(int index) const;
+    UIElement* getElement(int index) const;
 };

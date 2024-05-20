@@ -30,6 +30,7 @@ public:
     void static setupGameTitle();
     void static setupPanels();
 
+    void static addPanelToVector(Panel* panel);
     void static updatePanels();
 
     void static setBackgrundSprite(sf::Sprite& sprite);
