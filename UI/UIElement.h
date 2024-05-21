@@ -19,6 +19,7 @@ public:
 
     float posXRatio = 0;
     float posYRatio = 0;
+    void setPosRatios(float x, float y) { posXRatio = x; posYRatio = y; };
 
     sf::RectangleShape body;
 

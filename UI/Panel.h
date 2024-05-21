@@ -7,7 +7,7 @@
 class Panel : public UIElement {
 public:
     Panel(sf::Vector2f size, sf::Vector2f position);
-    Panel(UIElement* parent, sf::Vector2f size);
+    Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios);
 
     void draw() override;
     void update() override;

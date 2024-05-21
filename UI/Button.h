@@ -6,7 +6,7 @@
 
 class Button : public UIElement {
 public:
-    Button();
+    Button() = default;
     Button(sf::Vector2f& size, sf::Vector2f& position, const std::function<void()>& onClick);
     Button(sf::Vector2f& size, sf::Vector2f& position);
 

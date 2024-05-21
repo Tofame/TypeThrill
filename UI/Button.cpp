@@ -4,26 +4,16 @@
 #include "../Globals.h"
 #include "../Settings.h"
 
-Button::Button() {
-    //fmt::println("Default Button constructor called.");
-    this->body = sf::RectangleShape({200 * Settings::getUIScale(), 50 * Settings::getUIScale()});
-    this->body.setPosition({ (float)(window.getSize().x/2 - body.getSize().x/2), (float)(window.getSize().y/2 - body.getSize().y/2) });
-    this->visibility = true;
-    this->onClick = []() -> void { fmt::println("Default Button onClick"); };
-}
+auto defaultButtonLambda = []() -> void { fmt::println("Default Button onClick"); };
 
 Button::Button(sf::Vector2f& size, sf::Vector2f& position, const std::function<void()>& onClick) {
     this->body = sf::RectangleShape(size);
     this->body.setPosition(position);
     this->visibility = true;
-    this->onClick = []() -> void { fmt::println("Default Button onClick"); };
+    this->onClick = onClick;
 }
 
-Button::Button(sf::Vector2f& size, sf::Vector2f& position) {
-    this->body = sf::RectangleShape(size);
-    this->body.setPosition(position);
-    this->visibility = true;
-}
+Button::Button(sf::Vector2f& size, sf::Vector2f& position) : Button::Button(size, position, defaultButtonLambda) {};
 
 void Button::draw() {
     window.draw(this->body);

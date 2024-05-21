@@ -1,5 +1,6 @@
 #pragma once
 #include "Button.h"
+#include "Panel.h"
 #include "UIElement.h"
 #include "../Settings.h"
 #include "../Globals.h"
@@ -16,11 +17,8 @@ public:
     static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick) {
         sf::Vector2f size = {200 * Settings::getUIScale(), 50 * Settings::getUIScale()};
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
-        auto menuButton = new Button(size, position);
-        menuButton->posXRatio = 0.5;
-        menuButton->posYRatio = 0.15;
-
-        menuButton->onClick = onClick;
+        auto menuButton = new Button(size, position, onClick);
+        menuButton->setPosRatios(0.5, 0.15);
 
         auto& rect = menuButton->body;
         rect.setFillColor(myBlue);
@@ -39,5 +37,19 @@ public:
         menuButton->setText(text);
 
         return menuButton;
+    }
+
+    static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
+        size.x = size.x * Settings::getUIScale();
+        size.y = size.y * Settings::getUIScale();
+
+        auto panel = new Panel(parent, size, posRatios);
+
+        auto& rect = panel->body;
+        rect.setFillColor(sf::Color::Transparent);
+        rect.setOutlineColor(sf::Color::Green);
+        rect.setOutlineThickness(3);
+
+        return panel;
     }
 };

@@ -114,8 +114,10 @@ void GameInterface::setupGameTitle() {
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
     text.setString("TYPE THRILL");
-    text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, window.getSize().y * 0.1);
     GameInterface::setGameTitle(text);
+
+    // Sets position of GameTitle
+    GameInterface::updateGameTitle();
 }
 
 void GameInterface::updateGameTitle() {
@@ -138,14 +140,15 @@ void GameInterface::updateGameTitle() {
 }
 
 void GameInterface::setupPanels() {
-    auto panelWindow = new Panel(nullptr, {(float)originalWindowSize.x, (float)originalWindowSize.y});
-    panelWindow->body.setPosition(0,0);
+    auto panelWindow = new Panel({(float)originalWindowSize.x, (float)originalWindowSize.y}, {0,0});
 
-    auto panelMenu = new Panel(panelWindow, {300, 400});
+    auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.6});
     panelMenu->addElement(UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
 
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
+
+    GameInterface::updatePanels();
 }
 
 void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
@@ -168,9 +171,6 @@ void GameInterface::setupUI() {
     GameInterface::setupPanels();
     GameInterface::setupBackgroundSprite();
     GameInterface::setupGameTitle();
-
-    GameInterface::updatePanels();
-    GameInterface::updateGameTitle();
 }
 
 void GameInterface::addPanelToVector(Panel* panel) {

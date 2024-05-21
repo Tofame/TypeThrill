@@ -24,7 +24,7 @@ int main() {
         Game::run();
         auto frameEnd = std::chrono::high_resolution_clock ::now();
         auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
-        auto delay = std::chrono::milliseconds(1000) / 100 - frameDuration; // 100 fps na sekunde
+        auto delay = std::chrono::milliseconds(1000) / 100 - frameDuration; // 100 fps
 
         if(delay > std::chrono::milliseconds(0)) {
             std::this_thread::sleep_for(delay);
