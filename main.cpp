@@ -1,6 +1,7 @@
 #include <fmt/core.h>
 #include <SFML/Graphics.hpp>
 #include <chrono>
+#include <thread>
 
 #include "Globals.h"
 #include "Settings.h"
@@ -18,28 +19,15 @@ int main() {
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);
 
-    // Implement delta time (Game loop)
-    // Source of knowledge - RyiSnow (https://youtu.be/VpH33Uw-_0E?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&t=1072)
-    double drawInterval = 1000000000 / 90; // 1000000000 is 1 second (billion nanoseconds)
-    double delta = 0;
-    long long lastTime = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-    long long currentTime;
-    long long timer = 0;
-
     while (window.isOpen()){
-        currentTime = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-        delta += (currentTime - lastTime) / drawInterval;
-        timer += currentTime - lastTime;
-        lastTime = currentTime;
+        auto frameStart = std::chrono::high_resolution_clock ::now();
+        Game::run();
+        auto frameEnd = std::chrono::high_resolution_clock ::now();
+        auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
+        auto delay = std::chrono::milliseconds(1000) / 100 - frameDuration; // 100 fps na sekunde
 
-        if (delta >= 1) {
-            Game::run();
-            delta--;
-        }
-
-        if (timer >= 1000000000 / 4) { // runs every quarter of a second
-            // Some methods
-            timer = 0;
+        if(delay > std::chrono::milliseconds(0)) {
+            std::this_thread::sleep_for(delay);
         }
     }
 
