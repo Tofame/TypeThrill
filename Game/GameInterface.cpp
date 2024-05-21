@@ -143,7 +143,15 @@ void GameInterface::setupPanels() {
     auto panelWindow = new Panel({(float)originalWindowSize.x, (float)originalWindowSize.y}, {0,0});
 
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.6});
-    panelMenu->addElement(UIElementFactory::createMenuButton("Play", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }));
+    int i = 0;
+    for(UIElement* element : panelMenu->UIElements) {
+        element->setPosRatios(0.5, element->posYRatio + i * 0.24);
+        i++;
+    }
 
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
