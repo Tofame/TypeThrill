@@ -37,20 +37,21 @@ void Panel::update() {
     sf::Vector2f scale = {1.0f, 1.0f};
 
     if (this->parent == nullptr) { // panelWindow is a panel with no parent, its the "father" of all panels
-        sf::FloatRect localBounds = this->body.getLocalBounds();
+        this->body.setScale(scale);
+        sf::FloatRect globalBounds = this->body.getGlobalBounds();
 
-        if (localBounds.width > window.getSize().x) {
-            scale.x = window.getSize().x / localBounds.width;
+        if (globalBounds.width > window.getSize().x) {
+            this->body.setScale(window.getSize().x / globalBounds.width,window.getSize().x / globalBounds.width);
+            globalBounds = this->body.getGlobalBounds();
         }
 
-        if (localBounds.height > window.getSize().y) {
-            scale.y = window.getSize().y / localBounds.height;
+        if (globalBounds.height > window.getSize().y) {
+            this->body.setScale(window.getSize().y / globalBounds.height,window.getSize().y / globalBounds.height);
         }
     } else {
         scale = this->parent->body.getScale();
+        this->body.setScale(scale);
     }
-
-    this->body.setScale(scale);
 
     sf::Vector2f newPosition(
         this->posXRatio * window.getSize().x - (scale.x * this->body.getLocalBounds().width) / 2,
