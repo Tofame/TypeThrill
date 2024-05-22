@@ -40,13 +40,11 @@ void Panel::update() {
         this->body.setScale(scale);
         sf::FloatRect globalBounds = this->body.getGlobalBounds();
 
-        if (globalBounds.width > window.getSize().x) {
-            this->body.setScale(window.getSize().x / globalBounds.width,window.getSize().x / globalBounds.width);
-            globalBounds = this->body.getGlobalBounds();
-        }
-
-        if (globalBounds.height > window.getSize().y) {
-            this->body.setScale(window.getSize().y / globalBounds.height,window.getSize().y / globalBounds.height);
+        if (globalBounds.width > window.getSize().x || globalBounds.height > window.getSize().y) {
+            float scaleX = window.getSize().x / globalBounds.width;
+            float scaleY = window.getSize().y / globalBounds.height;
+            float scaleFactor = std::min(scaleX, scaleY);
+            this->body.setScale(scaleFactor, scaleFactor);
         }
     } else {
         scale = this->parent->body.getScale();
