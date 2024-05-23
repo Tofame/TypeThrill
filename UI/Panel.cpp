@@ -29,7 +29,7 @@ Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
 }
 
 Panel::~Panel() {
-    for(UIElement* uielement : UIElements) {
+    for(auto uielement : UIElements) {
         delete uielement;
     }
 }
@@ -39,7 +39,7 @@ void Panel::draw() {
 
     window.draw(this->body);
 
-    for(UIElement* uielement : UIElements) {
+    for(auto uielement : UIElements) {
         uielement->draw();
     }
 }

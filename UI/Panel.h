@@ -8,7 +8,9 @@ enum PanelType {
     PANEL_WINDOW = 0,
     PANEL_MENU = 1,
     PANEL_SETTINGS = 2,
-    PANEL_WORDS = 3
+    PANEL_LOADGAME = 4,
+    PANEL_HIGHSCORES = 5,
+    PANEL_WORDS = 6
 };
 
 class Panel : public UIElement {

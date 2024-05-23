@@ -9,6 +9,8 @@
 #include "../UI/UIElementFactory.h"
 #include <iostream>
 
+#include "fmt/chrono.h"
+
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
 sf::Sprite GameInterface::backgroundSprite = sf::Sprite();
 sf::Texture GameInterface::backgroundTexture = sf::Texture();
@@ -40,26 +42,42 @@ void GameInterface::drawMenuWindow() {
 
 
 void GameInterface::drawPanels() {
-    for (Panel* panel : GameInterface::panels) {
+    for (auto panel : GameInterface::panels) {
         if(panel->isVisible())
             panel->draw();
     }
 }
 
 void GameInterface::setMenuState(MenuStates state) {
+    //auto oldState = getMenuState();
+
+    // Hide all panels and in switch we will show whatever panels should be visible
+    for (auto panel : GameInterface::panels) {
+        panel->setVisibility(false);
+    }
+
     switch(state) {
         case MENU_DEFAULT:
         {
+            auto panelToShow = getPanelByType(PANEL_MENU);
+            if(panelToShow != nullptr)
+                panelToShow->setVisibility(true);
             GameInterface::menuState = state;
             break;
         }
         case MENU_SETTINGS:
         {
+            auto panelToShow = getPanelByType(PANEL_SETTINGS);
+            if(panelToShow != nullptr)
+                panelToShow->setVisibility(true);
             GameInterface::menuState = state;
             break;
         }
         case MENU_LOAD:
         {
+            auto panelToShow = getPanelByType(PANEL_LOADGAME);
+            if(panelToShow != nullptr)
+                panelToShow->setVisibility(true);
             GameInterface::menuState = state;
             break;
         }
@@ -152,12 +170,12 @@ void GameInterface::setupPanels() {
     panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }));
     panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }));
     int i = 0;
-    for(UIElement* element : panelMenu->UIElements) {
-        element->setPosRatios(0.5, element->posYRatio + i * 0.24);
+    for(auto uielement : panelMenu->UIElements) {
+        uielement->setPosRatios(0.5, uielement->posYRatio + i * 0.24);
         i++;
     }
 
-    auto panelSettings = UIElementFactory::createPanel(panelWindow, {600, 400}, {0.5, 0.5}, PANEL_MENU);
+    auto panelSettings = UIElementFactory::createPanel(panelWindow, {600, 400}, {0.5, 0.5}, PANEL_SETTINGS);
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }));
 
     GameInterface::addPanelToVector(panelWindow);
@@ -191,7 +209,7 @@ void GameInterface::setupUI() {
 
 void GameInterface::addPanelToVector(Panel* panel) {
     if(GameInterface::panels.empty()) {
-        if(panel->body.getPosition().x != 0 && panel->body.getPosition().y != 0) {
+        if(panel->body.getPosition().x != 0 || panel->body.getPosition().y != 0) {
             throw std::runtime_error("Tried to execute `addPanelToVector` on index 0, while the first panel must be panelWindow (the only one with pos 0,0)");
         }
     }
@@ -200,15 +218,17 @@ void GameInterface::addPanelToVector(Panel* panel) {
 }
 
 void GameInterface::updatePanels() {
-    for(Panel* panel : GameInterface::panels) {
+    for(auto panel : GameInterface::panels) {
         panel->update();
     }
 }
 
-Panel * GameInterface::getPanelByType(PanelType type) {
+Panel* GameInterface::getPanelByType(PanelType type) {
     for(auto panel : GameInterface::panels) {
         if(panel->getType() == type) {
             return panel;
         }
     }
+
+    return nullptr;
 }
