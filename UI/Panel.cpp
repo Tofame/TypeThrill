@@ -79,9 +79,9 @@ void Panel::removeElement(UIElement* UIElement) {
     }
 }
 
-UIElement* Panel::getElement(int index) const {
+UIElement* Panel::getElement(int index) {
     if (index < 0 || index >= UIElements.size()) {
-        throw std::out_of_range("Index out of range in Panel::getElement");
+        throw std::out_of_range("Index " + std::to_string(index) + " out of range in Panel::getElement");
     }
     return this->UIElements.at(index);
 }
