@@ -23,7 +23,7 @@ public:
 
     sf::RectangleShape body;
 
-    bool isVisible() const { return visibility; };
+    bool isVisible() { return visibility; };
     void setVisibility(bool value) { visibility = value; };
     void toggleVisibility(bool value) { visibility = !visibility; };
 

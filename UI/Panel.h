@@ -4,6 +4,13 @@
 #include "UIElement.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 
+enum PanelType {
+    PANEL_WINDOW = 0,
+    PANEL_MENU = 1,
+    PANEL_SETTINGS = 2,
+    PANEL_WORDS = 3
+};
+
 class Panel : public UIElement {
 public:
     Panel(sf::Vector2f size, sf::Vector2f position);
@@ -23,5 +30,9 @@ public:
     void removeElement(UIElement* ptrUIElement);
     UIElement* getElement(int index);
 
+    void setType(PanelType type);
+    PanelType getType();
 
+private:
+    PanelType type = PANEL_WINDOW;
 };

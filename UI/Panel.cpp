@@ -8,6 +8,8 @@
 auto UIElements = std::vector<UIElement*>();
 
 Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
+    this->visibility = false;
+
     this->body = sf::RectangleShape(size);
     this->body.setScale(1.0, 1.0);
 
@@ -16,6 +18,9 @@ Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
 
 Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
     this->parent = parent;
+
+    this->visibility = false;
+
     this->body = sf::RectangleShape(size * Settings::getUIScale());
     this->body.setScale(1.0, 1.0);
     this->setPosRatios(posRatios.x, posRatios.y);
@@ -84,4 +89,12 @@ UIElement* Panel::getElement(int index) {
         throw std::out_of_range("Index " + std::to_string(index) + " out of range in Panel::getElement");
     }
     return this->UIElements.at(index);
+}
+
+void Panel::setType(PanelType type) {
+    this->type = type;
+}
+
+PanelType Panel::getType() {
+    return this->type;
 }
