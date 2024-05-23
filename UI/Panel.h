@@ -9,6 +9,8 @@ public:
     Panel(sf::Vector2f size, sf::Vector2f position);
     Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios);
 
+    ~Panel();
+
     void draw() override;
     void update() override;
     void handleClick() override {};
@@ -19,6 +21,4 @@ public:
 
     void addElement(UIElement* ptrUIElement);
     UIElement* getElement(int index) const;
-
-    ~Panel();
 };

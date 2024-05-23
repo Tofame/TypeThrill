@@ -41,7 +41,8 @@ void GameInterface::drawMenuWindow() {
 
 void GameInterface::drawPanels() {
     for (Panel* panel : GameInterface::panels) {
-        panel->draw();
+        if(panel->isVisible())
+            panel->draw();
     }
 }
 

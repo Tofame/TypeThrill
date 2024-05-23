@@ -72,9 +72,11 @@ void Game::handleMousePress(sf::Mouse::Button mouseButton) {
 
 void Game::checkUIElements(sf::Vector2i mousePos) {
     for (auto panel : GameInterface::panels) {
+        if(panel->isVisible() == false)
+            continue;
+
         for(auto uielement : panel->UIElements) {
-            // TO-FINISH: uielement->isVisible() &&
-            if((uielement->isClicked(mousePos) == true)) {
+            if(uielement->isVisible() && uielement->isClicked(mousePos) == true) {
                 uielement->handleClick();
                 break;
             }
