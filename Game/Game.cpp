@@ -63,10 +63,13 @@ void Game::run() {
 
                 for(auto panel : GameInterface::panels) {
                     for(auto uielement : panel->UIElements) {
-                        if(uielement->getState() != HOVERED && uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
-                            uielement->body.setOutlineColor(sf::Color::Yellow);
-                            uielement->setState(HOVERED);
-                        } else if(uielement->getState() == HOVERED && !uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
+                        if(uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
+                            if(uielement->getState() == DEFAULT) {
+                                uielement->body.setOutlineColor(sf::Color::Yellow);
+                                uielement->setState(HOVERED);
+                            }
+                            break;
+                        } else {
                             uielement->body.setOutlineColor(sf::Color::White);
                             uielement->setState(DEFAULT);
                         }
