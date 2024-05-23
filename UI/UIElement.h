@@ -2,6 +2,12 @@
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 
+enum UIElementState {
+    DEFAULT = 0,
+    HOVERED = 1,
+    CLICKED = 2
+};
+
 class UIElement {
 public:
     virtual ~UIElement() = default;
@@ -9,6 +15,7 @@ public:
     virtual void draw() {};
     virtual void update() {};
     virtual void handleClick() {};
+    virtual void updateState() {};
 
     virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
 
@@ -28,4 +35,9 @@ public:
     void toggleVisibility(bool value) { visibility = !visibility; };
 
     bool visibility = true;
+
+    void setState(UIElementState state) { this->state = state; };
+    UIElementState getState() { return state; };
+protected:
+    UIElementState state = DEFAULT;
 };

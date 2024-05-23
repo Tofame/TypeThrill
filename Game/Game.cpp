@@ -39,6 +39,7 @@ void Game::run() {
 
                 GameInterface::updatePanels();
                 GameInterface::updateGameTitle();
+                break;
             case sf::Event::KeyPressed:
                 // Restart the game when gameover
                 if(Game::getGameState() == STATE_GAMEOVER) {
@@ -52,8 +53,28 @@ void Game::run() {
                     default:
                         break;
                 }
+                break;
             case sf::Event::MouseButtonPressed:
                 handleMousePress(event.mouseButton.button);
+                break;
+            case sf::Event::MouseMoved:
+            {
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+                for(auto panel : GameInterface::panels) {
+                    for(auto uielement : panel->UIElements) {
+                        if(uielement->getState() != HOVERED && uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
+                            uielement->body.setOutlineColor(sf::Color::Yellow);
+                            uielement->setState(HOVERED);
+                        } else if(uielement->getState() == HOVERED && !uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
+                            uielement->body.setOutlineColor(sf::Color::White);
+                            uielement->setState(DEFAULT);
+                        }
+                    }
+                }
+
+                break;
+            }
             default:
                 break;
         }
