@@ -23,6 +23,12 @@ Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
     this->body.setPosition(parent->body.getSize().x * posXRatio - body.getSize().x/2, parent->body.getSize().y * posYRatio - body.getSize().y/2);
 }
 
+Panel::~Panel() {
+    for(UIElement* uielement : UIElements) {
+        delete uielement;
+    }
+}
+
 void Panel::draw() {
     if(this->parent == nullptr) return;
 

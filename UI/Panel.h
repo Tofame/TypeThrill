@@ -19,4 +19,6 @@ public:
 
     void addElement(UIElement* ptrUIElement);
     UIElement* getElement(int index) const;
+
+    ~Panel();
 };
