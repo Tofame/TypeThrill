@@ -71,6 +71,14 @@ void Panel::addElement(UIElement* UIElement) {
     this->UIElements.push_back(UIElement);
 }
 
+void Panel::removeElement(UIElement* UIElement) {
+    auto it = std::find(this->UIElements.begin(), UIElements.end(), UIElement);
+    if (it != UIElements.end()) {
+        delete *it;
+        UIElements.erase(it);
+    }
+}
+
 UIElement* Panel::getElement(int index) const {
     if (index < 0 || index >= UIElements.size()) {
         throw std::out_of_range("Index out of range in Panel::getElement");

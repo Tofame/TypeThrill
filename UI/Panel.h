@@ -20,5 +20,6 @@ public:
     std::vector<UIElement*> UIElements;
 
     void addElement(UIElement* ptrUIElement);
+    void removeElement(UIElement* ptrUIElement);
     UIElement* getElement(int index) const;
 };
