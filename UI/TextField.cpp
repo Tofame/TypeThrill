@@ -1,5 +1,6 @@
 #include "TextField.h"
 #include "../Globals.h"
+#include "fmt/Core.h"
 
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
     this->body = sf::RectangleShape(size);
@@ -39,36 +40,30 @@ void TextField::handleClick() {
 
 void TextField::update() {
     sf::Vector2f parentScale = parent->body.getScale();
-    this->body.setScale(parentScale);
 
-    // Calculate position of TextField text in parent's body
-    sf::FloatRect textBounds = this->text.getLocalBounds();
-    auto textOffset = textBounds.top + textBounds.height/2;
+    auto textWidth = this->text.getLocalBounds().width * parentScale.x;
 
     sf::Vector2f newPosition(
         parent->body.getPosition().x + this->posXRatio * parent->body.getSize().x * parentScale.x,
-        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y - textOffset
+        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
     );
+    this->body.setPosition(newPosition);
+    this->body.move(textWidth + 6, 0);
+    this->body.setScale(parentScale);
 
     this->text.setPosition(newPosition);
+    this->text.setScale(parentScale);
 
-    // Set TextField body's position
-    newPosition.x = newPosition.x + textBounds.width + 16; // + random value so there is spacing
-    newPosition.y = newPosition.y - (this->body.getSize().y * parentScale.y)/2 + textOffset;
-    this->body.setPosition(newPosition);
-
-    sf::FloatRect inputBounds = this->text.getLocalBounds();
-    this->input.setPosition(newPosition);
+    auto bodyPosition = this->body.getPosition();
+    this->input.setPosition(bodyPosition);
+    this->input.setScale(parentScale);
 
     this->updatePointLinePosition(0);
-
-    this->text.setScale(parentScale);
-    this->input.setScale(parentScale);
 }
 
 void TextField::updatePointLinePosition(int offsetX) {
     this->pointLine.setPosition(this->input.getPosition());
-    this->pointLine.move(this->input.getLocalBounds().width + offsetX, -4);
+    this->pointLine.move(this->input.getGlobalBounds().width + offsetX, -4);
 
     this->pointLine.setScale(this->parent->body.getScale());
 }

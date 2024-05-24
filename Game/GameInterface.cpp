@@ -177,7 +177,7 @@ void GameInterface::setupPanels() {
 
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
-    panelSettings->addElement(UIElementFactory::createTextField("Word Frequency", {0.01, 0.15}));
+    panelSettings->addElement(UIElementFactory::createTextField("Word Frequency", {0.01, 0.05}));
 
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
