@@ -183,7 +183,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.1f}", Settings::getWordsSpeed()),
         {0.01, 0.05},
         "Word Speed",
-        "^[1-9]([.,][0-9]*)?$"
+        L"^[0-9]([.,][0-9]{0,2)?$" // L casts to wchar as we need wstring in wregex
     );
     panelSettings->addElement(wordSpeedField);
 
@@ -191,7 +191,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.1f}", Settings::getWordsFrequency()),
         {0.01, 0.35},
         "Word Frequency",
-        "^[1-9]([.,][0-9]*)?$"
+        L"^.*$" // L casts to wchar as we need wstring in wregex
     );
     panelSettings->addElement(wordFrequencyField);
 
@@ -199,7 +199,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.1f}", Settings::getWordsSize()),
         {0.01, 0.65},
         "Word Size",
-        "^[1-9]([.,][0-9]*)?$"
+        L"^[0-9]([.,][0-9]{0,2)?$" // L casts to wchar as we need wstring in wregex
     );
     panelSettings->addElement(wordSize);
 

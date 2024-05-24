@@ -101,7 +101,7 @@ void TextField::updatePointLinePosition(int offsetX) {
     this->pointLine.setScale(this->parent->body.getScale());
 }
 
-void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
+void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
     auto inputString = getInputString();
 
     if(mode == 0) {
@@ -113,15 +113,15 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
     } else {
         bool canAddToString = false;
 
-        auto tempString = inputString + c;
-        auto tempText = sf::Text();
-        tempText.setString(tempString);
-        if (std::regex_match(tempText.getString(), this->getPattern())) {
+        auto tempString = inputString + unicode;
+        // auto tempText = sf::Text();
+        // tempText.setString(tempString);
+        if (std::regex_match(tempString.toWideString(), this->getPattern())) {
             canAddToString = true;
         }
 
         if(canAddToString == true) {
-            inputString += c;
+            inputString += unicode;
         }
     }
 
@@ -165,10 +165,10 @@ void TextField::setPosition(float x, float y) {
     this->pointLine.setPosition(x, y);
 }
 
-std::regex TextField::getPattern() {
+std::wregex TextField::getPattern() {
     return this->pattern;
 }
 
-void TextField::setPattern(std::string pattern) {
-    this->pattern = std::regex(pattern);
+void TextField::setPattern(std::wstring pattern) {
+    this->pattern = std::wregex(pattern);
 }

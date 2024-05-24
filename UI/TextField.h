@@ -27,12 +27,12 @@ public:
     void move(float x, float y) override;
     void setPosition(float x, float y) override;
 
-    std::regex getPattern();
-    void setPattern(std::string pattern);
+    std::wregex getPattern();
+    void setPattern(std::wstring pattern);
 
     sf::Text pointLine;
 private:
     sf::Text text;
     sf::Text input;
-    std::regex pattern;
+    std::wregex pattern;
 };
