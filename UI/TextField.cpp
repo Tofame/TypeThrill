@@ -3,6 +3,20 @@
 #include "../Game/GameInterface.h"
 #include "fmt/Core.h"
 
+// Help methods that check if unicode corresponds to digit etc.
+bool checkUnicode_DIGITFLOAT(sf::Uint32 unicode) {
+    return (std::iswdigit(static_cast<wchar_t>(unicode)) || unicode == U'.' || unicode == U',');
+}
+
+bool checkUnicode_DIGIT(sf::Uint32 unicode) {
+    return (std::iswdigit(static_cast<wchar_t>(unicode)));
+}
+
+bool checkUnicode_ALPHABET(sf::Uint32 unicode) {
+    return std::iswalpha(static_cast<wchar_t>(unicode));
+}
+// End of help methods
+
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
     this->body = sf::RectangleShape(size);
     this->body.setPosition(position);
@@ -13,7 +27,7 @@ TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
 void TextField::draw() {
     window.draw(this->body);
     window.draw(this->input);
-    
+
     if(text.getString().isEmpty() == false) {
         window.draw(this->text);
     }
@@ -94,7 +108,21 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
 
         inputString.erase(inputString.getSize() - 1);
     } else {
-        inputString += c;
+        bool canAddToString = false;
+        auto type = this->getAllowedValues();
+
+        switch(type) {
+            case ALL: canAddToString = true; break;
+            case DIGITS: canAddToString = checkUnicode_DIGIT(c); break;
+            case DIGITS_FLOAT: canAddToString = checkUnicode_DIGITFLOAT(c); break;
+            case ALPHABET: canAddToString = checkUnicode_ALPHABET(c); break;
+            default:
+                throw std::runtime_error("Unknown type used in onWriteableKeyPressed: " + type);
+        }
+
+        if(canAddToString == true) {
+            inputString += c;
+        }
     }
 
     this->input.setString(inputString);
@@ -135,4 +163,12 @@ void TextField::setPosition(float x, float y) {
     this->body.setPosition(x, y);
     this->text.setPosition(x, y);
     this->pointLine.setPosition(x, y);
+}
+
+FieldValueType TextField::getAllowedValues() {
+    return this->allowedValues;
+}
+
+void TextField::setAllowedValues(FieldValueType type) {
+    this->allowedValues = type;
 }

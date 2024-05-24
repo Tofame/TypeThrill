@@ -182,21 +182,24 @@ void GameInterface::setupPanels() {
     auto wordSpeedField = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsSpeed()),
         {0.01, 0.05},
-        "Word Speed"
+        "Word Speed",
+        DIGITS_FLOAT
     );
     panelSettings->addElement(wordSpeedField);
 
     auto wordFrequencyField = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsFrequency()),
         {0.01, 0.35},
-        "Word Frequency"
+        "Word Frequency",
+        DIGITS_FLOAT
     );
     panelSettings->addElement(wordFrequencyField);
 
     auto wordSize = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsSize()),
         {0.01, 0.65},
-        "Word Size"
+        "Word Size",
+        DIGITS_FLOAT
     );
     panelSettings->addElement(wordSize);
 
