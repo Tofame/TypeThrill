@@ -1,6 +1,5 @@
 #include "TextField.h"
 #include "../Globals.h"
-#include "fmt/args.h"
 
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
     this->body = sf::RectangleShape(size);
@@ -51,11 +50,20 @@ void TextField::update() {
     this->input.setScale(parentScale);
 }
 
-void TextField::onChange() {
-    if(getText().getString().getSize() <= 0) {
+void TextField::onWriteableKeyPressed(int mode, char c) {
+    auto inputString = getInputString();
 
-        return;
+    if(mode == 0 || mode == 1) {
+        if(inputString.empty()) {
+            return;
+        }
+
+        inputString.pop_back();
+    } else {
+        inputString += c;
     }
+
+    this->input.setString(inputString);
 }
 
 bool TextField::isClicked(const sf::Vector2i& mousePos) {

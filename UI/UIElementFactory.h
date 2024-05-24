@@ -5,10 +5,12 @@
 #include "UIElement.h"
 #include "../Settings.h"
 #include "../Globals.h"
+#include "../cmake-build-debug/_deps/sfml-src/src/SFML/Window/Win32/CursorImpl.hpp"
 #include "../ResourceManagers/FontManager.h"
 
 inline auto ColorBlue = sf::Color(52, 194, 199);
 inline auto ColorGray = sf::Color(105,104,102);
+inline auto ColorGrayDarkLO = sf::Color(64,64,64, 120);
 
 class UIElementFactory {
 public:
@@ -40,10 +42,10 @@ public:
         input.setFont(FontManager::Fonts["arial"]);
         input.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
 
-        input.setFillColor(sf::Color::Magenta);
+        input.setFillColor(ColorGrayDarkLO);
         input.setOutlineColor(sf::Color::Black);
         input.setOutlineThickness(1);
-        input.setString("Beeeeeeeee");
+        input.setString("Input here...");
 
         element->setInput(input);
         element->setText(text);

@@ -11,7 +11,7 @@ public:
     void draw() override;
     void handleClick() override;
     void update() override;
-    void onChange() override;
+    void onWriteableKeyPressed(int mode, char c) override;
     bool isClicked(const sf::Vector2i& mousePos) override;
 
     sf::Text& getText();

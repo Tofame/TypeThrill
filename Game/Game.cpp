@@ -40,19 +40,8 @@ void Game::run() {
                 GameInterface::updatePanels();
                 GameInterface::updateGameTitle();
                 break;
-            case sf::Event::KeyPressed:
-                // Restart the game when gameover
-                if(Game::getGameState() == STATE_GAMEOVER) {
-                    resetGame();
-                    continue;
-                }
-
-                switch(event.key.code) {
-                    // Here we will be checking keyboard input (<= 127 and like BACKSPACE AND DELETE)
-                    // We will have text iput field handled here...
-                    default:
-                        break;
-                }
+            case sf::Event::TextEntered:
+                Game::handleTextEntered(event.text.unicode);
                 break;
             case sf::Event::MouseButtonPressed:
                 handleMousePress(event.mouseButton.button);
@@ -145,4 +134,32 @@ void Game::setGameState(GameStates state) {
 
 Game::GameStates Game::getGameState() {
     return Game::gameState;
+}
+
+void Game::handleTextEntered(sf::Uint32 unicode) {
+    int mode = 0; //0-backspace,1-delete,2-space and letter(s)
+    char charDetected = static_cast<char>(unicode);
+
+    if (unicode == 8) { // Backspace
+        mode = 0;
+    } else if (unicode == 127) { // Delete
+        mode = 1;
+    } else if (unicode >= 32) { // Handle other characters
+        mode = 2;
+    }
+
+    if(Game::getGameState() == STATE_PLAYING) {
+
+    } else if(Game::getGameState() == STATE_MENU) {
+        for(auto panel : GameInterface::panels) {
+            if(panel->isVisible()) {
+                for(auto uielement : panel->UIElements) {
+                    if(uielement->getState() == FOCUSED) {
+                        uielement->onWriteableKeyPressed(mode, charDetected);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

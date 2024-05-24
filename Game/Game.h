@@ -20,6 +20,7 @@ class Game {
         void static setGameState(GameStates state);
         GameStates static getGameState();
 
+        void static handleTextEntered(sf::Uint32 unicode);
     private:
         static GameStates gameState;
 };
