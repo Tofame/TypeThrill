@@ -2,13 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "UIElement.h"
-
-enum FieldValueType {
-    ALL = 0,
-    DIGITS = 1,
-    DIGITS_FLOAT = 2, // 1-9 and coma
-    ALPHABET = 3
-};
+#include <regex>
 
 class TextField : public UIElement {
 public:
@@ -33,12 +27,12 @@ public:
     void move(float x, float y) override;
     void setPosition(float x, float y) override;
 
-    FieldValueType getAllowedValues();
-    void setAllowedValues(FieldValueType type);
+    std::regex getPattern();
+    void setPattern(std::string pattern);
 
     sf::Text pointLine;
 private:
     sf::Text text;
     sf::Text input;
-    FieldValueType allowedValues;
+    std::regex pattern;
 };

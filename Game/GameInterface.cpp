@@ -183,7 +183,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.1f}", Settings::getWordsSpeed()),
         {0.01, 0.05},
         "Word Speed",
-        DIGITS_FLOAT
+        "^[1-9]([.,][0-9]*)?$"
     );
     panelSettings->addElement(wordSpeedField);
 
@@ -191,7 +191,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.1f}", Settings::getWordsFrequency()),
         {0.01, 0.35},
         "Word Frequency",
-        DIGITS_FLOAT
+        "^[1-9]([.,][0-9]*)?$"
     );
     panelSettings->addElement(wordFrequencyField);
 
@@ -199,7 +199,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.1f}", Settings::getWordsSize()),
         {0.01, 0.65},
         "Word Size",
-        DIGITS_FLOAT
+        "^[1-9]([.,][0-9]*)?$"
     );
     panelSettings->addElement(wordSize);
 

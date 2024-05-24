@@ -16,14 +16,14 @@ public:
     // Button static createMenuButton(const std::string& name, const std::function<void()>& onClick);
     // std::unique_ptr<UIElement> static createButton();
 
-    static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, FieldValueType allowedValues) {
+    static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::string pattern) {
         sf::Vector2f size = {200 * Settings::getUIScale(), 30 * Settings::getUIScale()};
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto element = new TextField(size, position);
 
         // Set Ratios && Allowed Value (e.g. only DIGITS (1-9) allowed)
         element->setPosRatios(posRatios.x, posRatios.y);
-        element->setAllowedValues(allowedValues);
+        element->setPattern(pattern);
 
         auto& rect = element->body;
         rect.setFillColor(ColorGray);

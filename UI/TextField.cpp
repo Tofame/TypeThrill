@@ -1,4 +1,7 @@
 #include "TextField.h"
+
+#include <regex>
+
 #include "../Globals.h"
 #include "../Game/GameInterface.h"
 #include "fmt/Core.h"
@@ -109,15 +112,12 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
         inputString.erase(inputString.getSize() - 1);
     } else {
         bool canAddToString = false;
-        auto type = this->getAllowedValues();
 
-        switch(type) {
-            case ALL: canAddToString = true; break;
-            case DIGITS: canAddToString = checkUnicode_DIGIT(c); break;
-            case DIGITS_FLOAT: canAddToString = checkUnicode_DIGITFLOAT(c); break;
-            case ALPHABET: canAddToString = checkUnicode_ALPHABET(c); break;
-            default:
-                throw std::runtime_error("Unknown type used in onWriteableKeyPressed: " + type);
+        auto tempString = inputString + c;
+        auto tempText = sf::Text();
+        tempText.setString(tempString);
+        if (std::regex_match(tempText.getString(), this->getPattern())) {
+            canAddToString = true;
         }
 
         if(canAddToString == true) {
@@ -165,10 +165,10 @@ void TextField::setPosition(float x, float y) {
     this->pointLine.setPosition(x, y);
 }
 
-FieldValueType TextField::getAllowedValues() {
-    return this->allowedValues;
+std::regex TextField::getPattern() {
+    return this->pattern;
 }
 
-void TextField::setAllowedValues(FieldValueType type) {
-    this->allowedValues = type;
+void TextField::setPattern(std::string pattern) {
+    this->pattern = std::regex(pattern);
 }
