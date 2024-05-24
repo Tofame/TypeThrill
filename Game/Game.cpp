@@ -65,13 +65,13 @@ void Game::run() {
                     for(auto uielement : panel->UIElements) {
                         if(uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
                             if(uielement->getState() == DEFAULT) {
-                                uielement->body.setOutlineColor(sf::Color::Yellow);
                                 uielement->setState(HOVERED);
                             }
                             break;
                         } else {
-                            uielement->body.setOutlineColor(sf::Color::White);
-                            uielement->setState(DEFAULT);
+                            if(uielement->getState() != FOCUSED) {
+                                uielement->setState(DEFAULT);
+                            }
                         }
                     }
                 }
@@ -103,6 +103,8 @@ void Game::checkUIElements(sf::Vector2i mousePos) {
             if(uielement->isVisible() && uielement->isClicked(mousePos) == true) {
                 uielement->handleClick();
                 break;
+            } else if(uielement->getState() == FOCUSED) {
+                uielement->setState(DEFAULT);
             }
         }
     }

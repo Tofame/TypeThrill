@@ -1,28 +1,69 @@
 #pragma once
 #include "Button.h"
 #include "Panel.h"
+#include "TextField.h"
 #include "UIElement.h"
 #include "../Settings.h"
 #include "../Globals.h"
 #include "../ResourceManagers/FontManager.h"
 
-inline auto myBlue = sf::Color(52, 194, 199);
-inline auto myWhite = sf::Color(255,255,255);
+inline auto ColorBlue = sf::Color(52, 194, 199);
+inline auto ColorGray = sf::Color(105,104,102);
 
 class UIElementFactory {
 public:
     // Button static createMenuButton(const std::string& name, const std::function<void()>& onClick);
     // std::unique_ptr<UIElement> static createButton();
 
-    static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick) {
+    static UIElement* createTextField(const std::string& name, sf::Vector2f posRatios) {
+        sf::Vector2f size = {200 * Settings::getUIScale(), 30 * Settings::getUIScale()};
+        sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
+        auto element = new TextField(size, position);
+        element->setPosRatios(posRatios.x, posRatios.y);
+
+        auto& rect = element->body;
+        rect.setFillColor(ColorGray);
+        rect.setOutlineColor(sf::Color::White);
+        rect.setOutlineThickness(3);
+
+        auto text = sf::Text();
+        text.setFont(FontManager::Fonts["times"]);
+        text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+
+        text.setFillColor(sf::Color::White);
+        text.setOutlineColor(sf::Color::Black);
+        text.setOutlineThickness(1);
+
+        text.setString(name);
+
+        auto input = sf::Text();
+        input.setFont(FontManager::Fonts["arial"]);
+        input.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+
+        input.setFillColor(sf::Color::Magenta);
+        input.setOutlineColor(sf::Color::Black);
+        input.setOutlineThickness(1);
+        input.setString("Beeeeeeeee");
+
+        element->setInput(input);
+        element->setText(text);
+
+        return element;
+    }
+
+    static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
         sf::Vector2f size = {200 * Settings::getUIScale(), 50 * Settings::getUIScale()};
+        return createMenuButton(name, onClick, posRatios, size);
+    }
+
+    static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size) {
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto menuButton = new Button(size, position, onClick);
-        menuButton->setPosRatios(0.5, 0.15);
+        menuButton->setPosRatios(posRatios.x, posRatios.y);
 
         auto& rect = menuButton->body;
-        rect.setFillColor(myBlue);
-        rect.setOutlineColor(myWhite);
+        rect.setFillColor(ColorBlue);
+        rect.setOutlineColor(sf::Color::White);
         rect.setOutlineThickness(4);
 
         auto text = sf::Text();

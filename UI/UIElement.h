@@ -5,7 +5,7 @@
 enum UIElementState {
     DEFAULT = 0,
     HOVERED = 1,
-    CLICKED = 2
+    FOCUSED = 2
 };
 
 class UIElement {
@@ -15,7 +15,7 @@ public:
     virtual void draw() {};
     virtual void update() {};
     virtual void handleClick() {};
-    virtual void updateState() {};
+    virtual void onChange() {};
 
     virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
 
@@ -36,7 +36,23 @@ public:
 
     bool visibility = true;
 
-    void setState(UIElementState state) { this->state = state; };
+    void setState(UIElementState state) {
+        this->state = state;
+
+        switch(state) {
+            case DEFAULT:
+                this->body.setOutlineColor(sf::Color::White);
+                break;
+            case HOVERED:
+                this->body.setOutlineColor(sf::Color::Yellow);
+                break;
+            case FOCUSED:
+                this->body.setOutlineColor(sf::Color::Cyan);
+                break;
+            default:
+                this->body.setOutlineColor(sf::Color::White);
+        }
+    };
     UIElementState getState() { return state; };
 protected:
     UIElementState state = DEFAULT;

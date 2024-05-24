@@ -165,18 +165,19 @@ void GameInterface::setupPanels() {
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.6}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_PLAYING); }));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_PLAYING); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.15}));
     int i = 0;
     for(auto uielement : panelMenu->UIElements) {
         uielement->setPosRatios(0.5, uielement->posYRatio + i * 0.24);
         i++;
     }
 
-    auto panelSettings = UIElementFactory::createPanel(panelWindow, {600, 400}, {0.5, 0.5}, PANEL_SETTINGS);
-    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }));
+    auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
+    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::createTextField("Word Frequency", {0.01, 0.15}));
 
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);

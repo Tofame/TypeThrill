@@ -42,5 +42,7 @@ add_executable(TypeThrill
         UI/Panel.cpp
         UI/Panel.h
         UI/UIElementFactory.h
+        UI/TextField.cpp
+        UI/TextField.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
