@@ -23,8 +23,8 @@ public:
     void setInput(sf::String value);
     void setInput(sf::Text value);
 
-    void move(float x, float y);
-    void setPosition(float x, float y);
+    void move(float x, float y) override;
+    void setPosition(float x, float y) override;
 
     sf::Text pointLine;
 private:

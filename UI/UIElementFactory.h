@@ -16,7 +16,7 @@ public:
     // Button static createMenuButton(const std::string& name, const std::function<void()>& onClick);
     // std::unique_ptr<UIElement> static createButton();
 
-    static UIElement* createTextField(const std::string& name, sf::Vector2f posRatios) {
+    static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue) {
         sf::Vector2f size = {200 * Settings::getUIScale(), 30 * Settings::getUIScale()};
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto element = new TextField(size, position);
@@ -27,22 +27,25 @@ public:
         rect.setOutlineColor(sf::Color::White);
         rect.setOutlineThickness(3);
 
-        auto text = sf::Text();
-        text.setFont(FontManager::Fonts["times"]);
-        text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+        if(textValue.empty() == false) {
+            auto text = sf::Text();
+            text.setFont(FontManager::Fonts["times"]);
+            text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
 
-        text.setFillColor(sf::Color::White);
-        text.setOutlineColor(sf::Color::Black);
-        text.setOutlineThickness(1);
+            text.setFillColor(sf::Color::White);
+            text.setOutlineColor(sf::Color::Black);
+            text.setOutlineThickness(1);
 
-        text.setString(name);
+            text.setString(textValue);
+
+            element->setText(text);
+        }
 
         auto input = sf::Text();
         input.setFont(FontManager::Fonts["aleoItalic"]);
         input.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
-
         input.setFillColor(sf::Color::White);
-        input.setString("Input here...");
+        input.setString(fieldValue);
 
         // I-line, Cursour etc. <- Its the line that blinks and indicates where your next letter will be
         element->pointLine.setFont(FontManager::Fonts["times"]);
@@ -51,7 +54,6 @@ public:
         element->pointLine.setString("|");
 
         element->setInput(input);
-        element->setText(text);
 
         return element;
     }

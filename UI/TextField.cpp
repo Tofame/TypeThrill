@@ -1,5 +1,6 @@
 #include "TextField.h"
 #include "../Globals.h"
+#include "../Game/GameInterface.h"
 #include "fmt/Core.h"
 
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
@@ -11,8 +12,11 @@ TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
 
 void TextField::draw() {
     window.draw(this->body);
-    window.draw(this->text);
     window.draw(this->input);
+    
+    if(text.getString().isEmpty() == false) {
+        window.draw(this->text);
+    }
 
     if(getState() == FOCUSED) {
         auto currentColor = this->pointLine.getFillColor();
@@ -35,6 +39,16 @@ void TextField::handleClick() {
         return;
     }
 
+    // Disable all focused elements
+    for(auto panel : GameInterface::panels) {
+        if(panel->isVisible()) {
+            for(auto uielement : panel->UIElements) {
+                if(uielement->getState() == FOCUSED)
+                    uielement->setState(DEFAULT);
+            }
+        }
+    }
+
     this->setState(FOCUSED);
 }
 
@@ -48,11 +62,13 @@ void TextField::update() {
         parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
     );
     this->body.setPosition(newPosition);
-    this->body.move(textWidth + 6, 0);
     this->body.setScale(parentScale);
 
-    this->text.setPosition(newPosition);
-    this->text.setScale(parentScale);
+    if (text.getString().isEmpty() == false) {
+        this->body.move(textWidth + 6, 0);
+        this->text.setPosition(newPosition);
+        this->text.setScale(parentScale);
+    }
 
     auto bodyPosition = this->body.getPosition();
     this->input.setPosition(bodyPosition);
@@ -112,9 +128,11 @@ void TextField::setInput(sf::Text value) {
 void TextField::move(float x, float y) {
     this->body.move(x, y);
     this->text.move(x, y);
+    this->pointLine.move(x, y);
 }
 
 void TextField::setPosition(float x, float y) {
     this->body.setPosition(x, y);
     this->text.setPosition(x, y);
+    this->pointLine.setPosition(x, y);
 }

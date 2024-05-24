@@ -175,10 +175,32 @@ void GameInterface::setupPanels() {
         i++;
     }
 
+    // Setting up the Settings Panel
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
-    panelSettings->addElement(UIElementFactory::createTextField("Word Frequency", {0.01, 0.05}));
 
+    auto wordSpeedField = UIElementFactory::createTextField(
+        fmt::format("{:.1f}", Settings::getWordsSpeed()),
+        {0.01, 0.05},
+        "Word Speed"
+    );
+    panelSettings->addElement(wordSpeedField);
+
+    auto wordFrequencyField = UIElementFactory::createTextField(
+        fmt::format("{:.1f}", Settings::getWordsFrequency()),
+        {0.01, 0.35},
+        "Word Frequency"
+    );
+    panelSettings->addElement(wordFrequencyField);
+
+    auto wordSize = UIElementFactory::createTextField(
+        fmt::format("{:.1f}", Settings::getWordsSize()),
+        {0.01, 0.65},
+        "Word Size"
+    );
+    panelSettings->addElement(wordSize);
+
+    // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
     GameInterface::addPanelToVector(panelSettings);

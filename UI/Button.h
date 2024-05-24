@@ -22,8 +22,8 @@ public:
     sf::Text& getText();
     void setText(sf::Text& text);
 
-    void move(float x, float y);
-    void setPosition(float x, float y);
+    void move(float x, float y) override;
+    void setPosition(float x, float y) override;
 private:
     sf::Text text;
 };
