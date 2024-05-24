@@ -4,10 +4,6 @@
 #include "fmt/Core.h"
 
 // Help methods that check if unicode corresponds to digit etc.
-bool checkUnicode_DIGITFLOAT(sf::Uint32 unicode) {
-    return (std::iswdigit(static_cast<wchar_t>(unicode)) || unicode == U'.' || unicode == U',');
-}
-
 bool checkUnicode_DIGIT(sf::Uint32 unicode) {
     return (std::iswdigit(static_cast<wchar_t>(unicode)));
 }
@@ -98,7 +94,7 @@ void TextField::updatePointLinePosition(int offsetX) {
     this->pointLine.setScale(this->parent->body.getScale());
 }
 
-void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
+void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
     auto inputString = getInputString();
 
     if(mode == 0) {
@@ -111,17 +107,33 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
         bool canAddToString = false;
         auto type = this->getAllowedValues();
 
+        auto size = inputString.getSize();
+
         switch(type) {
             case ALL: canAddToString = true; break;
-            case DIGITS: canAddToString = checkUnicode_DIGIT(c); break;
-            case DIGITS_FLOAT: canAddToString = checkUnicode_DIGITFLOAT(c); break;
-            case ALPHABET: canAddToString = checkUnicode_ALPHABET(c); break;
+            case DIGITS: canAddToString = checkUnicode_DIGIT(unicode); break;
+            case DIGITS_FLOAT_R:
+            {
+                auto max = 3; // Maximum chars number in this type (DIGITS_FLOAT_RESTRICTED)
+                if(size > max)
+                    break;
+
+                if(size == 1 && unicode != U'.') // we are adding 2nd one which means it must be a coma
+                    break;
+
+                if((size == 0 || size >= 2 && size < max) && !checkUnicode_DIGIT(unicode)) // 0.23 <- 0first digit, 1coma etc.
+                    break;
+
+                canAddToString = true;
+                break;
+            }
+            case ALPHABET: canAddToString = checkUnicode_ALPHABET(unicode); break;
             default:
                 throw std::runtime_error("Unknown type used in onWriteableKeyPressed: " + type);
         }
 
         if(canAddToString == true) {
-            inputString += c;
+            inputString += unicode;
         }
     }
 

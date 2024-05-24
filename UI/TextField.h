@@ -6,7 +6,7 @@
 enum FieldValueType {
     ALL = 0,
     DIGITS = 1,
-    DIGITS_FLOAT = 2, // 1-9 and coma
+    DIGITS_FLOAT_R = 2, // 1-9 and coma. Its R-estricted version where its in a format: 1digitMax-COMA-2digitsMax
     ALPHABET = 3
 };
 
