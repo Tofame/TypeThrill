@@ -15,7 +15,7 @@ public:
     virtual void draw() {};
     virtual void update() {};
     virtual void handleClick() {};
-    virtual void onWriteableKeyPressed(int mode, char c) {}; // Writeable means backspace/space/delete and alphabet
+    virtual void onWriteableKeyPressed(int mode, sf::Uint32 c) {}; // Writeable means backspace/space/delete and alphabet
 
     virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
 

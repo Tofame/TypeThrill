@@ -12,6 +12,20 @@ void TextField::draw() {
     window.draw(this->body);
     window.draw(this->text);
     window.draw(this->input);
+
+    if(getState() == FOCUSED) {
+        auto currentColor = this->pointLine.getFillColor();
+        auto alpha = currentColor.a;
+        if(alpha <= 0) {
+            currentColor.a = 255;
+            this->pointLine.setFillColor(currentColor);
+        } else {
+            currentColor.a -= 10;
+            this->pointLine.setFillColor(currentColor);
+        }
+
+        window.draw(this->pointLine);
+    }
 }
 
 void TextField::handleClick() {
@@ -46,24 +60,34 @@ void TextField::update() {
     sf::FloatRect inputBounds = this->text.getLocalBounds();
     this->input.setPosition(newPosition);
 
+    this->updatePointLinePosition(0);
+
     this->text.setScale(parentScale);
     this->input.setScale(parentScale);
 }
 
-void TextField::onWriteableKeyPressed(int mode, char c) {
+void TextField::updatePointLinePosition(int offsetX) {
+    this->pointLine.setPosition(this->input.getPosition());
+    this->pointLine.move(this->input.getLocalBounds().width + offsetX, -4);
+
+    this->pointLine.setScale(this->parent->body.getScale());
+}
+
+void TextField::onWriteableKeyPressed(int mode, sf::Uint32 c) {
     auto inputString = getInputString();
 
-    if(mode == 0 || mode == 1) {
-        if(inputString.empty()) {
+    if(mode == 0) {
+        if(inputString.isEmpty()) {
             return;
         }
 
-        inputString.pop_back();
+        inputString.erase(inputString.getSize() - 1);
     } else {
         inputString += c;
     }
 
     this->input.setString(inputString);
+    this->updatePointLinePosition(0);
 }
 
 bool TextField::isClicked(const sf::Vector2i& mousePos) {
@@ -78,11 +102,11 @@ void TextField::setText(sf::Text &text) {
     this->text = text;
 }
 
-std::string TextField::getInputString() {
+sf::String TextField::getInputString() {
     return input.getString();
 }
 
-void TextField::setInput(std::string value) {
+void TextField::setInput(sf::String value) {
     this->input.setString(value);
 }
 

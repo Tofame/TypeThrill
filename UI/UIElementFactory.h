@@ -5,7 +5,6 @@
 #include "UIElement.h"
 #include "../Settings.h"
 #include "../Globals.h"
-#include "../cmake-build-debug/_deps/sfml-src/src/SFML/Window/Win32/CursorImpl.hpp"
 #include "../ResourceManagers/FontManager.h"
 
 inline auto ColorBlue = sf::Color(52, 194, 199);
@@ -39,13 +38,17 @@ public:
         text.setString(name);
 
         auto input = sf::Text();
-        input.setFont(FontManager::Fonts["arial"]);
+        input.setFont(FontManager::Fonts["aleoItalic"]);
         input.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
 
-        input.setFillColor(ColorGrayDarkLO);
-        input.setOutlineColor(sf::Color::Black);
-        input.setOutlineThickness(1);
+        input.setFillColor(sf::Color::White);
         input.setString("Input here...");
+
+        // I-line, Cursour etc. <- Its the line that blinks and indicates where your next letter will be
+        element->pointLine.setFont(FontManager::Fonts["times"]);
+        element->pointLine.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+        element->pointLine.setFillColor(sf::Color::White);
+        element->pointLine.setString("|");
 
         element->setInput(input);
         element->setText(text);

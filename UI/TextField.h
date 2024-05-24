@@ -11,18 +11,22 @@ public:
     void draw() override;
     void handleClick() override;
     void update() override;
-    void onWriteableKeyPressed(int mode, char c) override;
+    void onWriteableKeyPressed(int mode, sf::Uint32 c) override;
     bool isClicked(const sf::Vector2i& mousePos) override;
+
+    void updatePointLinePosition(int offsetX);
 
     sf::Text& getText();
     void setText(sf::Text& text);
 
-    std::string getInputString();
-    void setInput(std::string value);
+    sf::String getInputString();
+    void setInput(sf::String value);
     void setInput(sf::Text value);
 
     void move(float x, float y);
     void setPosition(float x, float y);
+
+    sf::Text pointLine;
 private:
     sf::Text text;
     sf::Text input;

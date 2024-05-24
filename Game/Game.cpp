@@ -137,15 +137,14 @@ Game::GameStates Game::getGameState() {
 }
 
 void Game::handleTextEntered(sf::Uint32 unicode) {
-    int mode = 0; //0-backspace,1-delete,2-space and letter(s)
-    char charDetected = static_cast<char>(unicode);
+    int mode = 0; //0-delete mode (backspace, delete),1-add mode (space and letter(s))
 
     if (unicode == 8) { // Backspace
         mode = 0;
-    } else if (unicode == 127) { // Delete
-        mode = 1;
     } else if (unicode >= 32) { // Handle other characters
-        mode = 2;
+        mode = 1;
+    } else {
+        return;
     }
 
     if(Game::getGameState() == STATE_PLAYING) {
@@ -155,7 +154,7 @@ void Game::handleTextEntered(sf::Uint32 unicode) {
             if(panel->isVisible()) {
                 for(auto uielement : panel->UIElements) {
                     if(uielement->getState() == FOCUSED) {
-                        uielement->onWriteableKeyPressed(mode, charDetected);
+                        uielement->onWriteableKeyPressed(mode, unicode);
                         break;
                     }
                 }
