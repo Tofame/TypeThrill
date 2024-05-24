@@ -6,20 +6,6 @@
 #include "../Game/GameInterface.h"
 #include "fmt/Core.h"
 
-// Help methods that check if unicode corresponds to digit etc.
-bool checkUnicode_DIGITFLOAT(sf::Uint32 unicode) {
-    return (std::iswdigit(static_cast<wchar_t>(unicode)) || unicode == U'.' || unicode == U',');
-}
-
-bool checkUnicode_DIGIT(sf::Uint32 unicode) {
-    return (std::iswdigit(static_cast<wchar_t>(unicode)));
-}
-
-bool checkUnicode_ALPHABET(sf::Uint32 unicode) {
-    return std::iswalpha(static_cast<wchar_t>(unicode));
-}
-// End of help methods
-
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
     this->body = sf::RectangleShape(size);
     this->body.setPosition(position);
@@ -113,9 +99,8 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
     } else {
         bool canAddToString = false;
 
+        // We create tempString and we will check with regex if its possible to add unicode to inputString
         auto tempString = inputString + unicode;
-        // auto tempText = sf::Text();
-        // tempText.setString(tempString);
         if (std::regex_match(tempString.toWideString(), this->getPattern())) {
             canAddToString = true;
         }
