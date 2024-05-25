@@ -12,6 +12,8 @@ void Game::run() {
     switch(Game::getGameState()) {
         case STATE_PLAYING:
             // GameInterface here will draw && GameLogic will move everything (words etc)
+            GameInterface::drawMenuBackground();
+            GameInterface::drawPanels();
             break;
         case STATE_MENU:
             GameInterface::drawMenu();
@@ -107,14 +109,27 @@ void Game::resetGame() {
 
 
 void Game::setGameState(GameStates state) {
+    if(Game::getGameState() == state) {
+        return;
+    }
+
+    GameInterface::hideAllPanels();
+
     switch(state) {
         case STATE_MENU:
         {
+            GameInterface::setMenuState(GameInterface::MENU_DEFAULT);
             Game::gameState = state;
             break;
         }
         case STATE_PLAYING:
         {
+            auto panelToShow = GameInterface::getPanelByType(PANEL_WORDS);
+            if(panelToShow != nullptr)
+                panelToShow->setVisibility(true);
+            auto panelToShow2 = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+            if(panelToShow2 != nullptr)
+                panelToShow2->setVisibility(true);
             Game::gameState = state;
             break;
         }

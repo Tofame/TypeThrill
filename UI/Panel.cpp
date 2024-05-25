@@ -56,12 +56,12 @@ void Panel::update() {
             this->body.setScale(scaleFactor * Settings::getUIScale(), scaleFactor * Settings::getUIScale());
         }
     } else {
-        this->body.setScale(this->parent->body.getScale() * Settings::getUIScale());
+        this->body.setScale(this->parent->body.getScale());
     }
 
     sf::Vector2f newPosition(
         this->posXRatio * window.getSize().x - (this->body.getGlobalBounds().width) / 2,
-        this->posYRatio * window.getSize().y - (this->body.getGlobalBounds().height) / 2
+        this->posYRatio * window.getSize().y
     );
     this->body.setPosition(newPosition);
 

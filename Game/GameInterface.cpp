@@ -21,7 +21,6 @@ std::vector<Panel*> GameInterface::panels = std::vector<Panel*>();
 
 void GameInterface::drawMenu() {
     GameInterface::drawMenuBackground();
-    GameInterface::drawMenuWindow();
     GameInterface::drawPanels();
 }
 
@@ -30,18 +29,6 @@ void GameInterface::drawMenuBackground() {
     window.draw(GameInterface::getGameTitle());
 }
 
-void GameInterface::drawMenuWindow() {
-    switch(getMenuState()) {
-        case MENU_SETTINGS:
-        {
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-
 void GameInterface::drawPanels() {
     for (auto panel : GameInterface::panels) {
         if(panel->isVisible())
@@ -49,13 +36,17 @@ void GameInterface::drawPanels() {
     }
 }
 
-void GameInterface::setMenuState(MenuStates state) {
-    //auto oldState = getMenuState();
-
-    // Hide all panels and in switch we will show whatever panels should be visible
+void GameInterface::hideAllPanels() {
     for (auto panel : GameInterface::panels) {
         panel->setVisibility(false);
     }
+}
+
+void GameInterface::setMenuState(MenuStates state) {
+    // We wont make a check for getState != state here as its called in Game:setGameState and we need it.
+
+    // Hide all panels and in switch we will show whatever panels should be visible
+    GameInterface::hideAllPanels();
 
     switch(state) {
         case MENU_DEFAULT:
@@ -147,11 +138,11 @@ void GameInterface::updateGameTitle() {
     text.setScale(parentScale);
 
     sf::FloatRect textBounds = text.getLocalBounds();
-    text.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+    text.setOrigin(textBounds.left + textBounds.width/2, textBounds.top + textBounds.height/2);
 
     sf::Vector2f textCenter(
         (window.getSize().x * 0.5),
-        (window.getSize().y * 0.15)
+        (window.getSize().y * 0.1)
     );
 
     text.setPosition(textCenter);
@@ -160,10 +151,12 @@ void GameInterface::updateGameTitle() {
 }
 
 void GameInterface::setupPanels() {
+    // ================= Setting up the Window Panel
     auto panelWindow = new Panel({(float)originalWindowSize.x, (float)originalWindowSize.y}, {0,0});
     panelWindow->setType(PANEL_WINDOW);
 
-    auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.6}, PANEL_MENU);
+    // ================= Setting up the Menu Panel
+    auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
     panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_PLAYING); }, {0.5, 0.15}));
@@ -177,7 +170,7 @@ void GameInterface::setupPanels() {
     }
 
     // ================= Setting up the Settings Panel
-    auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
+    auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_SETTINGS);
 
     auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changes.", {0.5, 0.75});
     panelSettings->addElement(settingsTextLabel);
@@ -227,10 +220,22 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Apply", []() -> void { Settings::applySettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
+    // ================= Setting up the Panels for the actual Game (WORDS and GAMESTATISTICS)
+    auto panelWords = UIElementFactory::createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);
+    panelWords->body.setOutlineThickness(4);
+    panelWords->body.setFillColor(sf::Color(153, 153, 153, 60));
+
+    auto panelGameStatistics = UIElementFactory::createPanel(panelWindow, {1700, 280}, {0.5, 0.67}, PANEL_GAMESTATISTICS);
+    panelGameStatistics->body.setOutlineThickness(4);
+    panelGameStatistics->body.setOutlineColor(sf::Color(219, 170, 44));
+    panelGameStatistics->body.setFillColor(sf::Color(153, 153, 153, 60));
+
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
     GameInterface::addPanelToVector(panelSettings);
+    GameInterface::addPanelToVector(panelWords);
+    GameInterface::addPanelToVector(panelGameStatistics);
 
     GameInterface::updatePanels();
 }
