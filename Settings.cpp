@@ -47,7 +47,7 @@ void Settings::loadSettings() {
     auto file = std::fstream(projectPath + "/settings.txt");
 
     if (!file) {
-        return;
+        throw std::runtime_error("Unable to open settings.txt.");
     }
 
     std::regex pattern("([a-zA-Z_]+)[=]{1}(.+)");
@@ -263,5 +263,45 @@ void setSettingFromCheckbox(Checkbox* checkBoxPtr) {
 }
 
 void Settings::saveSettings() {
-    
+    // Allow for both reading AND writing
+    auto file = std::fstream(projectPath + "/settings.txt", std::ios::in | std::ios::out);
+
+    if (!file) {
+        throw std::runtime_error("Unable to open settings.txt.");
+    }
+
+    std::regex pattern("([a-zA-Z_]+)[=]{1}(.+)");
+    std::smatch matches;
+    std::stringstream buffer;
+
+    for (std::string line; std::getline(file, line); ) {
+        if (std::regex_match(line, matches, pattern)) {
+            std::string option = matches[1].str();
+            std::string newValue;
+
+            if (option == "words_font") {
+                newValue = Settings::getWordsFontName();
+            } else if (option == "words_frequency") {
+                newValue = fmt::format("{:.2f}", Settings::getWordsFrequency());
+            } else if (option == "words_speed") {
+                newValue = fmt::format("{:.2f}", Settings::getWordsSpeed());
+            } else if (option == "words_size") {
+                newValue = fmt::format("{:.2f}", Settings::getWordsSize());
+            } else if (option == "words_highlight") {
+                newValue = Settings::isWordsHighlightEnabled() ? "true" : "false";
+            } else if (option == "ui_scale") {
+                newValue = fmt::format("{:.2f}", Settings::getUIScale());
+            }
+
+            buffer << option << "=" << newValue << "\n";
+        } else {
+            buffer << line << "\n";
+        }
+    }
+
+    // Close and then update file
+    file.close();
+    std::ofstream outFile(projectPath + "/settings.txt");
+    outFile << buffer.str();
+    outFile.close();
 }
