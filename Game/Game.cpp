@@ -52,13 +52,14 @@ void Game::run() {
 
                 for(auto panel : GameInterface::panels) {
                     for(auto uielement : panel->UIElements) {
-                        if(uielement->body.getGlobalBounds().contains((sf::Vector2f)mousePosition)) {
+                        if(uielement->isMouseOver(mousePosition))
+                        {
                             if(uielement->getState() == DEFAULT) {
                                 uielement->setState(HOVERED);
                             }
                             break;
                         } else {
-                            if(uielement->getState() != FOCUSED) {
+                            if(uielement->getState() == HOVERED) {
                                 uielement->setState(DEFAULT);
                             }
                         }
@@ -89,9 +90,9 @@ void Game::checkUIElements(sf::Vector2i mousePos) {
             continue;
 
         for(auto uielement : panel->UIElements) {
-            if(uielement->isVisible() && uielement->isClicked(mousePos) == true) {
+            if(uielement->isVisible() && uielement->isMouseOver(mousePos) == true) {
                 uielement->handleClick();
-                break;
+                return;
             } else if(uielement->getState() == FOCUSED) {
                 uielement->setState(DEFAULT);
             }

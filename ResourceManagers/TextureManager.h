@@ -4,6 +4,5 @@
 
 class TextureManager {
 public:
-    static std::map<std::string, sf::Texture> Textures;
-    static void loadTextures();
+    static sf::Texture loadResource(std::string path);
 };

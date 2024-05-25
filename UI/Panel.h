@@ -24,7 +24,7 @@ public:
     void update() override;
     void handleClick() override {};
 
-    bool isClicked(const sf::Vector2i& mousePos) override { return false;};
+    bool isMouseOver(const sf::Vector2i& mousePos) override;
 
     std::vector<UIElement*> UIElements;
 

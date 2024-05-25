@@ -114,7 +114,7 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
     this->updatePointLinePosition(0);
 }
 
-bool TextField::isClicked(const sf::Vector2i& mousePos) {
+bool TextField::isMouseOver(const sf::Vector2i& mousePos) {
     return body.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 

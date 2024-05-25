@@ -9,29 +9,38 @@ Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios) {
 
     this->setPosRatios(posRatios.x, posRatios.y);
 
-    this->checkBoxSprite.setTexture(TextureManager::Textures["checkbox"]);
-    auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x;
-    auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y;
+    this->texture = TextureManager::loadResource("UI/checkbox.png");
+    this->checkBoxSprite.setTexture(this->texture);
+
+    auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x/2;
+    auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y/2;
+    this->checkBoxSprite.setTextureRect(sf::IntRect(0, 0, txtWidth, txtHeight));
+
     this->checkBoxSprite.setScale(getSizeMultiplier(), getSizeMultiplier());
-    this->checkBoxSprite.setTextureRect(sf::IntRect(0, 0, txtWidth/2, txtHeight));
+
+    this->state = DEFAULT;
 }
 
 bool Checkbox::isEnabled() const {
-    return this->enabled;
+    return this->enabled == true;
 }
 
 void Checkbox::disable() {
     this->enabled = false;
-    auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x;
-    auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y;
-    this->checkBoxSprite.setTextureRect(sf::IntRect(0, 0, txtWidth/2, txtHeight));
+    auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x/2;
+    auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y/2;
+    auto checkboxStateOffset = this->getState() == HOVERED ? txtHeight : 0;
+
+    this->checkBoxSprite.setTextureRect(sf::IntRect(0, checkboxStateOffset, txtWidth, txtHeight));
 }
 
 void Checkbox::enable() {
     this->enabled = true;
-    auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x;
-    auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y;
-    this->checkBoxSprite.setTextureRect(sf::IntRect(txtWidth/2, 0, txtWidth/2, txtHeight));
+    auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x/2;
+    auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y/2;
+    auto checkboxStateOffset = this->getState() == HOVERED ? txtHeight : 0;
+
+    this->checkBoxSprite.setTextureRect(sf::IntRect(txtWidth, checkboxStateOffset, txtWidth, txtHeight));
 }
 
 void Checkbox::draw() {
@@ -69,7 +78,31 @@ void Checkbox::update() {
     }
 }
 
-bool Checkbox::isClicked(const sf::Vector2i& mousePos) {
+void Checkbox::setState(UIElementState state) {
+    if(this->getState() == state) {
+        return;
+    }
+
+    this->state = state;
+
+    auto singleFrameWidth = this->checkBoxSprite.getTexture()->getSize().x/2; // 2x2 texture
+    auto singleFrameHeight = this->checkBoxSprite.getTexture()->getSize().y/2; // 2x2 texture
+
+    switch(state) {
+        case DEFAULT:
+            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isEnabled() ? singleFrameWidth : 0), 0, singleFrameWidth, singleFrameHeight));
+            break;
+        case HOVERED:
+            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isEnabled() ? singleFrameWidth : 0), singleFrameHeight, singleFrameWidth, singleFrameHeight));
+            break;
+        case FOCUSED:
+            break;
+        default:
+            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isEnabled() ? singleFrameWidth : 0), 0, singleFrameWidth, singleFrameHeight));
+    }
+}
+
+bool Checkbox::isMouseOver(const sf::Vector2i& mousePos) {
     return checkBoxSprite.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 

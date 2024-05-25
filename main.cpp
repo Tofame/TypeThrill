@@ -16,7 +16,6 @@ int main() {
     fmt::println("Hello TypeThrill!");
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
-    TextureManager::loadTextures();
     Settings::loadSettings();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);

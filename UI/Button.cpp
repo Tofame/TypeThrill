@@ -47,7 +47,7 @@ void Button::update() {
     this->text.setPosition(buttonCenter);
 }
 
-bool Button::isClicked(const sf::Vector2i& mousePos) {
+bool Button::isMouseOver(const sf::Vector2i& mousePos) {
     return body.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 

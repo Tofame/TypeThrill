@@ -17,7 +17,7 @@ public:
     void draw() override;
     void handleClick() override;
     void update() override;
-    bool isClicked(const sf::Vector2i& mousePos) override;
+    bool isMouseOver(const sf::Vector2i& mousePos) override;
 
     sf::Text& getText();
     void setText(sf::Text& text);

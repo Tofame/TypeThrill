@@ -13,7 +13,7 @@ public:
     void handleClick() override;
     void update() override;
     void onWriteableKeyPressed(int mode, sf::Uint32 c) override;
-    bool isClicked(const sf::Vector2i& mousePos) override;
+    bool isMouseOver(const sf::Vector2i& mousePos) override;
 
     void updatePointLinePosition(int offsetX);
 

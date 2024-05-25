@@ -17,7 +17,7 @@ public:
     virtual void handleClick() {};
     virtual void onWriteableKeyPressed(int mode, sf::Uint32 c) {}; // Writeable means backspace/space/delete and alphabet
 
-    virtual bool isClicked(const sf::Vector2i& mousePos) { return false; };
+    virtual bool isMouseOver(const sf::Vector2i& mousePos) { return false; };
 
     virtual void move(float x, float y) {};
     virtual void setPosition(float x, float y) {};
@@ -39,7 +39,7 @@ public:
 
     bool visibility = true;
 
-    void setState(UIElementState state) {
+    virtual void setState(UIElementState state) {
         this->state = state;
 
         switch(state) {

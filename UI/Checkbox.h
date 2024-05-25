@@ -17,7 +17,9 @@ public:
     void handleClick() override;
     void update() override;
 
-    bool isClicked(const sf::Vector2i& mousePos) override;
+    void setState(UIElementState state) override;
+
+    bool isMouseOver(const sf::Vector2i& mousePos) override;
 
     float getSizeMultiplier();
 
