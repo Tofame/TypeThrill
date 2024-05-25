@@ -21,7 +21,7 @@ Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
 
     this->visibility = false;
 
-    this->body = sf::RectangleShape(size * Settings::getUIScale());
+    this->body = sf::RectangleShape(size);
     this->body.setScale(1.0, 1.0);
     this->setPosRatios(posRatios.x, posRatios.y);
 
@@ -46,17 +46,17 @@ void Panel::draw() {
 
 void Panel::update() {
     if (this->parent == nullptr) { // panelWindow is a panel with no parent, its the "father" of all panels
-        this->body.setScale({1.0f, 1.0f});
+        this->body.setScale({1.0f * Settings::getUIScale(), 1.0f * Settings::getUIScale()});
         sf::FloatRect globalBounds = this->body.getGlobalBounds();
 
         if (globalBounds.width > window.getSize().x || globalBounds.height > window.getSize().y) {
             float scaleX = window.getSize().x / globalBounds.width;
             float scaleY = window.getSize().y / globalBounds.height;
             float scaleFactor = std::min(scaleX, scaleY);
-            this->body.setScale(scaleFactor, scaleFactor);
+            this->body.setScale(scaleFactor * Settings::getUIScale(), scaleFactor * Settings::getUIScale());
         }
     } else {
-        this->body.setScale(this->parent->body.getScale());
+        this->body.setScale(this->parent->body.getScale() * Settings::getUIScale());
     }
 
     sf::Vector2f newPosition(

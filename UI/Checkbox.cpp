@@ -65,7 +65,7 @@ void Checkbox::handleClick() {
 }
 
 void Checkbox::update() {
-    sf::Vector2f parentScale = parent->body.getScale();
+    sf::Vector2f parentScale = parent->body.getScale() * getSizeMultiplier();
 
     auto textWidth = this->text.getLocalBounds().width * parentScale.x;
 
@@ -112,7 +112,7 @@ bool Checkbox::isMouseOver(const sf::Vector2i& mousePos) {
 }
 
 float Checkbox::getSizeMultiplier() {
-    return Settings::getUIScale() * sizeMultiplier;
+    return sizeMultiplier;
 }
 
 sf::Text& Checkbox::getText() {

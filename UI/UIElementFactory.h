@@ -20,7 +20,7 @@ public:
         if(textValue.empty() == false) {
             auto text = sf::Text();
             text.setFont(FontManager::Fonts["times"]);
-            text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+            text.setCharacterSize(GameInterface::smallCharacterSize);
 
             text.setFillColor(sf::Color::White);
             text.setOutlineColor(sf::Color::Black);
@@ -35,7 +35,7 @@ public:
     }
 
     static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern) {
-        sf::Vector2f size = {200 * Settings::getUIScale(), 30 * Settings::getUIScale()};
+        sf::Vector2f size = {200, 30};
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto element = new TextField(size, position);
 
@@ -51,7 +51,7 @@ public:
         if(textValue.empty() == false) {
             auto text = sf::Text();
             text.setFont(FontManager::Fonts["times"]);
-            text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+            text.setCharacterSize(GameInterface::smallCharacterSize);
 
             text.setFillColor(sf::Color::White);
             text.setOutlineColor(sf::Color::Black);
@@ -64,13 +64,13 @@ public:
 
         auto input = sf::Text();
         input.setFont(FontManager::Fonts["aleoItalic"]);
-        input.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+        input.setCharacterSize(GameInterface::smallCharacterSize);
         input.setFillColor(sf::Color::White);
         input.setString(fieldValue);
 
         // I-line, Cursour etc. <- Its the line that blinks and indicates where your next letter will be
         element->pointLine.setFont(FontManager::Fonts["times"]);
-        element->pointLine.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+        element->pointLine.setCharacterSize(GameInterface::smallCharacterSize);
         element->pointLine.setFillColor(sf::Color::White);
         element->pointLine.setString("|");
 
@@ -80,7 +80,7 @@ public:
     }
 
     static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
-        sf::Vector2f size = {200 * Settings::getUIScale(), 50 * Settings::getUIScale()};
+        sf::Vector2f size = {200, 50};
         return createMenuButton(name, onClick, posRatios, size);
     }
 
@@ -96,7 +96,7 @@ public:
 
         auto text = sf::Text();
         text.setFont(FontManager::Fonts["jaro"]);
-        text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+        text.setCharacterSize(GameInterface::smallCharacterSize);
         text.setFillColor(sf::Color::White);
         text.setOutlineColor(sf::Color::Black);
         text.setOutlineThickness(1);
@@ -109,9 +109,6 @@ public:
     }
 
     static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType type) {
-        size.x = size.x * Settings::getUIScale();
-        size.y = size.y * Settings::getUIScale();
-
         auto panel = new Panel(parent, size, posRatios);
 
         panel->setType(type);

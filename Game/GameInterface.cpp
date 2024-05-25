@@ -204,7 +204,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(wordSize);
 
     auto wordHighlight = UIElementFactory::createMenuCheckbox(
-        2.0,
+        1.0,
         {0.01, 0.35},
         "Word Highlight",
         Settings::isWordsHighlightEnabled()
