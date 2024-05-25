@@ -7,7 +7,7 @@
 class Checkbox : public UIElement {
 public:
     Checkbox() = default;
-    Checkbox(float sizeMultiplier, sf::Vector2f posRatios);
+    Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEnabled);
 
     bool isEnabled() const;
     void enable();
@@ -25,6 +25,7 @@ public:
 
     sf::Text& getText();
     void setText(sf::Text& text);
+
 private:
     sf::Text text;
     sf::Sprite checkBoxSprite;

@@ -14,8 +14,8 @@ inline auto ColorGrayDarkLO = sf::Color(64,64,64, 120);
 
 class UIElementFactory {
 public:
-    static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue) {
-        auto element = new Checkbox(sizeMultiplier, posRatios);
+    static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled) {
+        auto element = new Checkbox(sizeMultiplier, posRatios, defaultEnabled);
 
         if(textValue.empty() == false) {
             auto text = sf::Text();

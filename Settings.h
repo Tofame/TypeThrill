@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#include "UI/TextField.h"
+
 class Settings {
 private:
     std::string static words_fontName;
@@ -12,6 +14,7 @@ private:
     float static ui_scale;
 public:
     void static loadSettings();
+
     void static restoreDefaultSettings();
     void static applySettingsPanel();
 

@@ -4,7 +4,7 @@
 #include "../ResourceManagers/TextureManager.h"
 #include "fmt/Core.h"
 
-Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios) {
+Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEnabled) {
     this->sizeMultiplier = sizeMultiplier;
 
     this->setPosRatios(posRatios.x, posRatios.y);
@@ -19,6 +19,11 @@ Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios) {
     this->checkBoxSprite.setScale(getSizeMultiplier(), getSizeMultiplier());
 
     this->state = DEFAULT;
+    if(defaultEnabled) {
+        this->enable();
+    } else {
+        this->disable();
+    }
 }
 
 bool Checkbox::isEnabled() const {

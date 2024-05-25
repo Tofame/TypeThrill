@@ -9,8 +9,11 @@
 
 #include "Game/GameInterface.h"
 #include "ResourceManagers/FontManager.h"
+#include "UI/Checkbox.h"
 #include "UI/TextField.h"
 
+void restoreDefaultTextFields(TextField* txtFieldPtr);
+void restoreDefaultCheckboxes(Checkbox* checkBoxPtr);
 // Settings's default values that we use when malformed settings or couldn't load one
 std::string defaultWordFontName = "arial";
 double defaultWordFrequency = 1.1;
@@ -73,24 +76,17 @@ void Settings::restoreDefaultSettings() {
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
         // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
-        TextField* txtFieldPtr = dynamic_cast<TextField*>(uielement);
-        if (!txtFieldPtr) {
+        auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
+        if (txtFieldPtr) {
+            restoreDefaultTextFields(txtFieldPtr);
             continue;
         }
 
-        std::string text = txtFieldPtr->getText().getString();
-        if (text.starts_with("Word Speed"))
-            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordSpeed));
-        else if (text.starts_with("Word Frequency"))
-            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordFrequency));
-        else if (text.starts_with("Word Size"))
-            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordSize));
-        else if (text.starts_with("Word Highlight"))
-            txtFieldPtr->setInput(fmt::format("{}", defaultWordHighlight));
-        else if (text.starts_with("UI Scale"))
-            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultUIScale));
-
-        uielement->update();
+        auto checkBoxPtr = dynamic_cast<Checkbox*>(uielement);
+        if (checkBoxPtr) {
+            restoreDefaultCheckboxes(checkBoxPtr);
+            continue;
+        }
     }
 
     setWordsFrequency(defaultWordFrequency);
@@ -190,4 +186,24 @@ bool Settings::isWordsHighlightEnabled() {
 
 float Settings::getUIScale() {
     return Settings::ui_scale;
+}
+
+void restoreDefaultTextFields(TextField* txtFieldPtr) {
+    std::string text = txtFieldPtr->getText().getString();
+    if (text.starts_with("Word Speed"))
+        txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordSpeed));
+    else if (text.starts_with("Word Frequency"))
+        txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordFrequency));
+    else if (text.starts_with("Word Size"))
+        txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordSize));
+    else if (text.starts_with("UI Scale"))
+        txtFieldPtr->setInput(fmt::format("{:.1f}", defaultUIScale));
+
+    txtFieldPtr->update();
+}
+
+void restoreDefaultCheckboxes(Checkbox* checkBoxPtr) {
+    std::string text = checkBoxPtr->getText().getString();
+    if (text.starts_with("Word Highlight"))
+        defaultWordHighlight == true ? checkBoxPtr->enable() : checkBoxPtr->disable();
 }

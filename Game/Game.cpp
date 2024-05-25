@@ -80,11 +80,11 @@ void Game::handleMousePress(sf::Mouse::Button mouseButton) {
     if (mouseButton == sf::Mouse::Left) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-        checkUIElements(mousePos);
+        checkUIElementsForClick(mousePos);
     }
 }
 
-void Game::checkUIElements(sf::Vector2i mousePos) {
+void Game::checkUIElementsForClick(sf::Vector2i mousePos) {
     for (auto panel : GameInterface::panels) {
         if(panel->isVisible() == false)
             continue;

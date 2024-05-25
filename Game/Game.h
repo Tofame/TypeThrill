@@ -7,7 +7,7 @@ class Game {
         void static run();
 
         void static handleMousePress(sf::Mouse::Button mouseButton);
-        void static checkUIElements(sf::Vector2i mousePos);
+        void static checkUIElementsForClick(sf::Vector2i mousePos);
         void static resetGame();
 
         enum GameStates {
