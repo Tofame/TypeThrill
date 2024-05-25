@@ -175,10 +175,9 @@ void GameInterface::setupPanels() {
         i++;
     }
 
-    // Setting up the Settings Panel
+    // ================= Setting up the Settings Panel
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
-    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
-
+    // The order we addElement is important now, as its used in Settings.cpp
     auto wordSpeedField = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsSpeed()),
         {0.01, 0.05},
@@ -189,19 +188,39 @@ void GameInterface::setupPanels() {
 
     auto wordFrequencyField = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsFrequency()),
-        {0.01, 0.35},
+        {0.01, 0.15},
         "Word Frequency",
-        L"^[0-9]([.,][0-9]{0,2})?$" // L casts to wchar as we need wstring in wregex
+        L"^[0-9]([.,][0-9]{0,2})?$"
     );
     panelSettings->addElement(wordFrequencyField);
 
     auto wordSize = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsSize()),
-        {0.01, 0.65},
+        {0.01, 0.25},
         "Word Size",
-        L"^[0-9]([.,][0-9]{0,2})?$" // L casts to wchar as we need wstring in wregex
+        L"^[0-9]([.,][0-9]{0,2})?$"
     );
     panelSettings->addElement(wordSize);
+
+    auto wordHighlight = UIElementFactory::createTextField(
+        fmt::format("{}", Settings::isWordsHighlightEnabled()),
+        {0.01, 0.35},
+        "Word Highlight (true/false)",
+        L"^[a-z]{0,5}$"
+    );
+    panelSettings->addElement(wordHighlight);
+
+    auto UIScaleSetting = UIElementFactory::createTextField(
+        fmt::format("{:.1f}", Settings::getUIScale()),
+        {0.01, 0.55},
+        "UI Scale (max 5.99)",
+        L"^[0-5]([.,][0-9]{0,2})?$"
+    );
+    panelSettings->addElement(UIScaleSetting);
+
+    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Apply", []() -> void { Settings::applySettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);

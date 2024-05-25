@@ -7,13 +7,16 @@
 #include <fmt/core.h>
 #include <iostream>
 
+#include "Game/GameInterface.h"
 #include "ResourceManagers/FontManager.h"
+#include "UI/TextField.h"
 
 // Settings's default values that we use when malformed settings or couldn't load one
 std::string defaultWordFontName = "arial";
 double defaultWordFrequency = 1.1;
 double defaultWordSpeed = 0.4;
 double defaultWordSize = 0.4;
+double defaultWordHighlight = true;
 
 float defaultUIScale = 1.0;
 
@@ -65,6 +68,42 @@ void Settings::loadSettings() {
     }
 }
 
+void Settings::restoreDefaultSettings() {
+    auto settingsPanel = GameInterface::getPanelByType(PANEL_SETTINGS);
+    for(auto uielement : settingsPanel->UIElements) {
+        // https://en.cppreference.com/w/cpp/language/dynamic_cast
+        // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
+        TextField* txtFieldPtr = dynamic_cast<TextField*>(uielement);
+        if (!txtFieldPtr) {
+            continue;
+        }
+
+        std::string text = txtFieldPtr->getText().getString();
+        if (text.starts_with("Word Speed"))
+            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordSpeed));
+        else if (text.starts_with("Word Frequency"))
+            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordFrequency));
+        else if (text.starts_with("Word Size"))
+            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultWordSize));
+        else if (text.starts_with("Word Highlight"))
+            txtFieldPtr->setInput(fmt::format("{}", defaultWordHighlight));
+        else if (text.starts_with("UI Scale"))
+            txtFieldPtr->setInput(fmt::format("{:.1f}", defaultUIScale));
+
+        uielement->update();
+    }
+
+    setWordsFrequency(defaultWordFrequency);
+    setWordsSize(defaultWordSize);
+    setWordsSpeed(defaultWordSpeed);
+    setWordsHighlight(defaultWordHighlight);
+
+    setUIScale(defaultUIScale);
+}
+
+void Settings::applySettingsPanel() {
+}
+
 void Settings::setWordsFontName(std::string const& value) {
     if(FontManager::Fonts.contains(value)) {
         Settings::words_fontName = value;
@@ -81,12 +120,20 @@ void Settings::setWordsFrequency(std::string const& value) {
     }
 }
 
+void Settings::setWordsFrequency(double value) {
+    Settings::words_frequency = value;
+}
+
 void Settings::setWordsSpeed(std::string const& value) {
     try {
         Settings::words_speed = std::stod(value);
     } catch (const std::invalid_argument& e) {
         Settings::words_speed = defaultWordSpeed;
     }
+}
+
+void Settings::setWordsSpeed(double value) {
+    Settings::words_speed = value;
 }
 
 void Settings::setWordsSize(std::string const& value) {
@@ -97,8 +144,16 @@ void Settings::setWordsSize(std::string const& value) {
     }
 }
 
+void Settings::setWordsSize(double value) {
+    Settings::words_size = value;
+}
+
 void Settings::setWordsHighlight(std::string const& value) {
     Settings::words_highlight = (value == "true" || value == "True");
+}
+
+void Settings::setWordsHighlight(bool value) {
+    Settings::words_highlight = value;
 }
 
 void Settings::setUIScale(std::string const& value) {
@@ -107,6 +162,10 @@ void Settings::setUIScale(std::string const& value) {
     } catch (const std::invalid_argument& e) {
         Settings::ui_scale = defaultUIScale;
     }
+}
+
+void Settings::setUIScale(float value) {
+    Settings::ui_scale = value;
 }
 
 std::string Settings::getWordsFontName() {
