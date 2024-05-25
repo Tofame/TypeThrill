@@ -19,6 +19,7 @@ public:
     void static setUpToDateValue(bool value);
 
     void static loadSettings();
+    void static saveSettings();
 
     void static restoreDefaultSettings();
     void static applySettingsPanel();
