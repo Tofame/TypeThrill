@@ -178,12 +178,12 @@ void GameInterface::setupPanels() {
     // ================= Setting up the Settings Panel
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
 
-    auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changed settings.", {0.5, 0.75});
+    auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changes.", {0.5, 0.75});
     panelSettings->addElement(settingsTextLabel);
     settingsTextLabel->update();
 
     auto wordSpeedField = UIElementFactory::createTextField(
-        fmt::format("{:.1f}", Settings::getWordsSpeed()),
+        fmt::format("{:.2f}", Settings::getWordsSpeed()),
         {0.01, 0.05},
         "Word Speed",
         L"^[0-9]([.,][0-9]{0,2})?$" // L casts to wchar as we need wstring in wregex
@@ -191,7 +191,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(wordSpeedField);
 
     auto wordFrequencyField = UIElementFactory::createTextField(
-        fmt::format("{:.1f}", Settings::getWordsFrequency()),
+        fmt::format("{:.2f}", Settings::getWordsFrequency()),
         {0.01, 0.15},
         "Word Frequency",
         L"^[0-9]([.,][0-9]{0,2})?$"
@@ -199,7 +199,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(wordFrequencyField);
 
     auto wordSize = UIElementFactory::createTextField(
-        fmt::format("{:.1f}", Settings::getWordsSize()),
+        fmt::format("{:.2f}", Settings::getWordsSize()),
         {0.01, 0.25},
         "Word Size",
         L"^[0-9]([.,][0-9]{0,2})?$"
@@ -215,7 +215,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(wordHighlight);
 
     auto UIScaleSetting = UIElementFactory::createTextField(
-        fmt::format("{:.1f}", Settings::getUIScale()),
+        fmt::format("{:.2f}", Settings::getUIScale()),
         {0.01, 0.55},
         "UI Scale (max 5.99)",
         L"^[0-5]([.,][0-9]{0,2})?$"
