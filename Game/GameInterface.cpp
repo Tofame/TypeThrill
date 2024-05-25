@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "../UI/TextLabel.h"
 #include "../UI/UIElementFactory.h"
+#include "../UI/Word.h"
 
 #include "fmt/chrono.h"
 

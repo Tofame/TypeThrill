@@ -9,6 +9,7 @@
 #include "Game/GameInterface.h"
 #include "ResourceManagers/FontManager.h"
 #include "ResourceManagers/TextureManager.h"
+#include "Translator/WordLanguages.h"
 
 auto run() -> void;
 
@@ -17,6 +18,7 @@ int main() {
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
     Settings::loadSettings();
+    WordLanguages::loadLocales();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);
 

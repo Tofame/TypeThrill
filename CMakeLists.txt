@@ -48,5 +48,9 @@ add_executable(TypeThrill
         UI/TextLabel.h
         ResourceManagers/TextureManager.cpp
         ResourceManagers/TextureManager.h
+        UI/Word.h
+        UI/Word.cpp
+        Translator/WordLanguages.cpp
+        Translator/WordLanguages.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
