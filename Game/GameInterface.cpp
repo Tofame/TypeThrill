@@ -9,6 +9,7 @@
 #include "../UI/UIElementFactory.h"
 #include <iostream>
 
+#include "../UI/Checkbox.h"
 #include "fmt/chrono.h"
 
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
@@ -202,11 +203,10 @@ void GameInterface::setupPanels() {
     );
     panelSettings->addElement(wordSize);
 
-    auto wordHighlight = UIElementFactory::createTextField(
-        fmt::format("{}", Settings::isWordsHighlightEnabled()),
+    auto wordHighlight = UIElementFactory::createMenuCheckbox(
+        2.0,
         {0.01, 0.35},
-        "Word Highlight (true/false)",
-        L"^[a-z]{0,5}$"
+        "Word Highlight"
     );
     panelSettings->addElement(wordHighlight);
 

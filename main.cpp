@@ -8,13 +8,15 @@
 #include "Game/Game.h"
 #include "Game/GameInterface.h"
 #include "ResourceManagers/FontManager.h"
+#include "ResourceManagers/TextureManager.h"
 
 auto run() -> void;
 
 int main() {
     fmt::println("Hello TypeThrill!");
-    // Always place loadFonts first, then loadSettings second  (the following classes use them)
+    // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
+    TextureManager::loadTextures();
     Settings::loadSettings();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU);

@@ -1,5 +1,6 @@
 #pragma once
 #include "Button.h"
+#include "Checkbox.h"
 #include "Panel.h"
 #include "TextField.h"
 #include "UIElement.h"
@@ -13,8 +14,25 @@ inline auto ColorGrayDarkLO = sf::Color(64,64,64, 120);
 
 class UIElementFactory {
 public:
-    // Button static createMenuButton(const std::string& name, const std::function<void()>& onClick);
-    // std::unique_ptr<UIElement> static createButton();
+    static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue) {
+        auto element = new Checkbox(sizeMultiplier, posRatios);
+
+        if(textValue.empty() == false) {
+            auto text = sf::Text();
+            text.setFont(FontManager::Fonts["times"]);
+            text.setCharacterSize(GameInterface::smallCharacterSize * Settings::getUIScale());
+
+            text.setFillColor(sf::Color::White);
+            text.setOutlineColor(sf::Color::Black);
+            text.setOutlineThickness(1);
+
+            text.setString(textValue);
+
+            element->setText(text);
+        }
+
+        return element;
+    }
 
     static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern) {
         sf::Vector2f size = {200 * Settings::getUIScale(), 30 * Settings::getUIScale()};

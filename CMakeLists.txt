@@ -44,5 +44,7 @@ add_executable(TypeThrill
         UI/UIElementFactory.h
         UI/TextField.cpp
         UI/TextField.h
+        ResourceManagers/TextureManager.cpp
+        ResourceManagers/TextureManager.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
