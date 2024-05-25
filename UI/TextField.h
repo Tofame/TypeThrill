@@ -15,6 +15,10 @@ public:
     void onWriteableKeyPressed(int mode, sf::Uint32 c) override;
     bool isMouseOver(const sf::Vector2i& mousePos) override;
 
+    // Source of knowledge: https://stackoverflow.com/questions/20353210/what-is-the-purpose-of-stdfunction-and-how-do-i-use-it
+    // void <= doesn't return anything, () <= empty brackets, takes no parameters. We can now save such lambdas into TextField now.
+    std::function<void()> onTextFieldUpdate;
+
     void updatePointLinePosition(int offsetX);
 
     sf::Text& getText();

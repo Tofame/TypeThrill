@@ -79,6 +79,13 @@ public:
         return element;
     }
 
+    static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern, std::function<void()> const& onTextFieldUpdate) {
+        auto textField = dynamic_cast<TextField*>(UIElementFactory::createTextField(fieldValue, posRatios, textValue, pattern));
+        textField->onTextFieldUpdate = onTextFieldUpdate;
+
+        return textField;
+    }
+
     static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
         sf::Vector2f size = {200, 50};
         return createMenuButton(name, onClick, posRatios, size);

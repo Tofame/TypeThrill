@@ -31,6 +31,15 @@ bool Settings::words_highlight = true;
 
 float Settings::ui_scale = defaultUIScale;
 
+
+bool Settings::isSettingsPanelUpToDate() {
+    return settingsPanelUpToDate == true;
+}
+
+void Settings::setUpToDateValue(bool value) {
+    settingsPanelUpToDate = value;
+}
+
 void Settings::loadSettings() {
     auto file = std::fstream(projectPath + "/settings.txt");
 

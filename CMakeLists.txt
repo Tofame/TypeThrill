@@ -44,6 +44,8 @@ add_executable(TypeThrill
         UI/UIElementFactory.h
         UI/TextField.cpp
         UI/TextField.h
+        UI/TextLabel.cpp
+        UI/TextLabel.h
         ResourceManagers/TextureManager.cpp
         ResourceManagers/TextureManager.h
 )

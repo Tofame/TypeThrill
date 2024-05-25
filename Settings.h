@@ -12,7 +12,12 @@ private:
     bool static words_highlight;
 
     float static ui_scale;
+
+    inline bool static settingsPanelUpToDate = true; // when some e.g. textFields from settings panel change their values its set to false;
 public:
+    bool static isSettingsPanelUpToDate();
+    void static setUpToDateValue(bool value);
+
     void static loadSettings();
 
     void static restoreDefaultSettings();

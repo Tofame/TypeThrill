@@ -6,10 +6,9 @@
 #include "GameInterface.h"
 
 #include "Game.h"
+#include "../UI/TextLabel.h"
 #include "../UI/UIElementFactory.h"
-#include <iostream>
 
-#include "../UI/Checkbox.h"
 #include "fmt/chrono.h"
 
 GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
@@ -178,7 +177,11 @@ void GameInterface::setupPanels() {
 
     // ================= Setting up the Settings Panel
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.6}, PANEL_SETTINGS);
-    // The order we addElement is important now, as its used in Settings.cpp
+
+    auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changed settings.", {0.5, 0.75});
+    panelSettings->addElement(settingsTextLabel);
+    settingsTextLabel->update();
+
     auto wordSpeedField = UIElementFactory::createTextField(
         fmt::format("{:.1f}", Settings::getWordsSpeed()),
         {0.01, 0.05},

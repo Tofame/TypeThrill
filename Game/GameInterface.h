@@ -6,6 +6,7 @@
 class GameInterface {
 public:
     int inline static hugeCharacterSize = 140;
+    int inline static mediumCharacterSize = 74;
     int inline static smallCharacterSize = 24;
 
     std::vector<Panel*> static panels;

@@ -96,6 +96,7 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
         }
 
         inputString.erase(inputString.getSize() - 1);
+        this->onTextFieldUpdate();
     } else {
         bool canAddToString = false;
 
@@ -107,6 +108,7 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
 
         if(canAddToString == true) {
             inputString += unicode;
+            this->onTextFieldUpdate();
         }
     }
 
