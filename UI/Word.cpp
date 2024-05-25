@@ -8,13 +8,6 @@
 #include "../Settings.h"
 #include "../Translator/WordLanguages.h"
 
-float getRandomFloat(float min, float max) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dis(min, max);
-    return dis(gen);
-}
-
 Word::Word() {
     auto sfText = sf::Text();
     sfText.setFont(FontManager::Fonts[Settings::getWordsFontName()]);
@@ -27,7 +20,6 @@ Word::Word() {
     this->setText(sfText);
 
     this->visibility = true;
-    this->setPosRatios(0, getRandomFloat(0, 1.0));
 }
 
 void Word::draw() {

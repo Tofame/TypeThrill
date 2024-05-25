@@ -177,10 +177,10 @@ void GameInterface::setupPanels() {
     settingsTextLabel->update();
 
     auto wordSpeedField = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getWordsSpeed()),
+        fmt::format("{:.5f}", Settings::getWordsSpeed()),
         {0.01, 0.05},
         "Word Speed",
-        L"^[0-9]([.,][0-9]{0,2})?$" // L casts to wchar as we need wstring in wregex
+        L"^[0-9]([.,][0-9]{0,5})?$" // L casts to wchar as we need wstring in wregex
     );
     panelSettings->addElement(wordSpeedField);
 

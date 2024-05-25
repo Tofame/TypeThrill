@@ -20,7 +20,7 @@ void setSettingFromCheckbox(Checkbox* checkBoxPtr);
 // Settings's default values that we use when malformed settings or couldn't load one
 std::string defaultWordFontName = "arial";
 double defaultWordFrequency = 1.1;
-double defaultWordSpeed = 0.01;
+double defaultWordSpeed = 0.001;
 double defaultWordSize = 1.0;
 double defaultWordHighlight = true;
 
@@ -221,7 +221,7 @@ float Settings::getUIScale() {
 void restoreDefaultTextFields(TextField* txtFieldPtr) {
     std::string text = txtFieldPtr->getText().getString();
     if (text.starts_with("Word Speed"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", defaultWordSpeed));
+        txtFieldPtr->setInput(fmt::format("{:.5f}", defaultWordSpeed));
     else if (text.starts_with("Word Frequency"))
         txtFieldPtr->setInput(fmt::format("{:.2f}", defaultWordFrequency));
     else if (text.starts_with("Word Size"))
@@ -249,8 +249,11 @@ void setSettingFromTextField(TextField* txtFieldPtr) {
         Settings::setWordsFrequency(value);
     else if (text.starts_with("Word Size"))
         Settings::setWordsSize(value);
-    else if (text.starts_with("UI Scale"))
+    else if (text.starts_with("UI Scale")) {
         Settings::setUIScale(value);
+        GameInterface::updatePanels();
+        GameInterface::updateGameTitle();
+    }
 }
 
 void setSettingFromCheckbox(Checkbox* checkBoxPtr) {
@@ -284,7 +287,7 @@ void Settings::saveSettings() {
             } else if (option == "words_frequency") {
                 newValue = fmt::format("{:.2f}", Settings::getWordsFrequency());
             } else if (option == "words_speed") {
-                newValue = fmt::format("{:.2f}", Settings::getWordsSpeed());
+                newValue = fmt::format("{:.5f}", Settings::getWordsSpeed());
             } else if (option == "words_size") {
                 newValue = fmt::format("{:.2f}", Settings::getWordsSize());
             } else if (option == "words_highlight") {

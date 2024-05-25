@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "../Settings.h"
+#include "fmt/ostream.h"
 
 auto UIElements = std::vector<UIElement*>();
 
@@ -46,7 +47,7 @@ void Panel::draw() {
 
 void Panel::update() {
     if (this->parent == nullptr) { // panelWindow is a panel with no parent, its the "father" of all panels
-        this->body.setScale({1.0f * Settings::getUIScale(), 1.0f * Settings::getUIScale()});
+        this->body.setScale({1.0f, 1.0f});
         sf::FloatRect globalBounds = this->body.getGlobalBounds();
 
         if (globalBounds.width > window.getSize().x || globalBounds.height > window.getSize().y) {
@@ -54,6 +55,8 @@ void Panel::update() {
             float scaleY = window.getSize().y / globalBounds.height;
             float scaleFactor = std::min(scaleX, scaleY);
             this->body.setScale(scaleFactor * Settings::getUIScale(), scaleFactor * Settings::getUIScale());
+        } else {
+            this->body.setScale({1.0f * Settings::getUIScale(), 1.0f * Settings::getUIScale()});
         }
     } else {
         this->body.setScale(this->parent->body.getScale());

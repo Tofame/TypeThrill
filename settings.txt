@@ -9,7 +9,7 @@ words_font=arial
 words_frequency=1.10
 
 // How quickly words move
-words_speed=0.01
+words_speed=0.00100
 
 // A multiplier for size of the words
 words_size=1.00
@@ -20,4 +20,4 @@ words_highlight=true
 
 // ============ Interface Settings
 // UI Size: scales all kinds of elements like buttons etc.
-ui_scale=1.00
+ui_scale=1.0

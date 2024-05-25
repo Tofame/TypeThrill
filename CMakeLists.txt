@@ -52,5 +52,7 @@ add_executable(TypeThrill
         UI/Word.cpp
         Translator/WordLanguages.cpp
         Translator/WordLanguages.h
+        Game/WordSpawner.cpp
+        Game/WordSpawner.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)

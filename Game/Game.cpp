@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "GameInterface.h"
+#include "WordSpawner.h"
 #include "../UI/Panel.h"
 #include "fmt/core.h"
 
@@ -14,6 +15,8 @@ void Game::run() {
             // GameInterface here will draw && GameLogic will move everything (words etc)
             GameInterface::drawMenuBackground();
             GameInterface::drawPanels();
+            WordSpawner::spawnWord();
+            WordSpawner::moveWords();
             break;
         case STATE_MENU:
             GameInterface::drawMenu();
