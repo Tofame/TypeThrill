@@ -21,7 +21,7 @@ void TextField::draw() {
         window.draw(this->text);
     }
 
-    if(getState() == FOCUSED) {
+    if(getState() == FOCUSED || getState() == FOCUSED_ALWAYS) {
         auto currentColor = this->pointLine.getFillColor();
         auto alpha = currentColor.a;
         if(alpha <= 0) {
@@ -71,6 +71,8 @@ void TextField::update() {
         this->body.move(UIElement::offsetBodyAfterText * parentScale.x, 0);
         this->text.setPosition(newPosition);
         this->text.setScale(parentScale);
+    } else {
+        this->body.move(-this->body.getSize().x/2, 0);
     }
 
     auto bodyPosition = this->body.getPosition();

@@ -5,7 +5,8 @@
 enum UIElementState {
     DEFAULT = 0,
     HOVERED = 1,
-    FOCUSED = 2
+    FOCUSED = 2,
+    FOCUSED_ALWAYS = 3
 };
 
 class UIElement {
@@ -54,6 +55,9 @@ public:
                 break;
             case FOCUSED:
                 this->body.setOutlineColor(sf::Color::Cyan);
+                break;
+            case FOCUSED_ALWAYS:
+                this->body.setOutlineColor(sf::Color(196, 113, 18)); // Orange
                 break;
             default:
                 this->body.setOutlineColor(sf::Color::White);

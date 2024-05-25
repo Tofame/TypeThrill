@@ -21,10 +21,7 @@ std::map<std::string, std::vector<std::wstring>> WordLanguages::wordsLocales = s
 void WordLanguages::loadLocales() {
     auto directory = projectPath + "/Resources/Locales";
 
-    // Rest of the project supports special characters like "ć" etc. as it was achieved with using sf::String etc.
-    // However while loading locales it seems default C++ doesn't have anything other than :alpha: which doesnt include them
-    // Note: ask professor if \p{L} exists and how can I use it (is it in boost?)
-    std::wregex wordRegex(L"^([[:alpha:] ])+$"); // Should accept any alphabet, special letters too (like ć)
+    std::wregex wordRegex(L"([a-z]|[A-Z]|[^\\x00-\\x7F]|\\s)+"); // Should accept any alphabet, special letters too (like ć)
 
     for (const auto& entry : std::filesystem::directory_iterator(directory)) {
         if (entry.is_regular_file() && entry.path().extension() == ".txt") {
@@ -40,7 +37,10 @@ void WordLanguages::loadLocales() {
                 std::wstring line;
                 while (std::getline(file, line)) {
                     if (!line.empty() && std::regex_match(line, wordRegex)) {
+                        //std::wcout << line << " <- working \n";
                         words.push_back(line);
+                    } else {
+                        //std::wcout << line << " <- not working \n";
                     }
                 }
 
@@ -59,7 +59,7 @@ std::wstring WordLanguages::getRandomWord() {
 
     try {
         auto words = WordLanguages::wordsLocales.at(language);
-        //fmt::println("{} word", std::to_string(wordsLocales[L"polish"][0]));
+
         if (!words.empty()) {
             return words[getRandomInt(0, words.size() - 1)];
         } else {

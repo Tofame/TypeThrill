@@ -230,6 +230,16 @@ void GameInterface::setupPanels() {
     panelGameStatistics->body.setOutlineColor(sf::Color(219, 170, 44));
     panelGameStatistics->body.setFillColor(sf::Color(153, 153, 153, 60));
 
+    auto gameInputWords = UIElementFactory::createTextField(
+        "",
+        {0.5, 0.5},
+        "",
+        L".{0,35}" // Anything can be in there as its up to user what he types
+    );
+    gameInputWords->body.setSize({420, 30});
+    gameInputWords->setState(FOCUSED_ALWAYS);
+    panelGameStatistics->addElement(gameInputWords);
+
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);

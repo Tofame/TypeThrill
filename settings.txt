@@ -6,7 +6,7 @@
 words_font=arial
 
 // The frequency of words appearing one after another
-words_frequency=1.10
+words_frequency=4.10
 
 // How quickly words move
 words_speed=0.00100

@@ -15,7 +15,10 @@ Word::Word() {
     sfText.setFillColor(sf::Color::White);
     sfText.setOutlineColor(sf::Color::Black);
     sfText.setOutlineThickness(1);
-    sfText.setString(WordLanguages::getRandomWord());
+
+    auto randomWord = WordLanguages::getRandomWord();
+    sf::String sfString(randomWord);
+    sfText.setString(sfString);
 
     this->setText(sfText);
 

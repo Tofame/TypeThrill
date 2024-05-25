@@ -95,6 +95,10 @@ void Game::checkUIElementsForClick(sf::Vector2i mousePos) {
             continue;
 
         for(auto uielement : panel->UIElements) {
+            // We skip elements that are FOCUSED_ALWAYS (example of it is TextField used during game for typing)
+            if(uielement->getState() == FOCUSED_ALWAYS)
+                continue;
+
             if(uielement->isVisible() && uielement->isMouseOver(mousePos) == true) {
                 uielement->handleClick();
                 return;
@@ -166,16 +170,12 @@ void Game::handleTextEntered(sf::Uint32 unicode) {
         return;
     }
 
-    if(Game::getGameState() == STATE_PLAYING) {
-
-    } else if(Game::getGameState() == STATE_MENU) {
-        for(auto panel : GameInterface::panels) {
-            if(panel->isVisible()) {
-                for(auto uielement : panel->UIElements) {
-                    if(uielement->getState() == FOCUSED) {
-                        uielement->onWriteableKeyPressed(mode, unicode);
-                        break;
-                    }
+    for(auto panel : GameInterface::panels) {
+        if(panel->isVisible()) {
+            for(auto uielement : panel->UIElements) {
+                if(uielement->getState() == FOCUSED || uielement->getState() == FOCUSED_ALWAYS) {
+                    uielement->onWriteableKeyPressed(mode, unicode);
+                    break;
                 }
             }
         }
