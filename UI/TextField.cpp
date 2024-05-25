@@ -68,7 +68,7 @@ void TextField::update() {
     this->body.setScale(parentScale);
 
     if (text.getString().isEmpty() == false) {
-        this->body.move(textWidth + 6, 0);
+        this->body.move(UIElement::offsetBodyAfterText * parentScale.x, 0);
         this->text.setPosition(newPosition);
         this->text.setScale(parentScale);
     }

@@ -17,8 +17,8 @@ void restoreDefaultCheckboxes(Checkbox* checkBoxPtr);
 // Settings's default values that we use when malformed settings or couldn't load one
 std::string defaultWordFontName = "arial";
 double defaultWordFrequency = 1.1;
-double defaultWordSpeed = 0.4;
-double defaultWordSize = 0.4;
+double defaultWordSpeed = 0.01;
+double defaultWordSize = 1.0;
 double defaultWordHighlight = true;
 
 float defaultUIScale = 1.0;

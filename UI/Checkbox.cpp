@@ -77,7 +77,7 @@ void Checkbox::update() {
     this->checkBoxSprite.setScale(parentScale);
 
     if (text.getString().isEmpty() == false) {
-        this->checkBoxSprite.move(textWidth + 6, 0);
+        this->checkBoxSprite.move(UIElement::offsetBodyAfterText * parentScale.x, 0);
         this->text.setPosition(newPosition);
         this->text.setScale(parentScale);
     }

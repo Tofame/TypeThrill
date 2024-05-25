@@ -9,10 +9,10 @@ words_font=arial
 words_frequency=1.1
 
 // How quickly words move
-words_speed=0.4
+words_speed=0.01
 
 // A multiplier for size of the words
-words_size=2.0
+words_size=1.0
 
 // If should search&&highlight a part of a moving word on a screen while you are typing
 // Possible: true,false

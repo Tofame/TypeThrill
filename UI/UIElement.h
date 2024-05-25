@@ -10,6 +10,9 @@ enum UIElementState {
 
 class UIElement {
 public:
+    inline static float offsetBodyAfterText = 250; // Defines the offset in case some element has both text and some field
+    // Example would be TextField which has text and input field, and this will define the distance beetween them
+
     virtual ~UIElement() = default;
 
     virtual void draw() {};
