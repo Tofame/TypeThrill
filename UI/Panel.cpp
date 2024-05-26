@@ -31,7 +31,7 @@ Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
 
 Panel::~Panel() {
     for(auto uielement : UIElements) {
-        delete uielement;
+        this->removeElement(uielement);
     }
 }
 
