@@ -344,17 +344,25 @@ void Settings::saveSettings() {
 
 std::string Settings::buildEndGameSettings() {
     std::string result;
+    endGame_never_bool = true;
 
     if (endGame_missedWords_bool) {
-        result += fmt::format("Ends on: {} missed\t", endGame_missedWords_value);
+        endGame_never_bool = false;
+        result += fmt::format("Ends on:\t{} missed\t", endGame_missedWords_value);
     }
 
     if (endGame_score_bool) {
-        result += fmt::format("Ends on: {} score\t", endGame_score_value);
+        endGame_never_bool = false;
+        result += fmt::format("Ends on:\t{} score\t", endGame_score_value);
     }
 
     if (endGame_time_bool) {
-        result += fmt::format("Ends on: {} time\t", GameStatistics::formatTime(endGame_time_value));
+        endGame_never_bool = false;
+        result += fmt::format("Ends on:\t{} time\t", GameStatistics::formatTime(endGame_time_value));
+    }
+
+    if(endGame_never_bool == true) {
+        result += fmt::format("This game never ends");
     }
 
     return result;

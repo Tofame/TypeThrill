@@ -55,6 +55,8 @@ public:
     inline bool static endGame_time_bool = false;
     inline bool static endGame_score_bool = false;
 
+    inline bool static endGame_never_bool = true;
+
     inline int static endGame_missedWords_value = 5;
     inline auto static endGame_time_value = std::chrono::duration<double>(10);
     inline int static endGame_score_value = 20;

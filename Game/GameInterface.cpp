@@ -349,7 +349,7 @@ void GameInterface::setupPanels() {
     auto whatGameSettingsPanel = UIElementFactory::createInfoDynamicLabel(
         {0.2, 0.75},
         []() -> std::string {
-            return fmt::format("[Selected Settings]\t {}", Settings::buildEndGameSettings());
+            return fmt::format("[Selected End Criterium]\t {}", Settings::buildEndGameSettings());
         }
     );
     panelGameStatistics->addElement(whatGameSettingsPanel);
