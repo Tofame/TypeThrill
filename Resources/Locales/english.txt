@@ -1,33 +1,139 @@
 Planet
-Black hole
 Star
 Comet
 Moon
-Artificial satellite
+Satellite
 Asteroid
 Pulsar
 Nebula
 Galaxy
-Space
-Space telescope
-Supernova
-White dwarfs
-Red giants
+Nova
+Dwarf
+Giant
 Meteor
-Space station
 Planetoid
-Neutron stars
+Neutron
 Void
-Cosmic radiation
-Gravitational lensing
-Asteroid belt
+Radiation
+Belt
+Kuiper
+Oort
+Space
+Telescope
+Station
 Rocket
-Kuiper belt
-Oort cloud
-Natural satellite
-Dark matter
-Space probe
-Dark energy
-Interstellar space
-Space shuttle
+Probe
+Shuttle
 Astronaut
+Lensing
+Dark
+Energy
+Interstellar
+Aries
+Taurus
+Gemini
+Cancer
+Leo
+Virgo
+Libra
+Scorpio
+Sagittarius
+Capricorn
+Aquarius
+Pisces
+Mercury
+Venus
+Earth
+Mars
+Jupiter
+Saturn
+Uranus
+Neptune
+Alien
+Milky
+Andromeda
+Light
+Unit
+Exoplanet
+Quasar
+Wind
+Sphere
+Cluster
+Binary
+String
+Solar
+Craft
+Cosmos
+Orbit
+Dust
+Protostar
+Brown
+Gamma
+Helios
+Corona
+Eclipse
+Transit
+Opposition
+Conjunction
+Aphelion
+Perihelion
+Apogee
+Perigee
+Weather
+Ionosphere
+Aurora
+Ray
+Fireball
+Bolide
+Medium
+Sail
+Astro
+Chrono
+Rover
+Base
+Colony
+Tourism
+Big Bang
+Multiverse
+Olbers
+Fermi
+Drake
+SpaceX
+Flyby
+Launch
+Boost
+Retro
+Capsule
+Docking
+Hatch
+Hubble
+James
+Voyager
+Apollo
+Sputnik
+Curiosity
+Perseverance
+Lander
+Dragon
+Starship
+Orbiter
+Biosphere
+Moonwalk
+Sunspot
+Tide
+Gravity
+Thrust
+Impulse
+Juno
+Titan
+Europa
+Phobos
+Deimos
+Ganymede
+Callisto
+Triton
+Pluto
+Ceres
+Haumea
+Makemake
+Eris
