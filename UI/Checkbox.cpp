@@ -62,6 +62,8 @@ void Checkbox::handleClick() {
     } else {
         this->enable();
     }
+
+    this->onCheckboxUpdate(isEnabled());
 }
 
 void Checkbox::update() {

@@ -207,7 +207,8 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.35},
         "Word Highlight",
-        Settings::isWordsHighlightEnabled()
+        Settings::isWordsHighlightEnabled(),
+        [](bool value) -> void { Settings::setWordsHighlight(value); }
     );
     panelSettings->addElement(wordHighlight);
 
@@ -252,6 +253,15 @@ void GameInterface::setupPanels() {
         {0.40, 0.95},
         {100, 30}
     ));
+
+    auto gameEndCriterium_wordsMissed = UIElementFactory::createMenuCheckbox(
+        1.0,
+        {0.01, 0.35},
+        "End when Words Missed",
+        Settings::isWordsHighlightEnabled(),
+        [](bool value) -> void {}
+    );
+    panelNewGameSetup->addElement(gameEndCriterium_wordsMissed);
 
     // ================= Setting up the Panels for the actual Game (WORDS and GAMESTATISTICS)
     auto panelWords = UIElementFactory::createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);

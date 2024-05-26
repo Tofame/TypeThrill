@@ -17,7 +17,6 @@ void restoreDefaultTextFields(TextField* txtFieldPtr);
 void setSettingFromTextField(TextField* txtFieldPtr);
 
 void restoreDefaultCheckboxes(Checkbox* checkBoxPtr);
-void setSettingFromCheckbox(Checkbox* checkBoxPtr);
 
 void restoreDefaultComboBoxes(ComboBox* comboBoxPtr);
 void setSettingFromComboBoxes(ComboBox* comboBoxPtr);
@@ -134,12 +133,6 @@ void Settings::applySettingsPanel() {
         auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
         if (txtFieldPtr) {
             setSettingFromTextField(txtFieldPtr);
-            continue;
-        }
-
-        auto checkBoxPtr = dynamic_cast<Checkbox*>(uielement);
-        if (checkBoxPtr) {
-            setSettingFromCheckbox(checkBoxPtr);
             continue;
         }
 
@@ -293,15 +286,6 @@ void setSettingFromTextField(TextField* txtFieldPtr) {
         Settings::setUIScale(value);
         GameInterface::updatePanels();
         GameInterface::updateGameTitle();
-    }
-}
-
-void setSettingFromCheckbox(Checkbox* checkBoxPtr) {
-    std::string text = checkBoxPtr->getText().getString();
-    bool value = checkBoxPtr->isEnabled() == true;
-
-    if (text.starts_with("Word Highlight")) {
-        Settings::setWordsHighlight(value);
     }
 }
 

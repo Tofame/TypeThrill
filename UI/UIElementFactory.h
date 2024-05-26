@@ -69,8 +69,10 @@ public:
         return element;
     }
 
-    static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled) {
+    static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled, std::function<void(bool value)> const& onCheckboxUpdate) {
         auto element = new Checkbox(sizeMultiplier, posRatios, defaultEnabled);
+
+        element->onCheckboxUpdate = onCheckboxUpdate;
 
         if(textValue.empty() == false) {
             auto text = sf::Text();
