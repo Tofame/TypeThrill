@@ -1,6 +1,8 @@
 #include "GameStatistics.h"
 
+#include "Game.h"
 #include "GameInterface.h"
+#include "../Settings.h"
 #include "../UI/DynamicTextLabel.h"
 #include "fmt/format.h"
 
@@ -17,6 +19,38 @@ void GameStatistics::updateStatistics(Panel* statisticsPanel) {
 
     for(auto uielement : statisticsPanel->UIElements) {
         uielement->update();
+    }
+
+    GameStatistics::checkGameEnd();
+}
+
+void GameStatistics::checkGameEnd() {
+    if(Settings::endGame_never_bool == true) {
+        return;
+    }
+
+    auto gameEnd = false;
+
+    if(Settings::endGame_score_bool) {
+        if(getWordsGeneralScore() >= Settings::endGame_score_value) {
+            gameEnd = true;
+        }
+    }
+
+    if(!gameEnd && Settings::endGame_missedWords_bool) {
+        if(getWordsMissed() >= Settings::endGame_missedWords_value) {
+            gameEnd = true;
+        }
+    }
+
+    if(!gameEnd && Settings::endGame_time_bool) {
+        if(getTimePassedSinceStart() >= Settings::endGame_time_value) {
+            gameEnd = true;
+        }
+    }
+
+    if(gameEnd == true) {
+        Game::setGameState(Game::STATE_GAMEOVER, false);
     }
 }
 

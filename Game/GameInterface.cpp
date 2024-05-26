@@ -163,7 +163,7 @@ void GameInterface::setupPanels() {
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP, true); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.15}));
@@ -242,14 +242,14 @@ void GameInterface::setupPanels() {
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Start",
-        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING); },
+        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING, true); },
         {0.60, 0.95},
         {100, 30}
     ));
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Back",
-        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU); },
+        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU, true); },
         {0.40, 0.95},
         {100, 30}
     ));

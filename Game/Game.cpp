@@ -29,7 +29,8 @@ void Game::run() {
             // Unsure whether to implement it at all
             break;
         case STATE_GAMEOVER:
-            // GameInterface draw GameOver -> a popup message "60s (or other set time in settings/menu) have passed"
+            GameInterface::drawMenuBackground();
+            GameInterface::drawPanels();
             break;
         default:
             break;
@@ -113,12 +114,13 @@ void Game::checkUIElementsForClick(sf::Vector2i mousePos) {
     }
 }
 
-void Game::setGameState(GameStates state) {
+void Game::setGameState(GameStates state, bool hidePanels) {
     if(Game::getGameState() == state) {
         return;
     }
 
-    GameInterface::hideAllPanels();
+    if(hidePanels)
+        GameInterface::hideAllPanels();
 
     switch(state) {
         case STATE_MENU:

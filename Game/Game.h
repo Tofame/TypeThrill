@@ -17,7 +17,7 @@ class Game {
             STATE_GAMEOVER = 4
         };
 
-        void static setGameState(GameStates state);
+        void static setGameState(GameStates state, bool hidePanels);
         GameStates static getGameState();
 
         void static handleTextEntered(sf::Uint32 unicode);

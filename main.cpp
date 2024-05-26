@@ -20,7 +20,7 @@ int main() {
     Settings::loadSettings();
     WordLanguages::loadLocales();
     GameInterface::setupUI();
-    Game::setGameState(Game::STATE_MENU);
+    Game::setGameState(Game::STATE_MENU, true);
 
     while (window.isOpen()){
         auto frameStart = std::chrono::high_resolution_clock ::now();

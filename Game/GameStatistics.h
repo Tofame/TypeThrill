@@ -6,6 +6,7 @@
 class GameStatistics {
 public:
     static void updateStatistics(Panel* statisticsPanel);
+    static void checkGameEnd();
 
     static void setupDefaultStatistics();
     static void setupStatistics(int score, int scored, int missed);
