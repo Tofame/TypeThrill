@@ -56,6 +56,7 @@ void WordSpawner::moveWords() {
         if(word->posXRatio >= 1.0) {
             wordsPanel->removeElement(word);
             GameStatistics::increaseWordsMissed(1);
+            GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
             continue;
         }
 
@@ -133,6 +134,7 @@ void WordSpawner::manageWords() {
                 textField->update();
                 // We reset input so we must reset existing words' bodies as well
                 setAllWordsBodiesToZero(panelWords);
+                GameStatistics::updateStatistics(panelGameStatistics);
                 return;
             }
 

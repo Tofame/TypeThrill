@@ -1,19 +1,33 @@
 #include "GameStatistics.h"
 
+#include "GameInterface.h"
+
 int GameStatistics::stat_WordsGeneralScore = 0;
 int GameStatistics::stat_WordsScored = 0;
 int GameStatistics::stat_WordsMissed = 0;
+
+void GameStatistics::updateStatistics(Panel* statisticsPanel) {
+    if(statisticsPanel == nullptr) {
+        throw std::runtime_error("GameStatistics::updateStatistics() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
+    }
+
+    for(auto uielement : statisticsPanel->UIElements) {
+        uielement->update();
+    }
+}
 
 void GameStatistics::setupDefaultStatistics() {
     stat_WordsGeneralScore = 0;
     stat_WordsScored = 0;
     stat_WordsMissed = 0;
+    GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setupStatistics(int score, int scored, int missed) {
     stat_WordsGeneralScore = score;
     stat_WordsScored = scored;
     stat_WordsMissed = missed;
+    GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setWordsGeneralScore(int score) {

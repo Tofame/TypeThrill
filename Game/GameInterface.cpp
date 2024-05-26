@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameStatistics.h"
 #include "WordSpawner.h"
+#include "../UI/DynamicTextLabel.h"
 #include "../UI/TextLabel.h"
 #include "../UI/UIElementFactory.h"
 #include "../UI/Word.h"
@@ -242,6 +243,18 @@ void GameInterface::setupPanels() {
     gameInputWords->body.setSize({420, 30});
     gameInputWords->setState(FOCUSED_ALWAYS);
     panelGameStatistics->addElement(gameInputWords);
+
+    auto wordsScored = UIElementFactory::createStatisticsDynamicLabel(
+        {0, 0.1},
+        []() -> std::string { return "Words Scored: " + std::to_string(GameStatistics::getWordsScored()); }
+    );
+    panelGameStatistics->addElement(wordsScored);
+
+    auto wordsMissed = UIElementFactory::createStatisticsDynamicLabel(
+        {0, 0.6},
+        []() -> std::string { return "Words Missed: " + std::to_string(GameStatistics::getWordsMissed()); }
+    );
+    panelGameStatistics->addElement(wordsMissed);
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);

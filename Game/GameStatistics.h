@@ -1,7 +1,10 @@
 #pragma once
+#include "../UI/Panel.h"
 
 class GameStatistics {
 public:
+    static void updateStatistics(Panel* statisticsPanel);
+
     static void setupDefaultStatistics();
     static void setupStatistics(int score, int scored, int missed);
 
