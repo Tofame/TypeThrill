@@ -72,7 +72,7 @@ void TextField::update() {
         this->text.setPosition(newPosition);
         this->text.setScale(parentScale);
     } else {
-        this->body.move(-this->body.getSize().x/2, 0);
+        this->body.move(-(this->body.getSize().x/2 * parentScale.x), 0);
     }
 
     auto bodyPosition = this->body.getPosition();
