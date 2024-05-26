@@ -52,6 +52,9 @@ void WordSpawner::moveWords() {
         return;
     }
 
+    // Updates dynamic label
+    GameStatistics::updateTimePassedSinceStart();
+
     for(auto word : wordsPanel->UIElements) {
         if(word->posXRatio >= 1.0) {
             wordsPanel->removeElement(word);
