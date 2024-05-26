@@ -4,6 +4,7 @@
 #include "Panel.h"
 #include "TextField.h"
 #include "UIElement.h"
+#include "DynamicTextLabel.h"
 #include "../Settings.h"
 #include "../Globals.h"
 #include "../ResourceManagers/FontManager.h"

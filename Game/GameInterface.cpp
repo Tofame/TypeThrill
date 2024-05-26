@@ -245,16 +245,22 @@ void GameInterface::setupPanels() {
     panelGameStatistics->addElement(gameInputWords);
 
     auto wordsScored = UIElementFactory::createStatisticsDynamicLabel(
-        {0, 0.1},
+        {0.05, 0.25},
         []() -> std::string { return "Words Scored: " + std::to_string(GameStatistics::getWordsScored()); }
     );
     panelGameStatistics->addElement(wordsScored);
 
     auto wordsMissed = UIElementFactory::createStatisticsDynamicLabel(
-        {0, 0.6},
+        {0.05, 0.5},
         []() -> std::string { return "Words Missed: " + std::to_string(GameStatistics::getWordsMissed()); }
     );
     panelGameStatistics->addElement(wordsMissed);
+
+    auto generalScore = UIElementFactory::createStatisticsDynamicLabel(
+        {0.05, 0.75},
+        []() -> std::string { return "General Score: " + std::to_string(GameStatistics::getWordsGeneralScore()); }
+    );
+    panelGameStatistics->addElement(generalScore);
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
