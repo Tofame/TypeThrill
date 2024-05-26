@@ -13,7 +13,7 @@ Button::Button(sf::Vector2f& size, sf::Vector2f& position, const std::function<v
     this->onClick = onClick;
 }
 
-Button::Button(sf::Vector2f& size, sf::Vector2f& position) : Button::Button(size, position, defaultButtonLambda) {};
+Button::Button(sf::Vector2f& size, sf::Vector2f& position) : Button::Button(size, position, defaultButtonLambda) {}
 
 void Button::draw() {
     window.draw(this->body);
@@ -29,18 +29,18 @@ void Button::update() {
     this->body.setScale(parentScale);
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + (this->posXRatio * parent->body.getSize().x * parentScale.x) - (this->body.getSize().x * parentScale.x) / 2.0f,
-        parent->body.getPosition().y + (this->posYRatio * parent->body.getSize().y * parentScale.y) - (this->body.getSize().y * parentScale.y) / 2.0f
+        parent->body.getPosition().x + (this->posXRatio * parent->body.getSize().x * parentScale.x) - (this->body.getSize().x * parentScale.x)/2,
+        parent->body.getPosition().y + (this->posYRatio * parent->body.getSize().y * parentScale.y) - (this->body.getSize().y * parentScale.y)/2
     );
 
     this->body.setPosition(newPosition);
 
     sf::FloatRect textBounds = this->text.getLocalBounds();
-    this->text.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+    this->text.setOrigin(textBounds.left + textBounds.width/2, textBounds.top + textBounds.height/2);
 
     sf::Vector2f buttonCenter(
-        newPosition.x + (this->body.getSize().x * parentScale.x) / 2.0f,
-        newPosition.y + (this->body.getSize().y * parentScale.y) / 2.0f
+        newPosition.x + (this->body.getSize().x * parentScale.x)/2,
+        newPosition.y + (this->body.getSize().y * parentScale.y)/2
     );
 
     this->text.setScale(parentScale);

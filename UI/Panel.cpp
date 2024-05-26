@@ -41,7 +41,8 @@ void Panel::draw() {
     window.draw(this->body);
 
     for(auto uielement : UIElements) {
-        uielement->draw();
+        if(uielement->isVisible())
+            uielement->draw();
     }
 }
 

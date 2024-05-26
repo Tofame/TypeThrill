@@ -3,6 +3,7 @@
 #include "Checkbox.h"
 #include "Panel.h"
 #include "TextField.h"
+#include "ComboBox.h"
 #include "UIElement.h"
 #include "DynamicTextLabel.h"
 #include "../Settings.h"
@@ -12,9 +13,46 @@
 inline auto ColorBlue = sf::Color(52, 194, 199);
 inline auto ColorGray = sf::Color(105,104,102);
 inline auto ColorGrayDarkLO = sf::Color(64,64,64, 120);
+inline auto ColorGrayDark = sf::Color(54, 54, 54);
 
 class UIElementFactory {
 public:
+    static ComboBox* createComboBox(const std::string& fieldValue, sf::Vector2f posRatios, const std::string& textValue) {
+        sf::Vector2f size = {200, 30};
+        auto element = new ComboBox(size, posRatios);
+
+        auto& rect = element->body;
+        rect.setFillColor(ColorGrayDark);
+        rect.setOutlineColor(sf::Color::White);
+        rect.setOutlineThickness(3);
+
+        if(textValue.empty() == false) {
+            auto text = sf::Text();
+            text.setFont(FontManager::Fonts["times"]);
+            text.setCharacterSize(GameInterface::smallCharacterSize);
+
+            text.setFillColor(sf::Color::White);
+            text.setOutlineColor(sf::Color::Black);
+            text.setOutlineThickness(1);
+
+            text.setString(textValue);
+
+            element->setText(text);
+        }
+
+        if(fieldValue.empty() == false) {
+            auto chosenText = sf::Text();
+            chosenText.setFont(FontManager::Fonts["aleoItalic"]);
+            chosenText.setCharacterSize(GameInterface::smallCharacterSize);
+            chosenText.setFillColor(sf::Color::White);
+            chosenText.setString(fieldValue);
+
+            element->setChosenText(chosenText);
+        }
+
+        return element;
+    }
+
     static UIElement* createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
         auto element = new DynamicTextLabel(ratios, onUpdateString);
 

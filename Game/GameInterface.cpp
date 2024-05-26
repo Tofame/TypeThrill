@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameStatistics.h"
 #include "WordSpawner.h"
+#include "../UI/ComboBox.h"
 #include "../UI/DynamicTextLabel.h"
 #include "../UI/TextLabel.h"
 #include "../UI/UIElementFactory.h"
@@ -175,7 +176,7 @@ void GameInterface::setupPanels() {
     // ================= Setting up the Settings Panel
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_SETTINGS);
 
-    auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changes.", {0.5, 0.75});
+    auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changes.", {0.5, 0.80});
     panelSettings->addElement(settingsTextLabel);
 
     auto wordSpeedField = UIElementFactory::createTextField(
@@ -212,11 +213,21 @@ void GameInterface::setupPanels() {
 
     auto UIScaleSetting = UIElementFactory::createTextField(
         fmt::format("{:.2f}", Settings::getUIScale()),
-        {0.01, 0.55},
+        {0.01, 0.70},
         "UI Scale (max 5.99)",
         L"^[0-5]([.,][0-9]{0,2})?$"
     );
     panelSettings->addElement(UIScaleSetting);
+
+    auto wordFontComboBox = UIElementFactory::createComboBox(
+        fmt::format("{}", Settings::getWordsFontName()),
+        {0.01, 0.45},
+        "Word Font"
+    );
+    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); wordFontComboBox->deactivate(); });
+    panelSettings->addElement(wordFontComboBox);
 
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));

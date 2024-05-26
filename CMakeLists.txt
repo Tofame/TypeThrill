@@ -58,5 +58,7 @@ add_executable(TypeThrill
         Game/WordSpawner.h
         Game/GameStatistics.cpp
         Game/GameStatistics.h
+        UI/ComboBox.cpp
+        UI/ComboBox.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
