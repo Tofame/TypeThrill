@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "GameInterface.h"
+#include "GameStatistics.h"
 #include "../Settings.h"
 #include "../UI/word.h"
 #include "fmt/ostream.h"
@@ -52,17 +53,91 @@ void WordSpawner::moveWords() {
 
     for(auto word : wordsPanel->UIElements) {
         if(word->posXRatio >= 1.0) {
-            auto it = std::find(wordsPanel->UIElements.begin(), wordsPanel->UIElements.end(), word);
-            if (it != wordsPanel->UIElements.end()) {
-                delete *it;
-                wordsPanel->UIElements.erase(it);
-            }
+            wordsPanel->removeElement(word);
+            GameStatistics::increaseWordsMissed(1);
             continue;
         }
 
         word->setPosRatios(word->posXRatio + Settings::getWordsSpeed(), word->posYRatio);
         word->update();
     }
+}
+
+void WordSpawner::manageWords() {
+    auto panelGameStatistics = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+    if(panelGameStatistics == nullptr) {
+        throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
+    }
+
+    TextField* textField = nullptr;
+    for(auto uielement : panelGameStatistics->UIElements) {
+        textField = dynamic_cast<TextField*>(uielement);
+        if (textField) {
+            break;
+        }
+    }
+    if(textField == nullptr) {
+        throw std::runtime_error("WordSpawner::manageWords() can't seem to find TextField in PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
+    }
+
+    auto panelWords = GameInterface::getPanelByType(PANEL_WORDS);
+    if(panelWords == nullptr) {
+        throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::setupPanels())");
+    }
+
+    auto input = textField->getInputString().toUtf32();
+
+    for(int uiIndex = 0; uiIndex < panelWords->UIElements.size(); uiIndex++) {
+        auto word = dynamic_cast<Word*>(panelWords->UIElements[uiIndex]);
+        if (word) { // true if isn't a nullptr (was sucessfully casted)
+            auto bodyHeight = word->body.getSize().y;
+            if(input.size() == 0) {
+                word->body.setSize({0,bodyHeight});
+                continue;
+            }
+
+            auto inputMatchesWord = false; // Dynamically changing boolean variable that will check if input equals word
+            auto finalBodyWidth = 0.0f;
+
+            auto wordString = word->getText().getString();
+            auto wordSize = wordString.getSize();
+            // We cant use .getCharacterSize() as it will not reflect the real size of single letter
+            auto charSize = word->getText().getGlobalBounds().width/wordSize;
+
+            // wordString.getSize() returns std::size_t so we dont use int for index
+            for (std::size_t index = 0; index < wordSize; index++) {
+                if(!input[index]) {
+                    inputMatchesWord = false;
+                    break;
+                }
+
+                sf::Uint32 letter = wordString[index];
+                if(letter == input[index]) {
+                    inputMatchesWord = true;
+                    finalBodyWidth += charSize;
+                } else {
+                    inputMatchesWord = false;
+                    break;
+                }
+            }
+
+            // Word is completed
+            if(inputMatchesWord == true) {
+                // DEBUG PRINT: (fmt doesnt by default support strings other than that one)
+                // fmt::println("Completed Word: {}", wordString.toAnsiString());
+                panelWords->removeElement(word);
+                GameStatistics::increaseWordsScored(1);
+                GameStatistics::increaseWordsGeneralScore(wordSize);
+                textField->setInput("");
+                textField->update();
+                return;
+            }
+
+            word->body.setSize({finalBodyWidth, bodyHeight});
+            word->update();
+        }
+    }
+
 }
 
 std::vector<double> lastYRatios = std::vector<double>{0.1, 0.65, 0.4, 0.9};

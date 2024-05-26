@@ -23,10 +23,16 @@ Word::Word() {
     this->setText(sfText);
 
     this->visibility = true;
+
+    this->body = sf::RectangleShape({0,static_cast<float>(GameInterface::smallCharacterSize)});
+    this->body.setFillColor(sf::Color::Yellow);
 }
 
 void Word::draw() {
     if(text.getString().isEmpty() == false) {
+        if(Settings::isWordsHighlightEnabled()) {
+            window.draw(this->body);
+        }
         window.draw(this->text);
     }
 }
@@ -35,6 +41,7 @@ void Word::update() {
     sf::Vector2f parentScale = parent->body.getScale();
 
     this->text.setScale(parentScale);
+    this->body.setScale(parentScale);
 
     auto textBounds = this->text.getGlobalBounds();
 
@@ -43,6 +50,9 @@ void Word::update() {
         parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
     );
     this->text.setPosition(newPosition);
+
+    //newPosition.x += textBounds.width;
+    this->body.setPosition(newPosition);
 }
 
 sf::Text& Word::getText() {

@@ -6,6 +6,8 @@
 #include "GameInterface.h"
 
 #include "Game.h"
+#include "GameStatistics.h"
+#include "WordSpawner.h"
 #include "../UI/TextLabel.h"
 #include "../UI/UIElementFactory.h"
 #include "../UI/Word.h"
@@ -159,7 +161,7 @@ void GameInterface::setupPanels() {
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_PLAYING); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.15}));
@@ -234,7 +236,8 @@ void GameInterface::setupPanels() {
         "",
         {0.5, 0.5},
         "",
-        L".{0,35}" // Anything can be in there as its up to user what he types
+        L".{0,35}", // Anything can be in there as its up to user what he types
+        []() -> void { WordSpawner::manageWords(); }
     );
     gameInputWords->body.setSize({420, 30});
     gameInputWords->setState(FOCUSED_ALWAYS);
