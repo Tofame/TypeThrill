@@ -91,6 +91,7 @@ void TextField::updatePointLinePosition(int offsetX) {
 
 void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
     auto inputString = getInputString();
+    bool stringChanged = false;
 
     if(mode == 0) {
         if(inputString.isEmpty()) {
@@ -98,23 +99,24 @@ void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
         }
 
         inputString.erase(inputString.getSize() - 1);
-        this->onTextFieldUpdate();
+        stringChanged = true;
     } else {
-        bool canAddToString = false;
 
         // We create tempString and we will check with regex if its possible to add unicode to inputString
         auto tempString = inputString + unicode;
         if (std::regex_match(tempString.toWideString(), this->getPattern())) {
-            canAddToString = true;
+            stringChanged = true;
         }
 
-        if(canAddToString == true) {
+        if(stringChanged == true) {
             inputString += unicode;
-            this->onTextFieldUpdate();
         }
     }
 
-    this->input.setString(inputString);
+    if(stringChanged == true) {
+        this->input.setString(inputString);
+        this->onTextFieldUpdate();
+    }
     this->updatePointLinePosition(0);
 }
 
