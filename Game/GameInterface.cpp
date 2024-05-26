@@ -250,7 +250,7 @@ void GameInterface::setupPanels() {
     panelGameStatistics->addElement(averageTimePerWord);
 
     auto timePassed = UIElementFactory::createStatisticsDynamicLabel(
-        {0.79, 0.40},
+        {0.79, 0.50},
         []() -> std::string { return "Time passed (s): " + GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()); }
     );
     panelGameStatistics->addElement(timePassed);
@@ -273,12 +273,17 @@ void GameInterface::setupPanels() {
     );
     panelGameStatistics->addElement(generalScore);
 
-    auto currentSettings = fmt::format(
-    "[Selected Settings]:\t Font {},\t Frequency {},\t Speed {},\t Size {},\t Highlight {},\t UIScale {},",
-                    Settings::getWordsFontName(), Settings::getWordsFrequency(), Settings::getWordsSpeed(),
-                    Settings::getWordsSize(), Settings::isWordsHighlightEnabled(), Settings::getUIScale()
+    // It cant be normal TextLabel and needs to be Dynamic as it needs updating in Settings::applySettings();
+    auto whatSettingsLabel = UIElementFactory::createInfoDynamicLabel(
+        {0.2, 0.85},
+        []() -> std::string {
+            return fmt::format(
+            "[Selected Settings]\t Font:  {},\t Frequency:  {},\t Speed:  {},\t Size:  {},\t Highlight:  {},\t UIScale:  {}",
+                            Settings::getWordsFontName(), Settings::getWordsFrequency(), Settings::getWordsSpeed(),
+                            Settings::getWordsSize(), Settings::isWordsHighlightEnabled(), Settings::getUIScale()
+            );
+        }
     );
-    auto whatSettingsLabel = new TextLabel(currentSettings, {0.5, 0.85});
     panelGameStatistics->addElement(whatSettingsLabel);
 
     // Adding each Panel to Panels Vector

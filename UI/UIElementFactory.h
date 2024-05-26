@@ -23,6 +23,14 @@ public:
         return element;
     }
 
+    static UIElement* createInfoDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
+        auto element = new DynamicTextLabel(ratios, onUpdateString);
+
+        element->getText().setCharacterSize(GameInterface::smallCharacterSize);
+
+        return element;
+    }
+
     static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled) {
         auto element = new Checkbox(sizeMultiplier, posRatios, defaultEnabled);
 

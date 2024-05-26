@@ -111,6 +111,10 @@ void Settings::restoreDefaultSettings() {
 
 void Settings::applySettingsPanel() {
     auto settingsPanel = GameInterface::getPanelByType(PANEL_SETTINGS);
+    if(settingsPanel == nullptr) {
+        throw std::runtime_error("Settings::applySettingsPanel() can't seem to find PANEL_SETTINGS. Does it exist?");
+    }
+
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
         // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
@@ -125,6 +129,16 @@ void Settings::applySettingsPanel() {
             setSettingFromCheckbox(checkBoxPtr);
             continue;
         }
+    }
+
+    // Update DynamicTextLabel in GameStatistics
+    auto gameStatisticsPanel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+    if(gameStatisticsPanel == nullptr) {
+        throw std::runtime_error("Settings::applySettingsPanel() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
+    }
+
+    for(auto uielement : settingsPanel->UIElements) {
+        uielement->update();
     }
 
     Settings::saveSettings();
