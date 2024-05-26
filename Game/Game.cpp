@@ -113,12 +113,6 @@ void Game::checkUIElementsForClick(sf::Vector2i mousePos) {
     }
 }
 
-void Game::resetGame() {
-
-}
-
-
-
 void Game::setGameState(GameStates state) {
     if(Game::getGameState() == state) {
         return;
