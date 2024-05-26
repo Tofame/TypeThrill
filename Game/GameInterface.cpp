@@ -256,12 +256,30 @@ void GameInterface::setupPanels() {
 
     auto gameEndCriterium_wordsMissed = UIElementFactory::createMenuCheckbox(
         1.0,
-        {0.01, 0.35},
-        "End when Words Missed",
-        Settings::isWordsHighlightEnabled(),
-        [](bool value) -> void {}
+        {0.01, 0.15},
+        "End on Words Missed",
+        Settings::endGame_missedWords_bool,
+        [](bool value) -> void { Settings::endGame_missedWords_bool = value; }
     );
     panelNewGameSetup->addElement(gameEndCriterium_wordsMissed);
+
+    auto gameEndCriterium_time = UIElementFactory::createMenuCheckbox(
+        1.0,
+        {0.01, 0.25},
+        "End on Time",
+        Settings::endGame_time_bool,
+        [](bool value) -> void { Settings::endGame_time_bool = value; }
+    );
+    panelNewGameSetup->addElement(gameEndCriterium_time);
+
+    auto gameEndCriterium_score = UIElementFactory::createMenuCheckbox(
+        1.0,
+        {0.01, 0.35},
+        "End on Score",
+        Settings::endGame_score_bool,
+        [](bool value) -> void { Settings::endGame_score_bool = value; }
+    );
+    panelNewGameSetup->addElement(gameEndCriterium_score);
 
     // ================= Setting up the Panels for the actual Game (WORDS and GAMESTATISTICS)
     auto panelWords = UIElementFactory::createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);
@@ -275,7 +293,7 @@ void GameInterface::setupPanels() {
 
     auto gameInputWords = UIElementFactory::createTextField(
         "",
-        {0.5, 0.5},
+        {0.5, 0.35},
         "",
         L".{0,35}", // Anything can be in there as its up to user what he types
         []() -> void { WordSpawner::manageWords(); }
@@ -285,31 +303,32 @@ void GameInterface::setupPanels() {
     panelGameStatistics->addElement(gameInputWords);
 
     auto averageTimePerWord = UIElementFactory::createStatisticsDynamicLabel(
-        {0.83, 0.35},
+        {0.79, 0.10},
+
         []() -> std::string { return "Av. word/s: " + GameStatistics::formatTime(GameStatistics::getAverageTimePerWord()); }
     );
     panelGameStatistics->addElement(averageTimePerWord);
 
     auto timePassed = UIElementFactory::createStatisticsDynamicLabel(
-        {0.79, 0.50},
+        {0.79, 0.25},
         []() -> std::string { return "Time passed (s): " + GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()); }
     );
     panelGameStatistics->addElement(timePassed);
 
     auto wordsScored = UIElementFactory::createStatisticsDynamicLabel(
-        {0.05, 0.15},
+        {0.05, 0.10},
         []() -> std::string { return "Words Scored: " + std::to_string(GameStatistics::getWordsScored()); }
     );
     panelGameStatistics->addElement(wordsScored);
 
     auto wordsMissed = UIElementFactory::createStatisticsDynamicLabel(
-        {0.05, 0.40},
+        {0.05, 0.25},
         []() -> std::string { return "Words Missed: " + std::to_string(GameStatistics::getWordsMissed()); }
     );
     panelGameStatistics->addElement(wordsMissed);
 
     auto generalScore = UIElementFactory::createStatisticsDynamicLabel(
-        {0.05, 0.65},
+        {0.05, 0.40},
         []() -> std::string { return "General Score: " + std::to_string(GameStatistics::getWordsGeneralScore()); }
     );
     panelGameStatistics->addElement(generalScore);
@@ -326,6 +345,14 @@ void GameInterface::setupPanels() {
         }
     );
     panelGameStatistics->addElement(whatSettingsLabel);
+
+    auto whatGameSettingsPanel = UIElementFactory::createInfoDynamicLabel(
+        {0.2, 0.75},
+        []() -> std::string {
+            return fmt::format("[Selected Settings]\t {}", Settings::buildEndGameSettings());
+        }
+    );
+    panelGameStatistics->addElement(whatGameSettingsPanel);
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);

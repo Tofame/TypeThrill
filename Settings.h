@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 #include <string>
 
 #include "UI/TextField.h"
@@ -46,4 +47,15 @@ public:
     float static getUIScale();
     void static setUIScale(std::string const& value);
     void static setUIScale(float value);
+
+    std::string static buildEndGameSettings();
+
+// Game End Criterias (no setters and getters - too much code)
+    inline bool static endGame_missedWords_bool = true;
+    inline bool static endGame_time_bool = false;
+    inline bool static endGame_score_bool = false;
+
+    inline int static endGame_missedWords_value = 5;
+    inline auto static endGame_time_value = std::chrono::duration<double>(10);
+    inline int static endGame_score_value = 20;
 };

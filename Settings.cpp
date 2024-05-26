@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "Game/GameInterface.h"
+#include "Game/GameStatistics.h"
 #include "ResourceManagers/FontManager.h"
 #include "UI/Checkbox.h"
 #include "UI/ComboBox.h"
@@ -339,4 +340,22 @@ void Settings::saveSettings() {
     std::ofstream outFile(projectPath + "/settings.txt");
     outFile << buffer.str();
     outFile.close();
+}
+
+std::string Settings::buildEndGameSettings() {
+    std::string result;
+
+    if (endGame_missedWords_bool) {
+        result += fmt::format("Ends on: {} missed\t", endGame_missedWords_value);
+    }
+
+    if (endGame_score_bool) {
+        result += fmt::format("Ends on: {} score\t", endGame_score_value);
+    }
+
+    if (endGame_time_bool) {
+        result += fmt::format("Ends on: {} time\t", GameStatistics::formatTime(endGame_time_value));
+    }
+
+    return result;
 }

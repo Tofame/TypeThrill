@@ -8,6 +8,7 @@ public:
     int inline static hugeCharacterSize = 140;
     int inline static bigCharacterSize = 54;
     int inline static mediumCharacterSize = 38;
+    int inline static mediumLiteCharacterSize = 30;
     int inline static smallCharacterSize = 24;
 
     std::vector<Panel*> static panels;

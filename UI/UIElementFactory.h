@@ -6,6 +6,7 @@
 #include "ComboBox.h"
 #include "UIElement.h"
 #include "DynamicTextLabel.h"
+#include "../Game/GameInterface.h"
 #include "../Settings.h"
 #include "../Globals.h"
 #include "../ResourceManagers/FontManager.h"
@@ -56,7 +57,7 @@ public:
     static UIElement* createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
         auto element = new DynamicTextLabel(ratios, onUpdateString);
 
-        element->getText().setCharacterSize(GameInterface::mediumCharacterSize);
+        element->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
 
         return element;
     }
