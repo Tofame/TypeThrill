@@ -28,7 +28,9 @@ void WordSpawner::spawnWord() {
 
     auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
     auto word = new Word();
-    word->setPosRatios(0.1, chooseWordYRatio());
+    // Words are not "left upper corner", but they are always -width, so its their position is actually (rightCorner, upper)
+    // Thats why we calculate x ratio here to make them properly aligned to left side of panel
+    word->setPosRatios(word->getText().getLocalBounds().width / wordsPanel->body.getLocalBounds().width, chooseWordYRatio());
 
     wordsPanel->addElement(word);
 
