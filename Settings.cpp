@@ -10,6 +10,7 @@
 #include "Game/GameInterface.h"
 #include "ResourceManagers/FontManager.h"
 #include "UI/Checkbox.h"
+#include "UI/ComboBox.h"
 #include "UI/TextField.h"
 
 void restoreDefaultTextFields(TextField* txtFieldPtr);
@@ -17,12 +18,15 @@ void setSettingFromTextField(TextField* txtFieldPtr);
 
 void restoreDefaultCheckboxes(Checkbox* checkBoxPtr);
 void setSettingFromCheckbox(Checkbox* checkBoxPtr);
+
+void restoreDefaultComboBoxes(ComboBox* comboBoxPtr);
+void setSettingFromComboBoxes(ComboBox* comboBoxPtr);
 // Settings's default values that we use when malformed settings or couldn't load one
-std::string defaultWordFontName = "arial";
+std::string defaultWordFontName = "voye";
 double defaultWordFrequency = 1.1;
 double defaultWordSpeed = 0.001;
 double defaultWordSize = 1.0;
-double defaultWordHighlight = true;
+bool defaultWordHighlight = true;
 
 float defaultUIScale = 1.0;
 
@@ -99,14 +103,23 @@ void Settings::restoreDefaultSettings() {
             restoreDefaultCheckboxes(checkBoxPtr);
             continue;
         }
+
+        auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
+        if (comboBoxPtr) {
+            restoreDefaultComboBoxes(comboBoxPtr);
+            continue;
+        }
     }
 
     setWordsFrequency(defaultWordFrequency);
     setWordsSize(defaultWordSize);
     setWordsSpeed(defaultWordSpeed);
     setWordsHighlight(defaultWordHighlight);
+    setWordsFontName(defaultWordFontName);
 
     setUIScale(defaultUIScale);
+
+    Settings::saveSettings();
 }
 
 void Settings::applySettingsPanel() {
@@ -127,6 +140,12 @@ void Settings::applySettingsPanel() {
         auto checkBoxPtr = dynamic_cast<Checkbox*>(uielement);
         if (checkBoxPtr) {
             setSettingFromCheckbox(checkBoxPtr);
+            continue;
+        }
+
+        auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
+        if (comboBoxPtr) {
+            setSettingFromComboBoxes(comboBoxPtr);
             continue;
         }
     }
@@ -253,6 +272,13 @@ void restoreDefaultCheckboxes(Checkbox* checkBoxPtr) {
     }
 }
 
+void restoreDefaultComboBoxes(ComboBox* comboBoxPtr) {
+    std::string text = comboBoxPtr->getText().getString();
+    if (text.starts_with("Word Font")) {
+        comboBoxPtr->setChosenText(fmt::format("{}", defaultWordFontName));
+    }
+}
+
 void setSettingFromTextField(TextField* txtFieldPtr) {
     std::string text = txtFieldPtr->getText().getString();
     auto value = txtFieldPtr->getInputString();
@@ -276,6 +302,14 @@ void setSettingFromCheckbox(Checkbox* checkBoxPtr) {
 
     if (text.starts_with("Word Highlight")) {
         Settings::setWordsHighlight(value);
+    }
+}
+
+void setSettingFromComboBoxes(ComboBox* comboBoxPtr) {
+    std::string text = comboBoxPtr->getText().getString();
+
+    if (text.starts_with("Word Font")) {
+        Settings::setWordsFontName(comboBoxPtr->getChosenTextString());
     }
 }
 

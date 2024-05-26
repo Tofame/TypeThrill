@@ -6,13 +6,13 @@
 words_font=voye
 
 // The frequency of words appearing one after another
-words_frequency=3.00
+words_frequency=2.15
 
 // How quickly words move
 words_speed=0.00100
 
 // A multiplier for size of the words
-words_size=1.02
+words_size=1.00
 
 // If should search&&highlight a part of a moving word on a screen while you are typing
 // Possible: true,false
