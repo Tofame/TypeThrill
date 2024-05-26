@@ -10,6 +10,7 @@
 #include "fmt/ostream.h"
 
 double chooseWordYRatio();
+void setAllWordsBodiesToZero(Panel* panel);
 
 float getRandomFloat(float min, float max) {
     std::random_device rd;
@@ -130,6 +131,8 @@ void WordSpawner::manageWords() {
                 GameStatistics::increaseWordsGeneralScore(wordSize);
                 textField->setInput("");
                 textField->update();
+                // We reset input so we must reset existing words' bodies as well
+                setAllWordsBodiesToZero(panelWords);
                 return;
             }
 
@@ -155,4 +158,10 @@ double chooseWordYRatio() {
     lastYRatios.erase(lastYRatios.begin());
     lastYRatios.push_back(randomFloat);
     return randomFloat;
+}
+
+void setAllWordsBodiesToZero(Panel* panel) {
+    for(auto word : panel->UIElements) {
+        word->body.setSize({0, word->body.getSize().y});
+    }
 }

@@ -24,7 +24,7 @@ Word::Word() {
 
     this->visibility = true;
 
-    this->body = sf::RectangleShape({0,static_cast<float>(GameInterface::smallCharacterSize)});
+    this->body = sf::RectangleShape({0,static_cast<float>(GameInterface::smallCharacterSize * Settings::getWordsSize())});
     this->body.setFillColor(sf::Color::Yellow);
 }
 
