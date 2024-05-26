@@ -12,9 +12,10 @@ class Game {
 
         enum GameStates {
             STATE_MENU = 0,
-            STATE_PLAYING = 1,
-            STATE_PAUSED = 2,
-            STATE_GAMEOVER = 3
+            STATE_NEWGAMESETUP = 1,
+            STATE_PLAYING = 2,
+            STATE_PAUSED = 3,
+            STATE_GAMEOVER = 4
         };
 
         void static setGameState(GameStates state);

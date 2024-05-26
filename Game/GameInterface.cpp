@@ -163,7 +163,7 @@ void GameInterface::setupPanels() {
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.15}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.15}));
@@ -232,6 +232,26 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Apply", []() -> void { Settings::applySettingsPanel(); }, {0.65, 0.94}, {100, 40}));
+
+    // ================= Setting up the STATE_NEWGAMESETUP Panel
+    auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
+
+    auto gameModesLabel = new TextLabel("Check the criteria for game end", {0.5, 0.01});
+    panelNewGameSetup->addElement(gameModesLabel);
+
+    panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
+        "Start",
+        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING); },
+        {0.60, 0.95},
+        {100, 30}
+    ));
+
+    panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
+        "Back",
+        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU); },
+        {0.40, 0.95},
+        {100, 30}
+    ));
 
     // ================= Setting up the Panels for the actual Game (WORDS and GAMESTATISTICS)
     auto panelWords = UIElementFactory::createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);
@@ -303,6 +323,7 @@ void GameInterface::setupPanels() {
     GameInterface::addPanelToVector(panelSettings);
     GameInterface::addPanelToVector(panelWords);
     GameInterface::addPanelToVector(panelGameStatistics);
+    GameInterface::addPanelToVector(panelNewGameSetup);
 
     GameInterface::updatePanels();
 }

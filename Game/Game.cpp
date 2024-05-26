@@ -21,6 +21,10 @@ void Game::run() {
         case STATE_MENU:
             GameInterface::drawMenu();
             break;
+        case STATE_NEWGAMESETUP:
+            GameInterface::drawMenuBackground();
+            GameInterface::drawPanels();
+            break;
         case STATE_PAUSED:
             // Unsure whether to implement it at all
             break;
@@ -137,6 +141,15 @@ void Game::setGameState(GameStates state) {
             auto panelToShow2 = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
             if(panelToShow2 != nullptr)
                 panelToShow2->setVisibility(true);
+            Game::gameState = state;
+            break;
+        }
+        case STATE_NEWGAMESETUP:
+        {
+            auto panelToShow = GameInterface::getPanelByType(PANEL_NEWGAMESETUP);
+            if(panelToShow != nullptr) {
+                panelToShow->setVisibility(true);
+            }
             Game::gameState = state;
             break;
         }

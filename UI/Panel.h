@@ -10,7 +10,7 @@ enum PanelType {
     PANEL_SETTINGS = 2,
     PANEL_LOADGAME = 4,
     PANEL_HIGHSCORES = 5,
-    PANEL_CHOOSELANGUAGE = 6, // not implemented
+    PANEL_NEWGAMESETUP = 6,
     PANEL_WORDS = 7,
     PANEL_GAMESTATISTICS = 8,
 };
