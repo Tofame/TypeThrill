@@ -1,6 +1,7 @@
 #pragma once
 #include <chrono>
 #include <string>
+#include <unordered_map>
 
 #include "UI/TextField.h"
 
@@ -13,12 +14,11 @@ private:
     bool static words_highlight;
 
     float static ui_scale;
-
-    inline bool static settingsPanelUpToDate = true; // when some e.g. textFields from settings panel change their values its set to false;
 public:
-    bool static isSettingsPanelUpToDate();
-    void static setUpToDateValue(bool value);
+    inline static auto defaultSettingsMap = std::unordered_map<std::string, std::string>();
+    inline static auto settingsMap = std::unordered_map<std::string, std::string>();
 
+    void static preLoadSettings(bool resetDefaultSettings);
     void static loadSettings();
     void static saveSettings();
 
@@ -26,27 +26,23 @@ public:
     void static applySettingsPanel();
 
     void static setWordsFontName(std::string const& value);
-    std::string static getWordsFontName();
+    std::string static getWordsFontName(bool defaultValue);
 
     void static setWordsFrequency(std::string const& value);
-    void static setWordsFrequency(double value);
-    double static getWordsFrequency();
+    double static getWordsFrequency(bool defaultValue);
 
     void static setWordsSpeed(std::string const& value);
-    void static setWordsSpeed(double value);
-    double static getWordsSpeed();
+    double static getWordsSpeed(bool defaultValue);
 
     void static setWordsSize(std::string const& value);
-    void static setWordsSize(double value);
-    double static getWordsSize();
+    double static getWordsSize(bool defaultValue);
 
     void static setWordsHighlight(std::string const& value);
-    void static setWordsHighlight(bool value);
-    bool static isWordsHighlightEnabled();
+    void static setWordsHighlight(bool const& value);
+    bool static isWordsHighlightEnabled(bool defaultValue);
 
-    float static getUIScale();
     void static setUIScale(std::string const& value);
-    void static setUIScale(float value);
+    float static getUIScale(bool defaultValue);
 
     std::string static buildEndGameSettings();
 

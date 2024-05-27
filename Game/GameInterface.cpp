@@ -124,7 +124,7 @@ void GameInterface::setupBackgroundSprite() {
 void GameInterface::setupGameTitle() {
     auto text = sf::Text();
     text.setFont(FontManager::Fonts["voye"]);
-    text.setCharacterSize(GameInterface::hugeCharacterSize * Settings::getUIScale());
+    text.setCharacterSize(GameInterface::hugeCharacterSize * Settings::getUIScale(false));
     text.setFillColor(sf::Color::White);
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
@@ -180,7 +180,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(settingsTextLabel);
 
     auto wordSpeedField = UIElementFactory::createTextField(
-        fmt::format("{:.5f}", Settings::getWordsSpeed()),
+        fmt::format("{:.5f}", Settings::getWordsSpeed(false)),
         {0.01, 0.05},
         "Word Speed",
         L"^[0-9]([.,][0-9]{0,5})?$" // L casts to wchar as we need wstring in wregex
@@ -188,7 +188,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(wordSpeedField);
 
     auto wordFrequencyField = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getWordsFrequency()),
+        fmt::format("{:.2f}", Settings::getWordsFrequency(false)),
         {0.01, 0.15},
         "Word Frequency",
         L"^[0-9]([.,][0-9]{0,2})?$"
@@ -196,7 +196,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(wordFrequencyField);
 
     auto wordSize = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getWordsSize()),
+        fmt::format("{:.2f}", Settings::getWordsSize(false)),
         {0.01, 0.25},
         "Word Size",
         L"^[0-9]([.,][0-9]{0,2})?$"
@@ -207,13 +207,13 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.35},
         "Word Highlight",
-        Settings::isWordsHighlightEnabled(),
+        Settings::isWordsHighlightEnabled(false),
         [](bool value) -> void { Settings::setWordsHighlight(value); }
     );
     panelSettings->addElement(wordHighlight);
 
     auto UIScaleSetting = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getUIScale()),
+        fmt::format("{:.2f}", Settings::getUIScale(false)),
         {0.01, 0.70},
         "UI Scale (max 5.99)",
         L"^[0-5]([.,][0-9]{0,2})?$"
@@ -221,7 +221,7 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(UIScaleSetting);
 
     auto wordFontComboBox = UIElementFactory::createComboBox(
-        fmt::format("{}", Settings::getWordsFontName()),
+        fmt::format("{}", Settings::getWordsFontName(false)),
         {0.01, 0.45},
         "Word Font"
     );
@@ -339,8 +339,8 @@ void GameInterface::setupPanels() {
         []() -> std::string {
             return fmt::format(
             "[Selected Settings]\t Font:  {},\t Frequency:  {},\t Speed:  {},\t Size:  {},\t Highlight:  {},\t UIScale:  {}",
-                            Settings::getWordsFontName(), Settings::getWordsFrequency(), Settings::getWordsSpeed(),
-                            Settings::getWordsSize(), Settings::isWordsHighlightEnabled(), Settings::getUIScale()
+                            Settings::getWordsFontName(false), Settings::getWordsFrequency(false), Settings::getWordsSpeed(false),
+                            Settings::getWordsSize(false), Settings::isWordsHighlightEnabled(false), Settings::getUIScale(false)
             );
         }
     );

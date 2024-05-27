@@ -21,30 +21,29 @@ void restoreDefaultCheckboxes(Checkbox* checkBoxPtr);
 
 void restoreDefaultComboBoxes(ComboBox* comboBoxPtr);
 void setSettingFromComboBoxes(ComboBox* comboBoxPtr);
-// Settings's default values that we use when malformed settings or couldn't load one
-std::string defaultWordFontName = "voye";
-double defaultWordFrequency = 1.1;
-double defaultWordSpeed = 0.001;
-double defaultWordSize = 1.0;
-bool defaultWordHighlight = true;
 
-float defaultUIScale = 1.0;
+// resetDefaultSettings also could be defined as "bool firstTimePreLoaded" (to give you better grasp of what is it for)
+void Settings::preLoadSettings(bool resetDefaultSettings) {
+    if(resetDefaultSettings) {
+        defaultSettingsMap["words_fontName"] = "voye";
+        defaultSettingsMap["words_frequency"] = "2.1";
+        defaultSettingsMap["words_speed"] = "0.001";
+        defaultSettingsMap["words_size"] = "1.0";
+        defaultSettingsMap["words_highlight"] = "true";
 
-std::string Settings::words_fontName = defaultWordFontName;
-double Settings::words_frequency = defaultWordFrequency;
-double Settings::words_speed = defaultWordSpeed;
-double Settings::words_size = defaultWordSize;
-bool Settings::words_highlight = true;
+        defaultSettingsMap["ui_scale"] = "1.0";
 
-float Settings::ui_scale = defaultUIScale;
+        defaultSettingsMap["endGame_missedWords_bool"] = "true";
+        defaultSettingsMap["endGame_time_bool"] = "false";
+        defaultSettingsMap["endGame_score_bool"] = "false";
+        defaultSettingsMap["endGame_never_bool"] = "false";
 
+        defaultSettingsMap["endGame_missedWords_value"] = "5";
+        defaultSettingsMap["endGame_time_value"] = "60";
+        defaultSettingsMap["endGame_score_value"] = "20";
+    }
 
-bool Settings::isSettingsPanelUpToDate() {
-    return settingsPanelUpToDate == true;
-}
-
-void Settings::setUpToDateValue(bool value) {
-    settingsPanelUpToDate = value;
+    settingsMap = defaultSettingsMap;
 }
 
 void Settings::loadSettings() {
@@ -66,20 +65,10 @@ void Settings::loadSettings() {
             std::string value = matches[2].str();
 
             // Switch does not support strings, so we use elseif.
-            if (option == "words_font") {
-                Settings::setWordsFontName(value);
-            } else if (option == "words_frequency") {
-                Settings::setWordsFrequency(value);
-            } else if (option == "words_speed") {
-                Settings::setWordsSpeed(value);
-            } else if (option == "words_size") {
-                Settings::setWordsSize(value);
-            } else if (option == "words_highlight") {
-                Settings::setWordsHighlight(value);
-            } else if (option == "ui_scale") {
-                Settings::setUIScale(value);
+            if (settingsMap.contains(option)) {
+                settingsMap[option] = value;
             } else {
-                fmt::println("Unknown settings.txt option: {}.\nThe full line is: {}", option, matches[0].str());
+                throw std::runtime_error(fmt::format("Settings.txt option: {} does not exist in settingsMap.\nThe full line is: {}", option, matches[0].str()));
             }
         } else {
             throw std::runtime_error("Malformed settings.txt line: " + line);
@@ -88,6 +77,7 @@ void Settings::loadSettings() {
 }
 
 void Settings::restoreDefaultSettings() {
+    // Reset values in TextField(s) etc.
     auto settingsPanel = GameInterface::getPanelByType(PANEL_SETTINGS);
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
@@ -111,14 +101,10 @@ void Settings::restoreDefaultSettings() {
         }
     }
 
-    setWordsFrequency(defaultWordFrequency);
-    setWordsSize(defaultWordSize);
-    setWordsSpeed(defaultWordSpeed);
-    setWordsHighlight(defaultWordHighlight);
-    setWordsFontName(defaultWordFontName);
+    // This basically will reset all the keys in the map (meaning it will reset settings)
+    Settings::preLoadSettings(false);
 
-    setUIScale(defaultUIScale);
-
+    // Saves settings to .txt
     Settings::saveSettings();
 }
 
@@ -154,107 +140,152 @@ void Settings::applySettingsPanel() {
         uielement->update();
     }
 
+    // Saves settings to .txt
     Settings::saveSettings();
 }
 
 void Settings::setWordsFontName(std::string const& value) {
     if(FontManager::Fonts.contains(value)) {
-        Settings::words_fontName = value;
+        settingsMap["words_fontName"] = value;
     } else {
-        Settings::words_fontName = defaultWordFontName;
+        settingsMap["words_fontName"] = defaultSettingsMap["words_fontName"];
     }
 }
 
 void Settings::setWordsFrequency(std::string const& value) {
     try {
-        Settings::words_frequency = std::stod(value);
+        // We do this to make sure the string we will save to map is of good type
+        // for frequency the string must be convertable to double
+        auto tempValue = std::stod(value);
+        settingsMap["words_frequency"] = value;
     } catch (const std::invalid_argument& e) {
-        Settings::words_frequency = defaultWordFrequency;
+        settingsMap["words_frequency"] = defaultSettingsMap["words_frequency"];
     }
-}
-
-void Settings::setWordsFrequency(double value) {
-    Settings::words_frequency = value;
 }
 
 void Settings::setWordsSpeed(std::string const& value) {
     try {
-        Settings::words_speed = std::stod(value);
+        auto tempValue = std::stod(value);
+        settingsMap["words_speed"] = value;
     } catch (const std::invalid_argument& e) {
-        Settings::words_speed = defaultWordSpeed;
+        settingsMap["words_speed"] = defaultSettingsMap["words_speed"];
     }
-}
-
-void Settings::setWordsSpeed(double value) {
-    Settings::words_speed = value;
 }
 
 void Settings::setWordsSize(std::string const& value) {
     try {
-        Settings::words_size = std::stod(value);
+        auto tempValue = std::stod(value);
+        settingsMap["words_size"] = value;
     } catch (const std::invalid_argument& e) {
-        Settings::words_size = defaultWordSize;
+        settingsMap["words_size"] = defaultSettingsMap["words_size"];
     }
 }
 
-void Settings::setWordsSize(double value) {
-    Settings::words_size = value;
-}
-
 void Settings::setWordsHighlight(std::string const& value) {
-    Settings::words_highlight = (value == "true" || value == "True");
+    settingsMap["words_highlight"] = value;
 }
 
-void Settings::setWordsHighlight(bool value) {
-    Settings::words_highlight = value;
+void Settings::setWordsHighlight(bool const &value) {
+    if(value == true) {
+        settingsMap["words_highlight"] = "true";
+    } else {
+        settingsMap["words_highlight"] = "false";
+    }
 }
 
 void Settings::setUIScale(std::string const& value) {
     try {
-        Settings::ui_scale = std::stof(value);
+        auto tempValue = std::stof(value);
+        settingsMap["ui_scale"] = value;
     } catch (const std::invalid_argument& e) {
-        Settings::ui_scale = defaultUIScale;
+        settingsMap["ui_scale"] = defaultSettingsMap["ui_scale"];
     }
 }
 
-void Settings::setUIScale(float value) {
-    Settings::ui_scale = value;
+std::string Settings::getWordsFontName(bool defaultValue) {
+    if(defaultValue == true)
+        return defaultSettingsMap["words_fontName"];
+
+    return settingsMap["words_fontName"];
 }
 
-std::string Settings::getWordsFontName() {
-    return Settings::words_fontName;
+double Settings::getWordsFrequency(bool defaultValue) {
+    if(defaultValue == true)
+        return std::stod(defaultSettingsMap["words_frequency"]);
+
+    auto value = 0.0;
+    try {
+        value = std::stod(settingsMap["words_frequency"]);
+    } catch (const std::invalid_argument& e) {
+        value = std::stod(defaultSettingsMap["words_frequency"]);
+    }
+
+    return value;
 }
 
-double Settings::getWordsFrequency() {
-    return Settings::words_frequency;
+double Settings::getWordsSpeed(bool defaultValue) {
+    if(defaultValue == true)
+        return std::stod(defaultSettingsMap["words_speed"]);
+
+    auto value = 0.0;
+    try {
+        value = std::stod(settingsMap["words_speed"]);
+    } catch (const std::invalid_argument& e) {
+        value = std::stod(defaultSettingsMap["words_speed"]);
+    }
+
+    return value;
 }
 
-double Settings::getWordsSpeed() {
-    return Settings::words_speed;
+double Settings::getWordsSize(bool defaultValue) {
+    if(defaultValue == true)
+        return std::stod(defaultSettingsMap["words_size"]);
+
+    auto value = 0.0;
+    try {
+        value = std::stod(settingsMap["words_size"]);
+    } catch (const std::invalid_argument& e) {
+        value = std::stod(defaultSettingsMap["words_size"]);
+    }
+
+    return value;
 }
 
-double Settings::getWordsSize() {
-    return Settings::words_size;
+bool Settings::isWordsHighlightEnabled(bool defaultValue) {\
+    std::string value = "true";
+
+    if(defaultValue)
+        value = defaultSettingsMap["words_highlight"];
+    else
+        value = settingsMap["words_highlight"];
+
+    return value == "true" || value == "True";
 }
 
-bool Settings::isWordsHighlightEnabled() {
-    return Settings::words_highlight;
-}
+float Settings::getUIScale(bool defaultValue) {
+    if(defaultValue == true)
+        return std::stof(defaultSettingsMap["ui_scale"]);
 
-float Settings::getUIScale() {
-    return Settings::ui_scale;
+    auto value = 0.0f;
+    try {
+        value = std::stof(settingsMap["ui_scale"]);
+    } catch (const std::invalid_argument& e) {
+        value = std::stof(defaultSettingsMap["ui_scale"]);
+    }
+
+    return value;
 }
 
 void restoreDefaultTextFields(TextField* txtFieldPtr) {
     std::string text = txtFieldPtr->getText().getString();
     if (text.starts_with("Word Speed"))
-        txtFieldPtr->setInput(fmt::format("{:.5f}", defaultWordSpeed));
+        txtFieldPtr->setInput(fmt::format("{:.5f}", Settings::getWordsSpeed(true)));
     else if (text.starts_with("Word Frequency"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", defaultWordFrequency));
+        txtFieldPtr->setInput(fmt::format("{:.2f}", Settings::getWordsFrequency(true)));
     else if (text.starts_with("Word Size"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", defaultWordSize));
+        txtFieldPtr->setInput(fmt::format("{:.2f}", Settings::getWordsSize(true)));
     else if (text.starts_with("UI Scale"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", defaultUIScale));
+        txtFieldPtr->setInput(fmt::format("{:.2f}", Settings::getUIScale(true)));
 
     txtFieldPtr->update();
 }
@@ -262,14 +293,14 @@ void restoreDefaultTextFields(TextField* txtFieldPtr) {
 void restoreDefaultCheckboxes(Checkbox* checkBoxPtr) {
     std::string text = checkBoxPtr->getText().getString();
     if (text.starts_with("Word Highlight")) {
-        defaultWordHighlight == true ? checkBoxPtr->enable() : checkBoxPtr->disable();
+        Settings::isWordsHighlightEnabled(true) == true ? checkBoxPtr->enable() : checkBoxPtr->disable();
     }
 }
 
 void restoreDefaultComboBoxes(ComboBox* comboBoxPtr) {
     std::string text = comboBoxPtr->getText().getString();
     if (text.starts_with("Word Font")) {
-        comboBoxPtr->setChosenText(fmt::format("{}", defaultWordFontName));
+        comboBoxPtr->setChosenText(fmt::format("{}", Settings::getWordsFontName(true)));
     }
 }
 
@@ -315,18 +346,18 @@ void Settings::saveSettings() {
             std::string option = matches[1].str();
             std::string newValue;
 
-            if (option == "words_font") {
-                newValue = Settings::getWordsFontName();
+            if (option == "words_fontName") {
+                newValue = Settings::getWordsFontName(false);
             } else if (option == "words_frequency") {
-                newValue = fmt::format("{:.2f}", Settings::getWordsFrequency());
+                newValue = fmt::format("{:.2f}", Settings::getWordsFrequency(false));
             } else if (option == "words_speed") {
-                newValue = fmt::format("{:.5f}", Settings::getWordsSpeed());
+                newValue = fmt::format("{:.5f}", Settings::getWordsSpeed(false));
             } else if (option == "words_size") {
-                newValue = fmt::format("{:.2f}", Settings::getWordsSize());
+                newValue = fmt::format("{:.2f}", Settings::getWordsSize(false));
             } else if (option == "words_highlight") {
-                newValue = Settings::isWordsHighlightEnabled() ? "true" : "false";
+                newValue = Settings::isWordsHighlightEnabled(false) ? "true" : "false";
             } else if (option == "ui_scale") {
-                newValue = fmt::format("{:.2f}", Settings::getUIScale());
+                newValue = fmt::format("{:.2f}", Settings::getUIScale(false));
             }
 
             buffer << option << "=" << newValue << "\n";

@@ -17,7 +17,8 @@ int main() {
     fmt::println("Hello TypeThrill!");
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
-    Settings::loadSettings();
+    Settings::preLoadSettings(true); // Setups the std::map (settingsMap)
+    Settings::loadSettings(); // Loads values from Settings.txt
     WordLanguages::loadLocales();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU, true);
