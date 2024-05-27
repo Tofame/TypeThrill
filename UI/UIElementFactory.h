@@ -54,7 +54,7 @@ public:
         return element;
     }
 
-    static UIElement* createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
+    static DynamicTextLabel* createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
         auto element = new DynamicTextLabel(ratios, onUpdateString);
 
         element->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
@@ -62,7 +62,7 @@ public:
         return element;
     }
 
-    static UIElement* createInfoDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
+    static DynamicTextLabel* createInfoDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
         auto element = new DynamicTextLabel(ratios, onUpdateString);
 
         element->getText().setCharacterSize(GameInterface::smallCharacterSize);
@@ -70,7 +70,7 @@ public:
         return element;
     }
 
-    static UIElement* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled, std::function<void(bool value)> const& onCheckboxUpdate) {
+    static Checkbox* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled, std::function<void(bool value)> const& onCheckboxUpdate) {
         auto element = new Checkbox(sizeMultiplier, posRatios, defaultEnabled);
 
         element->onCheckboxUpdate = onCheckboxUpdate;
@@ -92,7 +92,7 @@ public:
         return element;
     }
 
-    static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern) {
+    static TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern) {
         sf::Vector2f size = {200, 30};
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto element = new TextField(size, position);
@@ -137,19 +137,19 @@ public:
         return element;
     }
 
-    static UIElement* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern, std::function<void()> const& onTextFieldUpdate) {
-        auto textField = dynamic_cast<TextField*>(UIElementFactory::createTextField(fieldValue, posRatios, textValue, pattern));
+    static TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern, std::function<void()> const& onTextFieldUpdate) {
+        auto textField = UIElementFactory::createTextField(fieldValue, posRatios, textValue, pattern);
         textField->onTextFieldUpdate = onTextFieldUpdate;
 
         return textField;
     }
 
-    static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
+    static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
         sf::Vector2f size = {200, 50};
         return createMenuButton(name, onClick, posRatios, size);
     }
 
-    static UIElement* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size) {
+    static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size) {
         sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
         auto menuButton = new Button(size, position, onClick);
         menuButton->setPosRatios(posRatios.x, posRatios.y);
