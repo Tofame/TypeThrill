@@ -5,6 +5,8 @@
 #include "../ResourceManagers/FontManager.h"
 
 TextLabel::TextLabel(std::string text, sf::Vector2f ratios) {
+    this->setType(TEXTLABEL);
+
     auto sfText = sf::Text();
     sfText.setFont(FontManager::Fonts["jaro"]);
     sfText.setCharacterSize(GameInterface::smallCharacterSize);

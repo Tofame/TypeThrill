@@ -5,6 +5,8 @@
 #include "fmt/Core.h"
 
 Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEnabled) {
+    this->setType(CHECKBOX);
+
     this->sizeMultiplier = sizeMultiplier;
 
     this->setPosRatios(posRatios.x, posRatios.y);

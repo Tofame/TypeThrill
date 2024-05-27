@@ -7,6 +7,8 @@
 auto defaultButtonLambda = []() -> void { fmt::println("Default Button onClick"); };
 
 Button::Button(sf::Vector2f& size, sf::Vector2f& position, const std::function<void()>& onClick) {
+    this->setType(BUTTON);
+
     this->body = sf::RectangleShape(size);
     this->body.setPosition(position);
     this->visibility = true;

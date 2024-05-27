@@ -34,9 +34,9 @@ public:
     void removeElement(UIElement* ptrUIElement);
     UIElement* getElement(int index);
 
-    void setType(PanelType type);
-    PanelType getType();
+    void setPanelType(PanelType type);
+    PanelType getPanelType();
 
 private:
-    PanelType type = PANEL_WINDOW;
+    PanelType panelType = PANEL_WINDOW;
 };

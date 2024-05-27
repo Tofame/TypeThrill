@@ -9,6 +9,8 @@
 auto UIElements = std::vector<UIElement*>();
 
 Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
+    this->setType(PANEL);
+
     this->visibility = false;
 
     this->body = sf::RectangleShape(size);
@@ -18,6 +20,8 @@ Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
 }
 
 Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
+    this->setType(PANEL);
+
     this->parent = parent;
 
     this->visibility = false;
@@ -99,10 +103,10 @@ UIElement* Panel::getElement(int index) {
     return this->UIElements.at(index);
 }
 
-void Panel::setType(PanelType type) {
-    this->type = type;
+void Panel::setPanelType(PanelType type) {
+    this->panelType = type;
 }
 
-PanelType Panel::getType() {
-    return this->type;
+PanelType Panel::getPanelType() {
+    return this->panelType;
 }

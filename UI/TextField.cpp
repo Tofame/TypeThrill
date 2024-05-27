@@ -7,6 +7,8 @@
 #include "fmt/Core.h"
 
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
+    this->setType(TEXTFIELD);
+
     this->body = sf::RectangleShape(size);
     this->body.setPosition(position);
     this->visibility = true;

@@ -10,6 +10,8 @@
 #include "fmt/ostream.h"
 
 ComboBox::ComboBox(sf::Vector2f size, sf::Vector2f posRatios) {
+    this->setType(COMBOBOX);
+
     this->visibility = true;
 
     this->body = sf::RectangleShape(size);
@@ -17,6 +19,8 @@ ComboBox::ComboBox(sf::Vector2f size, sf::Vector2f posRatios) {
 }
 
 ComboBox::ComboBox(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
+    this->setType(COMBOBOX);
+
     this->parent = parent;
 
     this->visibility = true;

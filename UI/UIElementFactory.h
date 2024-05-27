@@ -173,10 +173,10 @@ public:
         return menuButton;
     }
 
-    static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType type) {
+    static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType panelType) {
         auto panel = new Panel(parent, size, posRatios);
 
-        panel->setType(type);
+        panel->setPanelType(panelType);
 
         auto& rect = panel->body;
         rect.setFillColor(sf::Color::Transparent);

@@ -76,11 +76,12 @@ void WordSpawner::manageWords() {
 
     TextField* textField = nullptr;
     for(auto uielement : panelGameStatistics->UIElements) {
-        textField = dynamic_cast<TextField*>(uielement);
-        if (textField) {
+        if(uielement->getType() == TEXTFIELD) {
+            textField = dynamic_cast<TextField*>(uielement);
             break;
         }
     }
+
     if(textField == nullptr) {
         throw std::runtime_error("WordSpawner::manageWords() can't seem to find TextField in PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
     }

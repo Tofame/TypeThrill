@@ -9,6 +9,8 @@
 #include "../Translator/WordLanguages.h"
 
 Word::Word() {
+    this->setType(WORD);
+
     auto sfText = sf::Text();
     sfText.setFont(FontManager::Fonts[Settings::getWordsFontName(false)]);
     sfText.setCharacterSize(GameInterface::smallCharacterSize * Settings::getWordsSize(false));

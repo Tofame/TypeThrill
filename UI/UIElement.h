@@ -9,6 +9,18 @@ enum UIElementState {
     FOCUSED_ALWAYS = 3
 };
 
+enum UIElementType {
+    UIELEMENT = 0,
+    BUTTON = 1,
+    CHECKBOX = 2,
+    COMBOBOX = 3,
+    DYNAMICTEXTLABEL = 4,
+    TEXTLABEL = 5,
+    PANEL = 6,
+    TEXTFIELD = 7,
+    WORD = 8,
+};
+
 class UIElement {
 public:
     inline static float offsetBodyAfterText = 250; // Defines the offset in case some element has both text and some field
@@ -64,6 +76,16 @@ public:
         }
     };
     UIElementState getState() { return state; };
+
+
+    void setType(UIElementType type) {
+        this->type = type;
+    }
+
+    UIElementType getType() {
+        return this->type;
+    }
 protected:
     UIElementState state = DEFAULT;
+    UIElementType type = UIELEMENT;
 };

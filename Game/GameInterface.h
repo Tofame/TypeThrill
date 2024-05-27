@@ -36,7 +36,7 @@ public:
 
     void static addPanelToVector(Panel* panel);
     void static updatePanels();
-    static Panel* getPanelByType(PanelType type);
+    static Panel* getPanelByType(PanelType panelType);
 
     void static setBackgrundSprite(sf::Sprite& sprite);
     sf::Sprite static getBackgroundSprite();

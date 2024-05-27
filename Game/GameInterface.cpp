@@ -157,7 +157,7 @@ void GameInterface::updateGameTitle() {
 void GameInterface::setupPanels() {
     // ================= Setting up the Window Panel
     auto panelWindow = new Panel({(float)originalWindowSize.x, (float)originalWindowSize.y}, {0,0});
-    panelWindow->setType(PANEL_WINDOW);
+    panelWindow->setPanelType(PANEL_WINDOW);
 
     // ================= Setting up the Menu Panel
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.45}, PANEL_MENU);
@@ -403,9 +403,9 @@ void GameInterface::updatePanels() {
     }
 }
 
-Panel* GameInterface::getPanelByType(PanelType type) {
+Panel* GameInterface::getPanelByType(PanelType panelType) {
     for(auto panel : GameInterface::panels) {
-        if(panel->getType() == type) {
+        if(panel->getPanelType() == panelType) {
             return panel;
         }
     }

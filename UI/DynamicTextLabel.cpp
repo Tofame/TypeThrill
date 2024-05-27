@@ -5,6 +5,8 @@
 #include "../ResourceManagers/FontManager.h"
 
 DynamicTextLabel::DynamicTextLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
+    this->setType(DYNAMICTEXTLABEL);
+
     auto sfText = sf::Text();
     sfText.setFont(FontManager::Fonts["jaro"]);
     sfText.setCharacterSize(GameInterface::smallCharacterSize);

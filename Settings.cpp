@@ -82,22 +82,27 @@ void Settings::restoreDefaultSettings() {
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
         // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
-        auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
-        if (txtFieldPtr) {
-            restoreDefaultTextFields(txtFieldPtr);
-            continue;
-        }
-
-        auto checkBoxPtr = dynamic_cast<Checkbox*>(uielement);
-        if (checkBoxPtr) {
-            restoreDefaultCheckboxes(checkBoxPtr);
-            continue;
-        }
-
-        auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
-        if (comboBoxPtr) {
-            restoreDefaultComboBoxes(comboBoxPtr);
-            continue;
+        switch(uielement->getType()) {
+            case TEXTFIELD:
+            {
+                auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
+                restoreDefaultTextFields(txtFieldPtr);
+                break;
+            }
+            case CHECKBOX:
+            {
+                auto checkBoxPtr = dynamic_cast<Checkbox*>(uielement);
+                restoreDefaultCheckboxes(checkBoxPtr);
+                break;
+            }
+            case COMBOBOX:
+            {
+                auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
+                restoreDefaultComboBoxes(comboBoxPtr);
+                break;
+            }
+            default:
+                break;
         }
     }
 
@@ -117,16 +122,21 @@ void Settings::applySettingsPanel() {
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
         // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
-        auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
-        if (txtFieldPtr) {
-            setSettingFromTextField(txtFieldPtr);
-            continue;
-        }
-
-        auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
-        if (comboBoxPtr) {
-            setSettingFromComboBoxes(comboBoxPtr);
-            continue;
+        switch(uielement->getType()) {
+            case TEXTFIELD:
+            {
+                auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
+                setSettingFromTextField(txtFieldPtr);
+                break;
+            }
+            case COMBOBOX:
+            {
+                auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
+                setSettingFromComboBoxes(comboBoxPtr);
+                break;
+            }
+            default:
+                break;
         }
     }
 
