@@ -196,6 +196,7 @@ void Settings::setUIScale(std::string const& value) {
     for(auto panel : GameInterface::panels) {
         panel->update();
     }
+    GameInterface::updateGameTitle();
 }
 
 std::string Settings::getWordsFontName(bool defaultValue) {
