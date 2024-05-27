@@ -14,7 +14,7 @@ struct Settings {
     void static saveSettings();
 
     void static restoreDefaultSettings();
-    void static applySettingsPanel();
+    void static saveSettingsPanel();
 
     void static setWordsFontName(std::string const& value);
     std::string static getWordsFontName(bool defaultValue);

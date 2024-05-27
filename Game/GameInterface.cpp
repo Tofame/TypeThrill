@@ -176,7 +176,7 @@ void GameInterface::setupPanels() {
     // ================= Setting up the Settings Panel
     auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_SETTINGS);
 
-    auto settingsTextLabel = new TextLabel("Remember, always click 'Apply' to apply changes.", {0.5, 0.80});
+    auto settingsTextLabel = new TextLabel("Click 'Save' to keep changes even after game is closed.", {0.5, 0.80});
     panelSettings->addElement(settingsTextLabel);
 
     auto wordSpeedField = UIElementFactory::createTextField(
@@ -185,6 +185,7 @@ void GameInterface::setupPanels() {
         "Word Speed",
         L"^[0-9]([.,][0-9]{0,5})?$" // L casts to wchar as we need wstring in wregex
     );
+    wordSpeedField->onTextFieldUpdate = [wordSpeedField]() -> void { Settings::setWordsSpeed(wordSpeedField->getInputString()); };
     panelSettings->addElement(wordSpeedField);
 
     auto wordFrequencyField = UIElementFactory::createTextField(
@@ -193,6 +194,7 @@ void GameInterface::setupPanels() {
         "Word Frequency",
         L"^[0-9]([.,][0-9]{0,2})?$"
     );
+    wordFrequencyField->onTextFieldUpdate = [wordFrequencyField]() -> void { Settings::setWordsFrequency(wordFrequencyField->getInputString()); };
     panelSettings->addElement(wordFrequencyField);
 
     auto wordSize = UIElementFactory::createTextField(
@@ -201,6 +203,7 @@ void GameInterface::setupPanels() {
         "Word Size",
         L"^[0-9]([.,][0-9]{0,2})?$"
     );
+    wordSize->onTextFieldUpdate = [wordSize]() -> void { Settings::setWordsSize(wordSize->getInputString()); };
     panelSettings->addElement(wordSize);
 
     auto wordHighlight = UIElementFactory::createMenuCheckbox(
@@ -218,6 +221,7 @@ void GameInterface::setupPanels() {
         "UI Scale (max 5.99)",
         L"^[0-5]([.,][0-9]{0,2})?$"
     );
+    UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::setUIScale(UIScaleSetting->getInputString()); };
     panelSettings->addElement(UIScaleSetting);
 
     auto wordFontComboBox = UIElementFactory::createComboBox(
@@ -225,14 +229,14 @@ void GameInterface::setupPanels() {
         {0.01, 0.45},
         "Word Font"
     );
-    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::setWordsFontName("voye"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::setWordsFontName("arial"); wordFontComboBox->deactivate(); });
     panelSettings->addElement(wordFontComboBox);
 
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Apply", []() -> void { Settings::applySettingsPanel(); }, {0.65, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
     // ================= Setting up the STATE_NEWGAMESETUP Panel
     auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_NEWGAMESETUP);

@@ -113,41 +113,17 @@ void Settings::restoreDefaultSettings() {
     Settings::saveSettings();
 }
 
-void Settings::applySettingsPanel() {
-    auto settingsPanel = GameInterface::getPanelByType(PANEL_SETTINGS);
-    if(settingsPanel == nullptr) {
-        throw std::runtime_error("Settings::applySettingsPanel() can't seem to find PANEL_SETTINGS. Does it exist?");
-    }
-
-    for(auto uielement : settingsPanel->UIElements) {
-        // https://en.cppreference.com/w/cpp/language/dynamic_cast
-        // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
-        switch(uielement->getType()) {
-            case TEXTFIELD:
-            {
-                auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
-                setSettingFromTextField(txtFieldPtr);
-                break;
-            }
-            case COMBOBOX:
-            {
-                auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
-                setSettingFromComboBoxes(comboBoxPtr);
-                break;
-            }
-            default:
-                break;
-        }
-    }
-
+void Settings::saveSettingsPanel() {
     // Update DynamicTextLabel in GameStatistics
     auto gameStatisticsPanel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
     if(gameStatisticsPanel == nullptr) {
-        throw std::runtime_error("Settings::applySettingsPanel() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
+        throw std::runtime_error("Settings::saveSettingsPanel() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
     }
 
-    for(auto uielement : settingsPanel->UIElements) {
-        uielement->update();
+    for(auto uielement : gameStatisticsPanel->UIElements) {
+        if(uielement->getType() == DYNAMICTEXTLABEL) {
+            uielement->update();
+        }
     }
 
     // Saves settings to .txt
@@ -206,9 +182,18 @@ void Settings::setWordsHighlight(bool const &value) {
 void Settings::setUIScale(std::string const& value) {
     try {
         auto tempValue = std::stof(value);
-        settingsMap["ui_scale"] = value;
+        if(tempValue > 0) {
+            settingsMap["ui_scale"] = value;
+        } else { // Failsafe from setting ui_scale to 0 (or less) which means UI would disappear
+            settingsMap["ui_scale"] = 0.1;
+        }
     } catch (const std::invalid_argument& e) {
         settingsMap["ui_scale"] = defaultSettingsMap["ui_scale"];
+    }
+
+    // Refresh panel sizes
+    for(auto panel : GameInterface::panels) {
+        panel->update();
     }
 }
 
