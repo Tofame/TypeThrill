@@ -375,26 +375,63 @@ void Settings::saveSettings() {
 
 std::string Settings::buildEndGameSettings() {
     std::string result;
-    endGame_never_bool = true;
+    Settings::setEndGameCriteriumBool("endGame_never_bool", true);
 
-    if (endGame_missedWords_bool) {
-        endGame_never_bool = false;
-        result += fmt::format("Ends on:\t{} missed\t", endGame_missedWords_value);
+    if (Settings::getEndGameCriteriumBool("endGame_missedWords_bool") == true) {
+        Settings::setEndGameCriteriumBool("endGame_never_bool", false);
+        result += fmt::format("Ends on:\t{} missed\t", getEndGameCriterium_missedWords());
     }
 
-    if (endGame_score_bool) {
-        endGame_never_bool = false;
-        result += fmt::format("Ends on:\t{} score\t", endGame_score_value);
+    if (Settings::getEndGameCriteriumBool("endGame_score_bool") == true) {
+        Settings::setEndGameCriteriumBool("endGame_never_bool", false);
+        result += fmt::format("Ends on:\t{} score\t", getEndGameCriterium_score());
     }
 
-    if (endGame_time_bool) {
-        endGame_never_bool = false;
-        result += fmt::format("Ends on:\t{} time\t", GameStatistics::formatTime(endGame_time_value));
+    if (Settings::getEndGameCriteriumBool("endGame_time_bool") == true) {
+        Settings::setEndGameCriteriumBool("endGame_never_bool", false);
+        result += fmt::format("Ends on:\t{} time\t", GameStatistics::formatTime(getEndGameCriterium_time()));
     }
 
-    if(endGame_never_bool == true) {
+    if(Settings::getEndGameCriteriumBool("endGame_never_bool") == true) {
         result += fmt::format("This game never ends");
     }
 
     return result;
+}
+
+void Settings::setEndGameCriteriumBool(std::string const& criterium, bool value) {
+    if(value == true) {
+        settingsMap[criterium] = "true";
+    } else {
+        settingsMap[criterium] = "false";
+    }
+}
+
+bool Settings::getEndGameCriteriumBool(std::string const& criterium) {
+    auto value = settingsMap[criterium];
+    return value == "true" || value == "True";
+}
+
+void Settings::setEndGameCriterium_missedWords(int value) {
+    settingsMap["endGame_missedWords_value"] = std::to_string(value);
+}
+
+int Settings::getEndGameCriterium_missedWords() {
+    return std::stoi(settingsMap["endGame_missedWords_value"]);
+}
+
+void Settings::setEndGameCriterium_time(double value) {
+    settingsMap["endGame_time_value"] = std::to_string(value);
+}
+
+std::chrono::duration<double> Settings::getEndGameCriterium_time() {
+    return std::chrono::duration<double>(std::stod(settingsMap["endGame_time_value"]));
+}
+
+void Settings::setEndGameCriterium_score(int value) {
+    settingsMap["endGame_score_value"] = std::to_string(value);
+}
+
+int Settings::getEndGameCriterium_score() {
+    return std::stoi(settingsMap["endGame_score_value"]);
 }

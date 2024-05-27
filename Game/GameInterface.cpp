@@ -258,8 +258,8 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.15},
         "End on Words Missed",
-        Settings::endGame_missedWords_bool,
-        [](bool value) -> void { Settings::endGame_missedWords_bool = value; }
+        Settings::getEndGameCriteriumBool("endGame_missedWords_bool"),
+        [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_missedWords_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_wordsMissed);
 
@@ -267,8 +267,8 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.25},
         "End on Time",
-        Settings::endGame_time_bool,
-        [](bool value) -> void { Settings::endGame_time_bool = value; }
+        Settings::getEndGameCriteriumBool("endGame_time_bool"),
+        [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_time_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_time);
 
@@ -276,8 +276,8 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.35},
         "End on Score",
-        Settings::endGame_score_bool,
-        [](bool value) -> void { Settings::endGame_score_bool = value; }
+        Settings::getEndGameCriteriumBool("endGame_score_bool"),
+        [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_score_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_score);
 

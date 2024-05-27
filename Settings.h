@@ -5,16 +5,7 @@
 
 #include "UI/TextField.h"
 
-class Settings {
-private:
-    std::string static words_fontName;
-    double static words_frequency;
-    double static words_speed;
-    double static words_size;
-    bool static words_highlight;
-
-    float static ui_scale;
-public:
+struct Settings {
     inline static auto defaultSettingsMap = std::unordered_map<std::string, std::string>();
     inline static auto settingsMap = std::unordered_map<std::string, std::string>();
 
@@ -46,14 +37,16 @@ public:
 
     std::string static buildEndGameSettings();
 
-// Game End Criterias (no setters and getters - too much code)
-    inline bool static endGame_missedWords_bool = true;
-    inline bool static endGame_time_bool = false;
-    inline bool static endGame_score_bool = false;
+// Game End Criteriums
+    void static setEndGameCriteriumBool(std::string const& criterium, bool value);
+    bool static getEndGameCriteriumBool(std::string const& criterium);
 
-    inline bool static endGame_never_bool = true;
+    void static setEndGameCriterium_missedWords(int value);
+    int static getEndGameCriterium_missedWords();
 
-    inline int static endGame_missedWords_value = 5;
-    inline auto static endGame_time_value = std::chrono::duration<double>(10);
-    inline int static endGame_score_value = 20;
+    void static setEndGameCriterium_time(double value);
+    std::chrono::duration<double> static getEndGameCriterium_time();
+
+    void static setEndGameCriterium_score(int value);
+    int static getEndGameCriterium_score();
 };

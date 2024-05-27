@@ -25,26 +25,26 @@ void GameStatistics::updateStatistics(Panel* statisticsPanel) {
 }
 
 void GameStatistics::checkGameEnd() {
-    if(Settings::endGame_never_bool == true) {
+    if(Settings::getEndGameCriteriumBool("endGame_never_bool") == true) {
         return;
     }
 
     auto gameEnd = false;
 
-    if(Settings::endGame_score_bool) {
-        if(getWordsGeneralScore() >= Settings::endGame_score_value) {
+    if(Settings::getEndGameCriteriumBool("endGame_score_bool")) {
+        if(getWordsGeneralScore() >= Settings::getEndGameCriterium_score()) {
             gameEnd = true;
         }
     }
 
-    if(!gameEnd && Settings::endGame_missedWords_bool) {
-        if(getWordsMissed() >= Settings::endGame_missedWords_value) {
+    if(!gameEnd && Settings::getEndGameCriteriumBool("endGame_missedWords_bool")) {
+        if(getWordsMissed() >= Settings::getEndGameCriterium_missedWords()) {
             gameEnd = true;
         }
     }
 
-    if(!gameEnd && Settings::endGame_time_bool) {
-        if(getTimePassedSinceStart() >= Settings::endGame_time_value) {
+    if(!gameEnd && Settings::getEndGameCriteriumBool("endGame_time_bool")) {
+        if(getTimePassedSinceStart() >= Settings::getEndGameCriterium_time()) {
             gameEnd = true;
         }
     }
