@@ -82,22 +82,23 @@ void Settings::restoreDefaultSettings() {
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
         // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
+        // Im using static_cast though, as its cheaper and I am sure uielement is parent class
         switch(uielement->getType()) {
             case TEXTFIELD:
             {
-                auto txtFieldPtr = dynamic_cast<TextField*>(uielement);
+                auto txtFieldPtr = static_cast<TextField*>(uielement);
                 restoreDefaultTextFields(txtFieldPtr);
                 break;
             }
             case CHECKBOX:
             {
-                auto checkBoxPtr = dynamic_cast<Checkbox*>(uielement);
+                auto checkBoxPtr = static_cast<Checkbox*>(uielement);
                 restoreDefaultCheckboxes(checkBoxPtr);
                 break;
             }
             case COMBOBOX:
             {
-                auto comboBoxPtr = dynamic_cast<ComboBox*>(uielement);
+                auto comboBoxPtr = static_cast<ComboBox*>(uielement);
                 restoreDefaultComboBoxes(comboBoxPtr);
                 break;
             }

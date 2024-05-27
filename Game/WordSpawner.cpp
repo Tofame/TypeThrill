@@ -77,7 +77,7 @@ void WordSpawner::manageWords() {
     TextField* textField = nullptr;
     for(auto uielement : panelGameStatistics->UIElements) {
         if(uielement->getType() == TEXTFIELD) {
-            textField = dynamic_cast<TextField*>(uielement);
+            textField = static_cast<TextField*>(uielement);
             break;
         }
     }
@@ -94,7 +94,7 @@ void WordSpawner::manageWords() {
     auto input = textField->getInputString().toUtf32();
 
     for(int uiIndex = 0; uiIndex < panelWords->UIElements.size(); uiIndex++) {
-        auto word = dynamic_cast<Word*>(panelWords->UIElements[uiIndex]);
+        auto word = static_cast<Word*>(panelWords->UIElements[uiIndex]);
         if (word) { // true if isn't a nullptr (was sucessfully casted)
             auto bodyHeight = word->body.getSize().y;
             if(input.size() == 0) {

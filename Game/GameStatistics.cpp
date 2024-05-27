@@ -137,24 +137,6 @@ std::chrono::duration<double> GameStatistics::getTimePassedSinceStart() {
 
 void GameStatistics::updateTimePassedSinceStart() {
     GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
-
-    // Below is a code that could be used, but its slower than just updating Statistics so for now it wont be used.
-
-    // auto panel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
-    // if(panel == nullptr) {
-    //     throw std::runtime_error("GameStatistics::updateStatistics() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
-    // }
-    //
-    // for(auto uielement : panel->UIElements) {
-    //     auto dynamicLabel = dynamic_cast<DynamicTextLabel*>(uielement);
-    //     if(dynamicLabel) {
-    //         auto name = dynamicLabel->getText().getString().toAnsiString();
-    //         if(name.starts_with("Time") || name.starts_with("Av")) {
-    //             dynamicLabel->update();
-    //             break;
-    //         }
-    //     }
-    // }
 }
 
 std::string GameStatistics::formatTime(std::chrono::duration<double> time) {
