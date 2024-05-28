@@ -369,7 +369,7 @@ void GameInterface::setupPanels() {
     GameInterface::updatePanels();
 }
 
-void GameInterface::setBackgrundSprite(sf::Sprite& sprite) {
+void GameInterface::setBackgroundSprite(sf::Sprite& sprite) {
     GameInterface::backgroundSprite = sprite;
 }
 

@@ -38,7 +38,7 @@ public:
     void static updatePanels();
     static Panel* getPanelByType(PanelType panelType);
 
-    void static setBackgrundSprite(sf::Sprite& sprite);
+    void static setBackgroundSprite(sf::Sprite& sprite);
     sf::Sprite static getBackgroundSprite();
 
     void static setGameTitle(sf::Text& text);
