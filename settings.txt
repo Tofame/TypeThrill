@@ -3,7 +3,7 @@
 // A font that appearing words use. All fonts available are in /Resources/Fonts
 // (you can add your own font and it will be detected but dont remove any fonts that are already there)
 // Example of correct setting: cOOlLetteRS.ttf <-> words_font=cOOlLetteRS
-words_fontName=voye
+words_fontName=aleoRegular
 
 // The frequency of words appearing one after another
 words_frequency=2.10

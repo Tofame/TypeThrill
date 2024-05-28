@@ -16,31 +16,26 @@ int getRandomInt(int min, int max) {
     return dis(gen);
 }
 
-std::map<std::string, std::vector<std::wstring>> WordLanguages::wordsLocales = std::map<std::string, std::vector<std::wstring>>();
+std::map<std::string, std::vector<std::string>> WordLanguages::wordsLocales = std::map<std::string, std::vector<std::string>>();
 
 void WordLanguages::loadLocales() {
     auto directory = projectPath + "/Resources/Locales";
 
-    std::wregex wordRegex(L"([a-z]|[A-Z]|[^\\x00-\\x7F]|\\s)+"); // Should accept any alphabet, special letters too (like ć)
-
     for (const auto& entry : std::filesystem::directory_iterator(directory)) {
         if (entry.is_regular_file() && entry.path().extension() == ".txt") {
             std::string filename = entry.path().stem().string();
-            auto file = std::wfstream(entry.path());
+            auto file = std::fstream(entry.path());
 
             // https://en.cppreference.com/w/cpp/io/basic_fstream/is_open
             // Checks if the file stream has an associated file
             // We loop through entries so they do have to exist, but we can still make sure
             if (file.is_open()) {
-                auto words = std::vector<std::wstring>();
+                auto words = std::vector<std::string>();
 
-                std::wstring line;
+                std::string line;
                 while (std::getline(file, line)) {
-                    if (!line.empty() && std::regex_match(line, wordRegex)) {
-                        //std::wcout << line << " <- working \n";
+                    if (!line.empty()) {
                         words.push_back(line);
-                    } else {
-                        //std::wcout << line << " <- not working \n";
                     }
                 }
 
@@ -53,7 +48,7 @@ void WordLanguages::loadLocales() {
     }
 }
 
-std::wstring WordLanguages::getRandomWord() {
+std::string WordLanguages::getRandomWord() {
     // Needs to be swapped for getLanguage()
     std::string language = "english";
 

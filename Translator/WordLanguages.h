@@ -6,9 +6,9 @@
 
 class WordLanguages {
 private:
-    static std::map<std::string, std::vector<std::wstring>> wordsLocales;
+    static std::map<std::string, std::vector<std::string>> wordsLocales;
 
 public:
     static void loadLocales();
-    static std::wstring getRandomWord();
+    static std::string getRandomWord();
 };

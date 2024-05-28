@@ -19,7 +19,7 @@ Word::Word() {
     sfText.setOutlineThickness(1);
 
     auto randomWord = WordLanguages::getRandomWord();
-    sf::String sfString(randomWord);
+    sf::String sfString = sf::String::fromUtf8(randomWord.begin(), randomWord.end());
     sfText.setString(sfString);
 
     this->setText(sfText);
