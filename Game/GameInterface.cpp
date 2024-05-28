@@ -183,7 +183,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.5f}", Settings::getWordsSpeed(false)),
         {0.01, 0.05},
         "Word Speed",
-        L"^[0-9]([.,][0-9]{0,5})?$" // L casts to wchar as we need wstring in wregex
+        L"^[0-9]([.][0-9]{0,5})?$" // L casts to wchar as we need wstring in wregex
     );
     wordSpeedField->onTextFieldUpdate = [wordSpeedField]() -> void { Settings::setWordsSpeed(wordSpeedField->getInputString()); };
     panelSettings->addElement(wordSpeedField);
@@ -192,7 +192,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.2f}", Settings::getWordsFrequency(false)),
         {0.01, 0.15},
         "Word Frequency",
-        L"^[0-9]([.,][0-9]{0,2})?$"
+        L"^[0-9]([.][0-9]{0,2})?$"
     );
     wordFrequencyField->onTextFieldUpdate = [wordFrequencyField]() -> void { Settings::setWordsFrequency(wordFrequencyField->getInputString()); };
     panelSettings->addElement(wordFrequencyField);
@@ -201,7 +201,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.2f}", Settings::getWordsSize(false)),
         {0.01, 0.25},
         "Word Size",
-        L"^[0-9]([.,][0-9]{0,2})?$"
+        L"^[0-9]([.][0-9]{0,2})?$"
     );
     wordSize->onTextFieldUpdate = [wordSize]() -> void { Settings::setWordsSize(wordSize->getInputString()); };
     panelSettings->addElement(wordSize);
@@ -219,7 +219,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.2f}", Settings::getUIScale(false)),
         {0.01, 0.70},
         "UI Scale (max 5.99)",
-        L"^[0-5]([.,][0-9]{0,2})?$"
+        L"^[0-5]([.][0-9]{0,2})?$"
     );
     UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::setUIScale(UIScaleSetting->getInputString()); };
     panelSettings->addElement(UIScaleSetting);
@@ -267,6 +267,17 @@ void GameInterface::setupPanels() {
     );
     panelNewGameSetup->addElement(gameEndCriterium_wordsMissed);
 
+    auto gameEnd_wordsMissedTextField = UIElementFactory::createTextField(
+        fmt::format("{}", Settings::getEndGameCriterium_missedWords()),
+        {0.5, 0.15},
+        "Value: ",
+        L"^[1-9]{1}[0-9]{0,9}$"
+    );
+    gameEnd_wordsMissedTextField->onTextFieldUpdate = [gameEnd_wordsMissedTextField]() -> void {
+        Settings::setEndGameCriterium_missedWords(gameEnd_wordsMissedTextField->getInputString());
+    };
+    panelNewGameSetup->addElement(gameEnd_wordsMissedTextField);
+
     auto gameEndCriterium_time = UIElementFactory::createMenuCheckbox(
         1.0,
         {0.01, 0.25},
@@ -276,6 +287,17 @@ void GameInterface::setupPanels() {
     );
     panelNewGameSetup->addElement(gameEndCriterium_time);
 
+    auto gameEndCriterium_timeTextField = UIElementFactory::createTextField(
+        fmt::format("{:.2f}", Settings::getEndGameCriterium_time().count()),
+        {0.5, 0.25},
+        "Value: ",
+        L"^[0-9]([.][0-9]{0,5})?$"
+    );
+    gameEndCriterium_timeTextField->onTextFieldUpdate = [gameEndCriterium_timeTextField]() -> void {
+        Settings::setEndGameCriterium_time(gameEndCriterium_timeTextField->getInputString());
+    };
+    panelNewGameSetup->addElement(gameEndCriterium_timeTextField);
+
     auto gameEndCriterium_score = UIElementFactory::createMenuCheckbox(
         1.0,
         {0.01, 0.35},
@@ -284,6 +306,17 @@ void GameInterface::setupPanels() {
         [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_score_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_score);
+
+    auto gameEndCriterium_scoreTextField = UIElementFactory::createTextField(
+        fmt::format("{}", Settings::getEndGameCriterium_score()),
+        {0.5, 0.35},
+        "Value: ",
+        L"^[1-9]{1}[0-9]{0,9}$"
+    );
+    gameEndCriterium_scoreTextField->onTextFieldUpdate = [gameEndCriterium_scoreTextField]() -> void {
+        Settings::setEndGameCriterium_score(gameEndCriterium_scoreTextField->getInputString());
+    };
+    panelNewGameSetup->addElement(gameEndCriterium_scoreTextField);
 
     // ================= Setting up the Panels for the actual Game (WORDS and GAMESTATISTICS)
     auto panelWords = UIElementFactory::createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);

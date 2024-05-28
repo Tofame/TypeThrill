@@ -42,11 +42,14 @@ struct Settings {
     bool static getEndGameCriteriumBool(std::string const& criterium);
 
     void static setEndGameCriterium_missedWords(int value);
+    void static setEndGameCriterium_missedWords(std::string value);
     int static getEndGameCriterium_missedWords();
 
     void static setEndGameCriterium_time(double value);
+    void static setEndGameCriterium_time(std::string value);
     std::chrono::duration<double> static getEndGameCriterium_time();
 
     void static setEndGameCriterium_score(int value);
+    void static setEndGameCriterium_score(std::string value);
     int static getEndGameCriterium_score();
 };

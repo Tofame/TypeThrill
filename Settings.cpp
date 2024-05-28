@@ -413,6 +413,10 @@ void Settings::setEndGameCriterium_missedWords(int value) {
     settingsMap["endGame_missedWords_value"] = std::to_string(value);
 }
 
+void Settings::setEndGameCriterium_missedWords(std::string value) {
+    settingsMap["endGame_missedWords_value"] = value;
+}
+
 int Settings::getEndGameCriterium_missedWords() {
     return std::stoi(settingsMap["endGame_missedWords_value"]);
 }
@@ -421,12 +425,20 @@ void Settings::setEndGameCriterium_time(double value) {
     settingsMap["endGame_time_value"] = std::to_string(value);
 }
 
+void Settings::setEndGameCriterium_time(std::string value) {
+    settingsMap["endGame_time_value"] = value;
+}
+
 std::chrono::duration<double> Settings::getEndGameCriterium_time() {
     return std::chrono::duration<double>(std::stod(settingsMap["endGame_time_value"]));
 }
 
 void Settings::setEndGameCriterium_score(int value) {
     settingsMap["endGame_score_value"] = std::to_string(value);
+}
+
+void Settings::setEndGameCriterium_score(std::string value) {
+    settingsMap["endGame_score_value"] = value;
 }
 
 int Settings::getEndGameCriterium_score() {
