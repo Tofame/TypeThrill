@@ -116,7 +116,7 @@ void GameStatistics::updateAverageTimePerWord() {
     auto elapsedTime = currentTime - stat_timeAtStart;
 
     if (getWordsScored() > 0) {
-        stat_averageTimePerWord = elapsedTime / static_cast<double>(getWordsScored());
+        stat_averageTimePerWord = std::chrono::duration<double>((std::chrono::duration<double>(getWordsScored()) / std::chrono::duration<double>(elapsedTime)));
     } else {
         stat_averageTimePerWord = std::chrono::duration<double>(0);
     }
