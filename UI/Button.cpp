@@ -6,16 +6,18 @@
 
 auto defaultButtonLambda = []() -> void { fmt::println("Default Button onClick"); };
 
-Button::Button(sf::Vector2f& size, sf::Vector2f& position, const std::function<void()>& onClick) {
+Button::Button(sf::Vector2f& size, sf::Vector2f& posRatios, const std::function<void()>& onClick) {
     this->setType(BUTTON);
 
     this->body = sf::RectangleShape(size);
-    this->body.setPosition(position);
-    this->visibility = true;
+    this->posRatio.setValues(posRatios);
+
     this->onClick = onClick;
+
+    this->visibility = true;
 }
 
-Button::Button(sf::Vector2f& size, sf::Vector2f& position) : Button::Button(size, position, defaultButtonLambda) {}
+Button::Button(sf::Vector2f& size, sf::Vector2f& posRatios) : Button::Button(size, posRatios, defaultButtonLambda) {}
 
 void Button::draw() {
     window.draw(this->body);
@@ -31,8 +33,8 @@ void Button::update() {
     this->body.setScale(parentScale);
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + (this->posXRatio * parent->body.getSize().x * parentScale.x) - (this->body.getSize().x * parentScale.x)/2,
-        parent->body.getPosition().y + (this->posYRatio * parent->body.getSize().y * parentScale.y) - (this->body.getSize().y * parentScale.y)/2
+        parent->body.getPosition().x + (this->posRatio.getX() * parent->body.getSize().x * parentScale.x) - (this->body.getSize().x * parentScale.x)/2,
+        parent->body.getPosition().y + (this->posRatio.getY() * parent->body.getSize().y * parentScale.y) - (this->body.getSize().y * parentScale.y)/2
     );
 
     this->body.setPosition(newPosition);

@@ -4,8 +4,10 @@
 #include "../Game/GameInterface.h"
 #include "../ResourceManagers/FontManager.h"
 
-DynamicTextLabel::DynamicTextLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
+DynamicTextLabel::DynamicTextLabel(sf::Vector2f posRatios, std::function<std::string()> const& onUpdateString) {
     this->setType(DYNAMICTEXTLABEL);
+
+    this->posRatio.setValues(posRatios);
 
     auto sfText = sf::Text();
     sfText.setFont(FontManager::Fonts["jaro"]);
@@ -20,7 +22,6 @@ DynamicTextLabel::DynamicTextLabel(sf::Vector2f ratios, std::function<std::strin
     this->setText(sfText);
 
     this->visibility = true;
-    this->setPosRatios(ratios.x, ratios.y);
 }
 
 void DynamicTextLabel::draw() {
@@ -40,8 +41,8 @@ void DynamicTextLabel::update() {
     auto textBounds = this->text.getGlobalBounds();
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + this->posXRatio * parent->body.getSize().x * parentScale.x,
-        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
+        parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x,
+        parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y
     );
     this->text.setPosition(newPosition);
 }

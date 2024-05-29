@@ -7,7 +7,7 @@
 class TextField : public UIElement {
 public:
     TextField() = default;
-    TextField(sf::Vector2f& size, sf::Vector2f& position);
+    TextField(sf::Vector2f& size, sf::Vector2f& posRatios);
 
     void draw() override;
     void handleClick() override;

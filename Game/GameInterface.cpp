@@ -169,7 +169,7 @@ void GameInterface::setupPanels() {
     panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.15}));
     int i = 0;
     for(auto uielement : panelMenu->UIElements) {
-        uielement->setPosRatios(0.5, uielement->posYRatio + i * 0.24);
+        uielement->posRatio.setValues(0.5, uielement->posRatio.getY() + i * 0.24);
         i++;
     }
 

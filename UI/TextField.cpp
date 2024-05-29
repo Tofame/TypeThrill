@@ -6,13 +6,13 @@
 #include "../Game/GameInterface.h"
 #include "fmt/Core.h"
 
-TextField::TextField(sf::Vector2f& size, sf::Vector2f& position) {
+TextField::TextField(sf::Vector2f& size, sf::Vector2f& posRatios) {
     this->setType(TEXTFIELD);
 
+    this->posRatio.setValues(posRatios);
+
     this->body = sf::RectangleShape(size);
-    this->body.setPosition(position);
     this->visibility = true;
-    this->setPosRatios(0.1, 0.1);
 }
 
 void TextField::draw() {
@@ -63,8 +63,8 @@ void TextField::update() {
     auto textWidth = this->text.getLocalBounds().width * parentScale.x;
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + this->posXRatio * parent->body.getSize().x * parentScale.x,
-        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
+        parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x,
+        parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y
     );
     this->body.setPosition(newPosition);
     this->body.setScale(parentScale);

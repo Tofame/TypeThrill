@@ -60,5 +60,6 @@ add_executable(TypeThrill
         Game/GameStatistics.h
         UI/ComboBox.cpp
         UI/ComboBox.h
+        Misc/PosRatio.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)

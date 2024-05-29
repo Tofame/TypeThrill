@@ -7,7 +7,7 @@
 class DynamicTextLabel : public TextLabel {
 public:
     DynamicTextLabel() = default;
-    DynamicTextLabel(sf::Vector2f ratios, std::function<std::string()> const &onUpdateString);
+    DynamicTextLabel(sf::Vector2f posRatios, std::function<std::string()> const &onUpdateString);
 
     void draw() override;
     void update() override;

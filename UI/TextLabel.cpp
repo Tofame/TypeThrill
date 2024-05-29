@@ -4,8 +4,10 @@
 #include "../Game/GameInterface.h"
 #include "../ResourceManagers/FontManager.h"
 
-TextLabel::TextLabel(std::string text, sf::Vector2f ratios) {
+TextLabel::TextLabel(std::string text, sf::Vector2f posRatios) {
     this->setType(TEXTLABEL);
+
+    this->posRatio.setValues(posRatios);
 
     auto sfText = sf::Text();
     sfText.setFont(FontManager::Fonts["jaro"]);
@@ -18,7 +20,6 @@ TextLabel::TextLabel(std::string text, sf::Vector2f ratios) {
     this->setText(sfText);
 
     this->visibility = true;
-    this->setPosRatios(ratios.x, ratios.y);
 }
 
 void TextLabel::draw() {
@@ -35,8 +36,8 @@ void TextLabel::update() {
     auto textBounds = this->text.getGlobalBounds();
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + this->posXRatio * parent->body.getSize().x * parentScale.x - textBounds.width/2,
-        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
+        parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x - textBounds.width/2,
+        parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y
     );
     this->text.setPosition(newPosition);
 }

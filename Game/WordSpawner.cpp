@@ -32,7 +32,7 @@ void WordSpawner::spawnWord() {
     auto word = new Word();
     // Words are not "left upper corner", but they are always -width, so its their position is actually (rightCorner, upper)
     // Thats why we calculate x ratio here to make them properly aligned to left side of panel
-    word->setPosRatios(word->getText().getLocalBounds().width / wordsPanel->body.getLocalBounds().width, chooseWordYRatio());
+    word->posRatio.setValues(word->getText().getLocalBounds().width / wordsPanel->body.getLocalBounds().width, chooseWordYRatio());
 
     wordsPanel->addElement(word);
 
@@ -56,14 +56,14 @@ void WordSpawner::moveWords() {
     GameStatistics::updateTimePassedSinceStart();
 
     for(auto word : wordsPanel->UIElements) {
-        if(word->posXRatio >= 1.0) {
+        if(word->posRatio.getX() >= 1.0) {
             wordsPanel->removeElement(word);
             GameStatistics::increaseWordsMissed(1);
             GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
             continue;
         }
 
-        word->setPosRatios(word->posXRatio + Settings::getWordsSpeed(false), word->posYRatio);
+        word->posRatio.setValues(word->posRatio.getX() + Settings::getWordsSpeed(false), word->posRatio.getY());
         word->update();
     }
 }

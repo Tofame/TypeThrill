@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "../Misc/PosRatio.h"
 
 enum UIElementState {
     DEFAULT = 0,
@@ -26,6 +27,10 @@ public:
     inline static float offsetBodyAfterText = 250; // Defines the offset in case some element has both text and some field
     // Example would be TextField which has text and input field, and this will define the distance beetween them
 
+    sf::RectangleShape body;
+    PosRatio posRatio = PosRatio();
+    bool visibility = true;
+
     virtual ~UIElement() = default;
 
     virtual void draw() {};
@@ -38,22 +43,12 @@ public:
     virtual void move(float x, float y) {};
     virtual void setPosition(float x, float y) {};
 
-    UIElement* parent = nullptr;
-
     void setParent(UIElement* parent) { this->parent = parent; };
     UIElement* getParent() { return parent; };
-
-    float posXRatio = 0;
-    float posYRatio = 0;
-    void setPosRatios(float x, float y) { posXRatio = x; posYRatio = y; };
-
-    sf::RectangleShape body;
 
     bool isVisible() { return visibility; };
     void setVisibility(bool value) { visibility = value; };
     void toggleVisibility(bool value) { visibility = !visibility; };
-
-    bool visibility = true;
 
     virtual void setState(UIElementState state) {
         this->state = state;
@@ -86,6 +81,8 @@ public:
         return this->type;
     }
 protected:
+    UIElement* parent = nullptr;
+
     UIElementState state = DEFAULT;
     UIElementType type = UIELEMENT;
 };

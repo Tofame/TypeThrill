@@ -11,12 +11,12 @@ auto UIElements = std::vector<UIElement*>();
 Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
     this->setType(PANEL);
 
-    this->visibility = false;
-
     this->body = sf::RectangleShape(size);
     this->body.setScale(1.0, 1.0);
 
     this->body.setPosition(position);
+
+    this->visibility = false;
 }
 
 Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
@@ -24,13 +24,16 @@ Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
 
     this->parent = parent;
 
-    this->visibility = false;
-
     this->body = sf::RectangleShape(size);
     this->body.setScale(1.0, 1.0);
-    this->setPosRatios(posRatios.x, posRatios.y);
+    this->posRatio.setValues(posRatios);
 
-    this->body.setPosition(parent->body.getSize().x * posXRatio - body.getSize().x/2, parent->body.getSize().y * posYRatio - body.getSize().y/2);
+    this->body.setPosition(
+    parent->body.getSize().x * this->posRatio.getX() - body.getSize().x/2,
+    parent->body.getSize().y * this->posRatio.getY() - body.getSize().y/2
+    );
+
+    this->visibility = false;
 }
 
 Panel::~Panel() {
@@ -68,8 +71,8 @@ void Panel::update() {
     }
 
     sf::Vector2f newPosition(
-        this->posXRatio * window.getSize().x - (this->body.getGlobalBounds().width) / 2,
-        this->posYRatio * window.getSize().y
+        this->posRatio.getX() * window.getSize().x - (this->body.getGlobalBounds().width) / 2,
+        this->posRatio.getY() * window.getSize().y
     );
     this->body.setPosition(newPosition);
 

@@ -9,7 +9,7 @@ Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEna
 
     this->sizeMultiplier = sizeMultiplier;
 
-    this->setPosRatios(posRatios.x, posRatios.y);
+    this->posRatio.setValues(posRatios);
 
     this->texture = TextureManager::loadResource("UI/checkbox.png");
     this->checkBoxSprite.setTexture(this->texture);
@@ -74,8 +74,8 @@ void Checkbox::update() {
     auto textWidth = this->text.getLocalBounds().width * parentScale.x;
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + this->posXRatio * parent->body.getSize().x * parentScale.x,
-        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
+        parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x,
+        parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y
     );
     this->checkBoxSprite.setPosition(newPosition);
     this->checkBoxSprite.setScale(parentScale);

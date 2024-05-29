@@ -94,11 +94,9 @@ public:
 
     static TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern) {
         sf::Vector2f size = {200, 30};
-        sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
-        auto element = new TextField(size, position);
+        auto element = new TextField(size, posRatios);
 
-        // Set Ratios && Allowed Value (e.g. only DIGITS (1-9) allowed)
-        element->setPosRatios(posRatios.x, posRatios.y);
+        // Set allowed input - a regex pattern (e.g. only DIGITS (1-9) allowed)
         element->setPattern(pattern);
 
         auto& rect = element->body;
@@ -138,10 +136,10 @@ public:
     }
 
     static TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern, std::function<void()> const& onTextFieldUpdate) {
-        auto textField = UIElementFactory::createTextField(fieldValue, posRatios, textValue, pattern);
-        textField->onTextFieldUpdate = onTextFieldUpdate;
+        auto element = UIElementFactory::createTextField(fieldValue, posRatios, textValue, pattern);
+        element->onTextFieldUpdate = onTextFieldUpdate;
 
-        return textField;
+        return element;
     }
 
     static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
@@ -150,11 +148,9 @@ public:
     }
 
     static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size) {
-        sf::Vector2f position = { (float)(window.getSize().x/2 - size.x/2), (float)(window.getSize().y/2 - size.y/2) };
-        auto menuButton = new Button(size, position, onClick);
-        menuButton->setPosRatios(posRatios.x, posRatios.y);
+        auto element = new Button(size, posRatios, onClick);
 
-        auto& rect = menuButton->body;
+        auto& rect = element->body;
         rect.setFillColor(ColorBlue);
         rect.setOutlineColor(sf::Color::White);
         rect.setOutlineThickness(4);
@@ -168,9 +164,9 @@ public:
         text.setString(name);
         text.setPosition(rect.getPosition());
         text.move(rect.getSize().x/2 - text.getGlobalBounds().width/2, rect.getSize().y/2 - text.getGlobalBounds().height + text.getGlobalBounds().height/3);
-        menuButton->setText(text);
+        element->setText(text);
 
-        return menuButton;
+        return element;
     }
 
     static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType panelType) {

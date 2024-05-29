@@ -6,7 +6,7 @@
 class TextLabel : public UIElement {
 public:
     TextLabel() = default;
-    TextLabel(std::string text, sf::Vector2f ratios);
+    TextLabel(std::string text, sf::Vector2f posRatios);
 
     void draw() override;
     void update() override;

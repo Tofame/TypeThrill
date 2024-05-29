@@ -12,10 +12,10 @@
 ComboBox::ComboBox(sf::Vector2f size, sf::Vector2f posRatios) {
     this->setType(COMBOBOX);
 
-    this->visibility = true;
-
     this->body = sf::RectangleShape(size);
-    this->setPosRatios(posRatios.x, posRatios.y);
+    this->posRatio.setValues(posRatios);
+
+    this->visibility = true;
 }
 
 ComboBox::ComboBox(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
@@ -23,13 +23,11 @@ ComboBox::ComboBox(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios)
 
     this->parent = parent;
 
-    this->visibility = true;
-
     this->body = sf::RectangleShape(size);
     this->body.setScale(1.0, 1.0);
-    this->setPosRatios(posRatios.x, posRatios.y);
+    this->posRatio.setValues(posRatios);
 
-    this->body.setPosition(parent->body.getSize().x * posXRatio - body.getSize().x/2, parent->body.getSize().y * posYRatio - body.getSize().y/2);
+    this->visibility = true;
 }
 
 ComboBox::~ComboBox() {
@@ -65,8 +63,8 @@ void ComboBox::update() {
     auto textWidth = this->text.getLocalBounds().width * parentScale.x;
 
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + this->posXRatio * parent->body.getSize().x * parentScale.x,
-        parent->body.getPosition().y + this->posYRatio * parent->body.getSize().y * parentScale.y
+        parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x,
+        parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y
     );
     this->body.setPosition(newPosition);
     this->body.setScale(parentScale);
@@ -164,12 +162,12 @@ void ComboBox::addElement(Button* UIElement) {
     float calculatedPosYRatio = 0.0f;
     if (!this->UIElements.empty()) {
         auto lastElement = this->UIElements.back();
-        calculatedPosYRatio = lastElement->posYRatio + (lastElement->body.getSize().y / this->body.getSize().y);
+        calculatedPosYRatio = lastElement->posRatio.getY() + (lastElement->body.getSize().y / this->body.getSize().y);
     } else {
         calculatedPosYRatio = 1 + UIElement->body.getSize().y / this->body.getSize().y;
     }
 
-    UIElement->setPosRatios(this->posXRatio, calculatedPosYRatio);
+    UIElement->posRatio.setValues(this->posRatio.getX(), calculatedPosYRatio);
 
     UIElement->update();
     this->UIElements.push_back(UIElement);
