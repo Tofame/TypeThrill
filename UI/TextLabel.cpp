@@ -19,7 +19,7 @@ TextLabel::TextLabel(std::string text, sf::Vector2f posRatios) {
 
     this->setText(sfText);
 
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 void TextLabel::draw() {

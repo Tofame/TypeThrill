@@ -9,10 +9,10 @@
 TextField::TextField(sf::Vector2f& size, sf::Vector2f& posRatios) {
     this->setType(TEXTFIELD);
 
+    this->body = sf::RectangleShape(size);
     this->posRatio.setValues(posRatios);
 
-    this->body = sf::RectangleShape(size);
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 void TextField::draw() {

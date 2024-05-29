@@ -29,7 +29,6 @@ public:
 
     sf::RectangleShape body;
     PosRatio posRatio = PosRatio();
-    bool visibility = true;
 
     virtual ~UIElement() = default;
 
@@ -82,6 +81,8 @@ public:
     }
 protected:
     UIElement* parent = nullptr;
+
+    bool visibility = true;
 
     UIElementState state = DEFAULT;
     UIElementType type = UIELEMENT;

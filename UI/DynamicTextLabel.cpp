@@ -21,7 +21,7 @@ DynamicTextLabel::DynamicTextLabel(sf::Vector2f posRatios, std::function<std::st
 
     this->setText(sfText);
 
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 void DynamicTextLabel::draw() {

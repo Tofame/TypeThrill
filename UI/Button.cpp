@@ -14,7 +14,7 @@ Button::Button(sf::Vector2f& size, sf::Vector2f& posRatios, const std::function<
 
     this->onClick = onClick;
 
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 Button::Button(sf::Vector2f& size, sf::Vector2f& posRatios) : Button::Button(size, posRatios, defaultButtonLambda) {}

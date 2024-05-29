@@ -15,7 +15,7 @@ ComboBox::ComboBox(sf::Vector2f size, sf::Vector2f posRatios) {
     this->body = sf::RectangleShape(size);
     this->posRatio.setValues(posRatios);
 
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 ComboBox::ComboBox(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
@@ -27,7 +27,7 @@ ComboBox::ComboBox(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios)
     this->body.setScale(1.0, 1.0);
     this->posRatio.setValues(posRatios);
 
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 ComboBox::~ComboBox() {
@@ -149,7 +149,7 @@ void ComboBox::addRadioButton(std::string buttonText, std::function<void()> cons
     textForButton.setString(buttonText);
     button->setText(textForButton);
 
-    button->visibility = true;
+    button->setVisibility(true);
     button->onClick = onClick;
 
     this->addElement(button);

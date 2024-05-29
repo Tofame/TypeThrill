@@ -27,7 +27,7 @@ Word::Word() {
 
     this->setText(sfText);
 
-    this->visibility = true;
+    this->setVisibility(true);
 }
 
 void Word::draw() {
@@ -53,7 +53,6 @@ void Word::update() {
     );
     this->text.setPosition(newPosition);
 
-    //newPosition.x += textBounds.width;
     this->body.setPosition(newPosition);
 }
 

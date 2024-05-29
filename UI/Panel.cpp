@@ -16,7 +16,7 @@ Panel::Panel(sf::Vector2f size, sf::Vector2f position) {
 
     this->body.setPosition(position);
 
-    this->visibility = false;
+    this->setVisibility(false);
 }
 
 Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
@@ -33,7 +33,7 @@ Panel::Panel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios) {
     parent->body.getSize().y * this->posRatio.getY() - body.getSize().y/2
     );
 
-    this->visibility = false;
+    this->setVisibility(false);
 }
 
 Panel::~Panel() {
