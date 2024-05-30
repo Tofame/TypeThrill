@@ -32,7 +32,7 @@ Word::Word() {
 
 void Word::draw() {
     if(text.getString().isEmpty() == false) {
-        if(Settings::isWordsHighlightEnabled(false)) {
+        if(Settings::isWordsHighlightEnabled(false) == true) {
             window.draw(this->body);
         }
         window.draw(this->text);

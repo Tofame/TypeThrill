@@ -108,7 +108,8 @@ void WordSpawner::manageWords() {
             auto wordString = word->getText().getString();
             auto wordSize = wordString.getSize();
             // We cant use .getCharacterSize() as it will not reflect the real size of single letter
-            auto charSize = word->getText().getGlobalBounds().width/wordSize;
+            // getGlobalBounds MUST NOT be used in charSize. It's because we are scalling text in update() so it would collide
+            auto charSize = (word->getText().getLocalBounds().width/wordSize);
 
             // wordString.getSize() returns std::size_t so we dont use int for index
             for (std::size_t index = 0; index < wordSize; index++) {
