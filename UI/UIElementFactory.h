@@ -58,6 +58,7 @@ public:
         auto element = new DynamicTextLabel(ratios, onUpdateString);
 
         element->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
+        element->setAlignType(ALIGN_NONE);
 
         return element;
     }
@@ -66,6 +67,7 @@ public:
         auto element = new DynamicTextLabel(ratios, onUpdateString);
 
         element->getText().setCharacterSize(GameInterface::smallCharacterSize);
+        element->setAlignType(ALIGN_NONE);
 
         return element;
     }

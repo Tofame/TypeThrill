@@ -21,6 +21,8 @@ class Game {
         GameStates static getGameState();
 
         void static handleTextEntered(sf::Uint32 unicode);
+
+        void static onGameOver();
     private:
         static GameStates gameState;
 };

@@ -37,12 +37,29 @@ void DynamicTextLabel::update() {
     this->getText().setString(stringValue);
 
     this->text.setScale(parentScale);
-
     auto textBounds = this->text.getGlobalBounds();
 
+    float alignmentValueX = 0;
+    float alignmentValueY = 0;
+    switch(getAlignType()) {
+        case ALIGN_HALFWIDTH:
+            alignmentValueX -= textBounds.width/2;
+            break;
+        case ALIGN_HALFHEIGHT:
+            alignmentValueY -= textBounds.height/2;
+            break;
+        case ALIGN_HALFSIZE:
+            alignmentValueX -= textBounds.width/2;
+            alignmentValueY -= textBounds.height/2;
+            break;
+        case ALIGN_NONE:
+        default:
+            break;
+    }
+
     sf::Vector2f newPosition(
-        parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x,
-        parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y
+            parent->body.getPosition().x + this->posRatio.getX() * parent->body.getSize().x * parentScale.x + alignmentValueX,
+            parent->body.getPosition().y + this->posRatio.getY() * parent->body.getSize().y * parentScale.y + alignmentValueY
     );
     this->text.setPosition(newPosition);
 }

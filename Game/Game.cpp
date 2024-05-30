@@ -194,3 +194,18 @@ void Game::handleTextEntered(sf::Uint32 unicode) {
         }
     }
 }
+
+void Game::onGameOver() {
+    auto GameOverPanel = GameInterface::getPanelByType(PANEL_GAMEOVER);
+    if(GameOverPanel == nullptr) {
+        throw std::runtime_error("Game::onGameOver() is called when PANEL_GAMEOVER doesn't exist (yet?).");
+        return;
+    }
+
+    // We update uielements, among them can be e.g. DynamicLabels
+    for(auto uielement : GameOverPanel->UIElements) {
+        uielement->update();
+    }
+
+    // Check highscores and update them if actual ones are higher
+}

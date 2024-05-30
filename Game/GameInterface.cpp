@@ -248,14 +248,14 @@ void GameInterface::setupPanels() {
         "Start",
         []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING, true); },
         {0.60, 0.95},
-        {100, 30}
+        {100, 40}
     ));
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Back",
         []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU, true); },
         {0.40, 0.95},
-        {100, 30}
+        {100, 40}
     ));
 
     auto gameEndCriterium_wordsMissed = UIElementFactory::createMenuCheckbox(
@@ -398,7 +398,27 @@ void GameInterface::setupPanels() {
     auto panelGameOver = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_GAMEOVER);
     panelGameOver->body.setOutlineThickness(4);
     panelGameOver->body.setOutlineColor(sf::Color(209, 31, 34));
-    panelGameOver->body.setFillColor(sf::Color(153, 153, 153, 160));
+    panelGameOver->body.setFillColor(sf::Color(15, 15, 15, 210));
+
+    auto gameOverLabel = new TextLabel("GAME OVER", {0.5, 0.01});
+    gameOverLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
+    panelGameOver->addElement(gameOverLabel);
+
+    auto onGameOverUpdateString = []() -> std::string {
+        return fmt::format(
+            "General Score:\t {}\nWords Scored:\t {}\nWords Missed:\t {}\nAv. Word/s:\t {}\nTime Passed (s):\t {}",
+            std::to_string(GameStatistics::getWordsGeneralScore()),
+            std::to_string(GameStatistics::getWordsScored()),
+            std::to_string(GameStatistics::getWordsMissed()),
+            GameStatistics::formatTime(GameStatistics::getAverageTimePerWord()),
+            GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart())
+        );
+    };
+    auto gameOverOverallStats = new DynamicTextLabel({0.5, 0.22}, onGameOverUpdateString);
+    gameOverOverallStats->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
+    panelGameOver->addElement(gameOverOverallStats);
+
+    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.5, 0.90}, {150, 40}));
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
