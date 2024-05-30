@@ -70,7 +70,7 @@ void TextField::update() {
     this->body.setScale(parentScale);
 
     if (text.getString().isEmpty() == false) {
-        this->body.move(UIElement::offsetBodyAfterText * parentScale.x, 0);
+        this->body.move(getOffsetBodyAfterText() * parentScale.x, 0);
         this->text.setPosition(newPosition);
         this->text.setScale(parentScale);
     } else {
@@ -164,4 +164,15 @@ std::wregex TextField::getPattern() {
 
 void TextField::setPattern(std::wstring pattern) {
     this->pattern = std::wregex(pattern);
+}
+
+void TextField::setOffsetBodyAfterText(float value) {
+    this->offsetBodyAfterText = value;
+}
+
+float TextField::getOffsetBodyAfterText() {
+    if(this->offsetBodyAfterText == -1)
+        return UIElement::offsetBodyAfterText;
+    else
+        return this->offsetBodyAfterText;
 }

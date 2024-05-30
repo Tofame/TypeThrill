@@ -273,6 +273,7 @@ void GameInterface::setupPanels() {
         "Value: ",
         L"^[1-9]{1}[0-9]{0,9}$"
     );
+    gameEnd_wordsMissedTextField->setOffsetBodyAfterText(90);
     gameEnd_wordsMissedTextField->onTextFieldUpdate = [gameEnd_wordsMissedTextField]() -> void {
         Settings::setEndGameCriterium_missedWords(gameEnd_wordsMissedTextField->getInputString());
     };
@@ -293,6 +294,7 @@ void GameInterface::setupPanels() {
         "Value: ",
         L"^[0-9]([.][0-9]{0,5})?$"
     );
+    gameEndCriterium_timeTextField->setOffsetBodyAfterText(90);
     gameEndCriterium_timeTextField->onTextFieldUpdate = [gameEndCriterium_timeTextField]() -> void {
         Settings::setEndGameCriterium_time(gameEndCriterium_timeTextField->getInputString());
     };
@@ -313,6 +315,7 @@ void GameInterface::setupPanels() {
         "Value: ",
         L"^[1-9]{1}[0-9]{0,9}$"
     );
+    gameEndCriterium_scoreTextField->setOffsetBodyAfterText(90);
     gameEndCriterium_scoreTextField->onTextFieldUpdate = [gameEndCriterium_scoreTextField]() -> void {
         Settings::setEndGameCriterium_score(gameEndCriterium_scoreTextField->getInputString());
     };

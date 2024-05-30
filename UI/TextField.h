@@ -34,9 +34,15 @@ public:
     std::wregex getPattern();
     void setPattern(std::wstring pattern);
 
+    float getOffsetBodyAfterText();
+    void setOffsetBodyAfterText(float value);
+
     sf::Text pointLine;
 private:
     sf::Text text;
     sf::Text input;
     std::wregex pattern;
+
+    // -1 means its ignored in getOffsetBodyAfterText() and static value from UIElement is taken
+    float offsetBodyAfterText = -1;
 };
