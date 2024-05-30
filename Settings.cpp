@@ -25,7 +25,7 @@ void setSettingFromComboBoxes(ComboBox* comboBoxPtr);
 // resetDefaultSettings also could be defined as "bool firstTimePreLoaded" (to give you better grasp of what is it for)
 void Settings::preLoadSettings(bool resetDefaultSettings) {
     if(resetDefaultSettings) {
-        defaultSettingsMap["words_fontName"] = "voye";
+        defaultSettingsMap["words_fontName"] = "aleoRegular";
         defaultSettingsMap["words_frequency"] = "2.1";
         defaultSettingsMap["words_speed"] = "0.001";
         defaultSettingsMap["words_size"] = "1.0";
