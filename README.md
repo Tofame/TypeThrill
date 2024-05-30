@@ -11,6 +11,8 @@ TypeThrill is a fast-paced typing game designed to test your typing speed and ac
 ## Features
 
 - Very customizable settings, so you can setup the game the way you like.
+- Variety of game end criteriums (Score, Time, Words Missed)
+- Multiple 'Word' languages support (while adding a new one is just drag&drop to Locales folder)
 
 ## Assets
 

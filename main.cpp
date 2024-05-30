@@ -23,6 +23,7 @@ int main() {
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU, true);
 
+    // Game loop that will work the same on different (weaker/stronger) computers
     while (window.isOpen()){
         auto frameStart = std::chrono::high_resolution_clock ::now();
         Game::run();
