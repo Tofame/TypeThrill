@@ -156,6 +156,10 @@ void Game::setGameState(GameStates state, bool hidePanels) {
         }
         case STATE_GAMEOVER:
         {
+            auto panelToShow = GameInterface::getPanelByType(PANEL_GAMEOVER);
+            if(panelToShow != nullptr) {
+                panelToShow->setVisibility(true);
+            }
             Game::gameState = state;
             break;
         }

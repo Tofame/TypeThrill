@@ -4,7 +4,7 @@
 #include "../ResourceManagers/TextureManager.h"
 #include "fmt/Core.h"
 
-Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEnabled) {
+Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultChecked) {
     this->setType(CHECKBOX);
 
     this->sizeMultiplier = sizeMultiplier;
@@ -21,19 +21,19 @@ Checkbox::Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEna
     this->checkBoxSprite.setScale(getSizeMultiplier(), getSizeMultiplier());
 
     this->state = DEFAULT;
-    if(defaultEnabled) {
-        this->enable();
+    if(defaultChecked) {
+        this->check();
     } else {
-        this->disable();
+        this->uncheck();
     }
 }
 
-bool Checkbox::isEnabled() const {
-    return this->enabled == true;
+bool Checkbox::isChecked() const {
+    return this->checked == true;
 }
 
-void Checkbox::disable() {
-    this->enabled = false;
+void Checkbox::uncheck() {
+    this->checked = false;
     auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x/2;
     auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y/2;
     auto checkboxStateOffset = this->getState() == HOVERED ? txtHeight : 0;
@@ -41,8 +41,8 @@ void Checkbox::disable() {
     this->checkBoxSprite.setTextureRect(sf::IntRect(0, checkboxStateOffset, txtWidth, txtHeight));
 }
 
-void Checkbox::enable() {
-    this->enabled = true;
+void Checkbox::check() {
+    this->checked = true;
     auto txtWidth = this->checkBoxSprite.getTexture()->getSize().x/2;
     auto txtHeight = this->checkBoxSprite.getTexture()->getSize().y/2;
     auto checkboxStateOffset = this->getState() == HOVERED ? txtHeight : 0;
@@ -59,13 +59,16 @@ void Checkbox::draw() {
 }
 
 void Checkbox::handleClick() {
-    if(isEnabled()) {
-        this->disable();
+    if(isEnabled() == false)
+        return;
+
+    if(isChecked()) {
+        this->uncheck();
     } else {
-        this->enable();
+        this->check();
     }
 
-    this->onCheckboxUpdate(isEnabled());
+    this->onCheckboxUpdate(isChecked());
 }
 
 void Checkbox::update() {
@@ -99,15 +102,15 @@ void Checkbox::setState(UIElementState state) {
 
     switch(state) {
         case DEFAULT:
-            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isEnabled() ? singleFrameWidth : 0), 0, singleFrameWidth, singleFrameHeight));
+            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isChecked() ? singleFrameWidth : 0), 0, singleFrameWidth, singleFrameHeight));
             break;
         case HOVERED:
-            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isEnabled() ? singleFrameWidth : 0), singleFrameHeight, singleFrameWidth, singleFrameHeight));
+            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isChecked() ? singleFrameWidth : 0), singleFrameHeight, singleFrameWidth, singleFrameHeight));
             break;
         case FOCUSED:
             break;
         default:
-            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isEnabled() ? singleFrameWidth : 0), 0, singleFrameWidth, singleFrameHeight));
+            this->checkBoxSprite.setTextureRect(sf::IntRect((this->isChecked() ? singleFrameWidth : 0), 0, singleFrameWidth, singleFrameHeight));
     }
 }
 

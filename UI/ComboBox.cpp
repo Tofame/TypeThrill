@@ -46,7 +46,7 @@ void ComboBox::draw() {
         window.draw(this->text);
     }
 
-    if(this->isActive()) {
+    if(this->isActive() && this->isEnabled()) {
         for(auto uielement : UIElements) {
             uielement->draw();
         }
@@ -92,6 +92,9 @@ void ComboBox::update() {
 }
 
 void ComboBox::handleClick() {
+    if(isEnabled() == false)
+        return;
+
     if(this->isActive()) {
         this->deactivate();
 

@@ -394,6 +394,12 @@ void GameInterface::setupPanels() {
     );
     panelGameStatistics->addElement(whatGameSettingsPanel);
 
+    // Game Over Panel
+    auto panelGameOver = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_GAMEOVER);
+    panelGameOver->body.setOutlineThickness(4);
+    panelGameOver->body.setOutlineColor(sf::Color(209, 31, 34));
+    panelGameOver->body.setFillColor(sf::Color(153, 153, 153, 160));
+
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
@@ -401,6 +407,7 @@ void GameInterface::setupPanels() {
     GameInterface::addPanelToVector(panelWords);
     GameInterface::addPanelToVector(panelGameStatistics);
     GameInterface::addPanelToVector(panelNewGameSetup);
+    GameInterface::addPanelToVector(panelGameOver);
 
     GameInterface::updatePanels();
 }

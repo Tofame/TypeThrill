@@ -45,9 +45,15 @@ public:
     void setParent(UIElement* parent) { this->parent = parent; };
     UIElement* getParent() { return parent; };
 
+    // Returns the value of 'visibility' field. It decides whether UIElement is drawn or not.
     bool isVisible() { return visibility; };
     void setVisibility(bool value) { visibility = value; };
     void toggleVisibility(bool value) { visibility = !visibility; };
+
+    // Returns the value of 'enabled' field. It decides whether UIElement is responsive
+    // This means that 'enabled' = false, will mean it can't be: clicked, written, checked etc.
+    bool isEnabled() { return enabled; };
+    void setEnabled(bool value) { enabled = value; };
 
     virtual void setState(UIElementState state) {
         this->state = state;
@@ -83,6 +89,7 @@ protected:
     UIElement* parent = nullptr;
 
     bool visibility = true;
+    bool enabled = true;
 
     UIElementState state = DEFAULT;
     UIElementType type = UIELEMENT;

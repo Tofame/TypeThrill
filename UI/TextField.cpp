@@ -23,7 +23,7 @@ void TextField::draw() {
         window.draw(this->text);
     }
 
-    if(getState() == FOCUSED || getState() == FOCUSED_ALWAYS) {
+    if(isEnabled() && (getState() == FOCUSED || getState() == FOCUSED_ALWAYS)) {
         auto currentColor = this->pointLine.getFillColor();
         auto alpha = currentColor.a;
         if(alpha <= 0) {
@@ -39,6 +39,9 @@ void TextField::draw() {
 }
 
 void TextField::handleClick() {
+    if(isEnabled() == false)
+        return;
+
     if(this->getState() == FOCUSED) {
         this->setState(DEFAULT);
         return;
@@ -92,6 +95,9 @@ void TextField::updatePointLinePosition(int offsetX) {
 }
 
 void TextField::onWriteableKeyPressed(int mode, sf::Uint32 unicode) {
+    if(isEnabled() == false)
+        return;
+
     auto inputString = getInputString();
     bool stringChanged = false;
 

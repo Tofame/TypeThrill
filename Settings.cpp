@@ -290,7 +290,7 @@ void restoreDefaultTextFields(TextField* txtFieldPtr) {
 void restoreDefaultCheckboxes(Checkbox* checkBoxPtr) {
     std::string text = checkBoxPtr->getText().getString();
     if (text.starts_with("Word Highlight")) {
-        Settings::isWordsHighlightEnabled(true) == true ? checkBoxPtr->enable() : checkBoxPtr->disable();
+        Settings::isWordsHighlightEnabled(true) == true ? checkBoxPtr->check() : checkBoxPtr->uncheck();
     }
 }
 

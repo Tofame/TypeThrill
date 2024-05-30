@@ -25,6 +25,9 @@ void Button::draw() {
 }
 
 void Button::handleClick() {
+    if(isEnabled() == false)
+        return;
+
     this->onClick();
 }
 

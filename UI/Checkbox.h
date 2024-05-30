@@ -9,11 +9,11 @@
 class Checkbox : public UIElement {
 public:
     Checkbox() = default;
-    Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultEnabled);
+    Checkbox(float sizeMultiplier, sf::Vector2f posRatios, bool defaultChecked);
 
-    bool isEnabled() const;
-    void enable();
-    void disable();
+    bool isChecked() const;
+    void check();
+    void uncheck();
 
     void draw() override;
     void handleClick() override;
@@ -37,5 +37,5 @@ private:
     sf::Sprite checkBoxSprite;
     sf::Texture texture;
     float sizeMultiplier;
-    bool enabled = false;
+    bool checked = false;
 };
