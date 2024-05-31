@@ -13,6 +13,7 @@
 #include "../UI/TextLabel.h"
 #include "../UI/UIElementFactory.h"
 #include "../UI/Word.h"
+#include "../Game/Highscores.h"
 
 #include "fmt/chrono.h"
 
@@ -22,6 +23,8 @@ sf::Texture GameInterface::backgroundTexture = sf::Texture();
 sf::Text GameInterface::gameTitle = sf::Text();
 
 std::vector<Panel*> GameInterface::panels = std::vector<Panel*>();
+
+void setupHighscoresPanel(Panel* panelWindow);
 
 void GameInterface::drawMenu() {
     GameInterface::drawMenuBackground();
@@ -79,6 +82,9 @@ void GameInterface::setMenuState(MenuStates state) {
         }
         case MENU_HIGHSCORES:
         {
+            auto panelToShow = getPanelByType(PANEL_HIGHSCORES);
+            if(panelToShow != nullptr)
+                panelToShow->setVisibility(true);
             GameInterface::menuState = state;
             break;
         }
@@ -160,16 +166,17 @@ void GameInterface::setupPanels() {
     panelWindow->setPanelType(PANEL_WINDOW);
 
     // ================= Setting up the Menu Panel
-    auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 400}, {0.5, 0.45}, PANEL_MENU);
+    auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 440}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP, true); }, {0.5, 0.15}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.15}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.15}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.15}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP, true); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Highscores", []() -> void { GameInterface::setMenuState(MENU_HIGHSCORES); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.10}));
     int i = 0;
     for(auto uielement : panelMenu->UIElements) {
-        uielement->posRatio.setValues(0.5, uielement->posRatio.getY() + i * 0.24);
+        uielement->posRatio.setValues(0.5, uielement->posRatio.getY() + i * 0.19);
         i++;
     }
 
@@ -344,7 +351,6 @@ void GameInterface::setupPanels() {
 
     auto averageTimePerWord = UIElementFactory::createStatisticsDynamicLabel(
         {0.79, 0.10},
-
         []() -> std::string { return "Av. word/s: " + GameStatistics::formatTime(GameStatistics::getAverageTimePerWord()); }
     );
     panelGameStatistics->addElement(averageTimePerWord);
@@ -428,6 +434,8 @@ void GameInterface::setupPanels() {
     GameInterface::addPanelToVector(panelGameStatistics);
     GameInterface::addPanelToVector(panelNewGameSetup);
     GameInterface::addPanelToVector(panelGameOver);
+    // Adds Highscores Panel to vector
+    setupHighscoresPanel(panelWindow);
 
     GameInterface::updatePanels();
 }
@@ -478,4 +486,26 @@ Panel* GameInterface::getPanelByType(PanelType panelType) {
     }
 
     return nullptr;
+}
+
+void setupHighscoresPanel(Panel* panelWindow) {
+    auto panel = UIElementFactory::createPanel(panelWindow, {810, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
+    auto MAXHIGHSCORES_AMOUNT = 5;
+
+    for(auto i = 0; i < MAXHIGHSCORES_AMOUNT; i++) {
+        // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
+        auto dynamicHighscoreLabel = UIElementFactory::createStatisticsDynamicLabel(
+                {0.5, static_cast<float>(0.19 * i + 0.02)},
+                [i]() -> std::string {
+                    auto highscore = Highscores::getHighscore(i);
+                    return fmt::format("TOP {}\t\t\tScore: {}\nTime Passed: {}\tW. Frequency: {}\tW. Speed: {}\nChosen Language: {}",
+                        i + 1, highscore[0], highscore[1], highscore[2], highscore[3], highscore[4]);
+                }
+        );
+        dynamicHighscoreLabel->setAlignType(ALIGN_HALFWIDTH);
+        panel->addElement(dynamicHighscoreLabel);
+    }
+    panel->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
+
+    GameInterface::addPanelToVector(panel);
 }

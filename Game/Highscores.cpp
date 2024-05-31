@@ -1,29 +1,32 @@
 #include "Highscores.h"
 
 #include "../Globals.h"
+#include "../UI/UIElementFactory.h"
 
 #include <fstream>
 #include <filesystem>
 #include <regex>
+#include <fmt/core.h>
 
-auto MAXHIGHSCORES_AMOUNT = 10;
-std::unordered_map<int, std::vector<std::string>> Highscores::highscores = std::unordered_map<int, std::vector<std::string>>();
+auto MAXHIGHSCORES_AMOUNT = 5;
+std::vector<std::vector<std::string>> Highscores::highscores(MAXHIGHSCORES_AMOUNT);
 
 void Highscores::loadHighscores() {
     std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
 
-    // Give here link to stackoverflow
+    https://stackoverflow.com/questions/478075/creating-files-in-c    James Thompson's comment
+    // on how to create files in C++ (create an instance of the ofstream class)
     if(std::filesystem::exists(path) == false) {
         std::ofstream newFile(path);
 
-        for(auto i = 1; i <= (MAXHIGHSCORES_AMOUNT - 1); i++) {
-            newFile << "empty\n";
+        for(auto i = 0; i < MAXHIGHSCORES_AMOUNT - 1; i++) {
             // Each highscore line will look like this:
             // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
+            newFile << "empty,empty,empty,empty,empty\n";
             Highscores::setHighscore(i, {"empty", "empty", "empty", "empty", "empty"});
         }
-        newFile << "empty";
-        Highscores::setHighscore(MAXHIGHSCORES_AMOUNT, {"empty", "empty", "empty", "empty", "empty"});
+        newFile << "empty,empty,empty,empty,empty";
+        Highscores::setHighscore(MAXHIGHSCORES_AMOUNT - 1, {"empty", "empty", "empty", "empty", "empty"});
 
         newFile.close();
         return;
@@ -36,30 +39,47 @@ void Highscores::loadHighscores() {
     }
 
     // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
-    std::regex pattern("([0-9]+)[,]{1}([]+)");
-    std::smatch matches;
-
+    auto index = 0;
     for (auto line = std::string(); std::getline(file, line); ) {
-        if(line.empty() || line[0] == '/')
-            continue;
+        std::vector<std::string> singleHighscoreVector;
+        std::stringstream ss(line);
+        std::string highscorePart;
 
-        if (std::regex_match(line, matches, pattern)) {
-            std::string option = matches[1].str();
-            std::string value = matches[2].str();
-
-//            if (Highscores::highscores.contains(option)) {
-//                settingsMap[option] = value;
-//            } else {
-//                throw std::runtime_error(fmt::format("Settings.txt option: {} does not exist in settingsMap.\nThe full line is: {}", option, matches[0].str()));
-//            }
-        } else {
-            //throw std::runtime_error("Malformed settings.txt line: " + line);
+        while (std::getline(ss, highscorePart, ',')) {
+            singleHighscoreVector.push_back(highscorePart);
         }
+
+        Highscores::highscores[index] = singleHighscoreVector;
+        index++;
+        if(index == MAXHIGHSCORES_AMOUNT) break;
     }
+
+    file.close();
+}
+
+void Highscores::saveHighscores() {
+    std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
+    std::fstream file(path);
+
+    if (!file) {
+        throw std::runtime_error("Unable to open highscores.txt. The path used is: " + path);
+    }
+
+    for (auto& highscore : Highscores::highscores) {
+        for (auto i = 0; i < highscore.size(); ++i) {
+            file << highscore[i];
+            if (i < highscore.size() - 1) {
+                file << ",";
+            }
+        }
+        file << "\n";
+    }
+
+    file.close();
 }
 
 std::vector<std::string>& Highscores::getHighscore(int index) {
-    if(index < 1 || index > 10) {
+    if(index < 0 || index > MAXHIGHSCORES_AMOUNT - 1) {
         throw std::runtime_error("Highscores::getHighscore() method was called with wrong index: " + index);
     }
 
@@ -67,7 +87,7 @@ std::vector<std::string>& Highscores::getHighscore(int index) {
 }
 
 void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecString) {
-    if(index < 1 || index > 10) {
+    if(index < 0 || index > MAXHIGHSCORES_AMOUNT - 1) {
         throw std::runtime_error("Highscores::setHighscore() method was called with wrong index: " + index);
     }
 
