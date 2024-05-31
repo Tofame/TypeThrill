@@ -61,5 +61,7 @@ add_executable(TypeThrill
         UI/ComboBox.cpp
         UI/ComboBox.h
         Misc/PosRatio.h
+        Game/Highscores.cpp
+        Game/Highscores.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)

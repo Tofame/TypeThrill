@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "Game/Game.h"
 #include "Game/GameInterface.h"
+#include "Game/Highscores.h"
 #include "ResourceManagers/FontManager.h"
 #include "ResourceManagers/TextureManager.h"
 #include "Translator/WordLanguages.h"
@@ -19,6 +20,7 @@ int main() {
     FontManager::loadFonts();
     Settings::preLoadSettings(true); // Setups the std::map (settingsMap)
     Settings::loadSettings(); // Loads values from Settings.txt
+    Highscores::loadHighscores();
     WordLanguages::loadLocales();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU, true);

@@ -64,7 +64,6 @@ void Settings::loadSettings() {
             std::string option = matches[1].str();
             std::string value = matches[2].str();
 
-            // Switch does not support strings, so we use elseif.
             if (settingsMap.contains(option)) {
                 settingsMap[option] = value;
             } else {
