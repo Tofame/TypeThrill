@@ -424,7 +424,7 @@ void GameInterface::setupPanels() {
     gameOverOverallStats->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
     panelGameOver->addElement(gameOverOverallStats);
 
-    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.5, 0.90}, {150, 40}));
+    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); WordSpawner::clearWords(true, false, true); }, {0.5, 0.90}, {150, 40}));
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);

@@ -150,6 +150,51 @@ void WordSpawner::manageWords() {
 
 }
 
+// Useful method when you want to clear e.g. input or when the game is over and you want to remove all the words
+void WordSpawner::clearWords(bool removeWords, bool removeHighlight, bool clearGameTextField) {
+    if(removeWords || removeHighlight) {
+        auto panelWords = GameInterface::getPanelByType(PANEL_WORDS);
+        if (panelWords == nullptr) {
+            throw std::runtime_error(
+                    "WordSpawner::clearWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::setupPanels())");
+        }
+
+        if(removeWords) {
+            for(auto word : panelWords->UIElements) {
+                delete word;
+            }
+            panelWords->UIElements.clear();
+        } else {
+            for(int uiIndex = 0; uiIndex < panelWords->UIElements.size(); uiIndex++) {
+                auto word = static_cast<Word *>(panelWords->UIElements[uiIndex]);
+                if (word) { // true if isn't a nullptr (was sucessfully casted)
+                    auto bodyHeight = word->body.getSize().y;
+                    word->body.setSize({0, bodyHeight});
+                }
+            }
+        }
+    }
+
+    if(clearGameTextField) {
+        auto panelGameStatistics = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+        if(panelGameStatistics == nullptr) {
+            throw std::runtime_error("WordSpawner::clearWords() can't seem to find PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
+        }
+
+        for(auto uielement : panelGameStatistics->UIElements) {
+            if(uielement->getType() == TEXTFIELD) {
+                TextField* textField = nullptr;
+                textField = static_cast<TextField*>(uielement);
+                if(textField != nullptr) {
+                    textField->setInput("");
+                    textField->update();
+                }
+                break;
+            }
+        }
+    }
+}
+
 std::vector<double> lastYRatios = std::vector<double>{0.1, 0.65, 0.4, 0.9};
 double chooseWordYRatio() {
     auto randomFloat = getRandomFloat(0, 0.95);
