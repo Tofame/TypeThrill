@@ -489,20 +489,20 @@ Panel* GameInterface::getPanelByType(PanelType panelType) {
 }
 
 void setupHighscoresPanel(Panel* panelWindow) {
-    auto panel = UIElementFactory::createPanel(panelWindow, {810, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
+    auto panel = UIElementFactory::createPanel(panelWindow, {880, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
     auto MAXHIGHSCORES_AMOUNT = 5;
 
     for(auto i = 0; i < MAXHIGHSCORES_AMOUNT; i++) {
         // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
         auto dynamicHighscoreLabel = UIElementFactory::createStatisticsDynamicLabel(
-                {0.5, static_cast<float>(0.19 * i + 0.02)},
+                {0.03, static_cast<float>(0.19 * i + 0.02)},
                 [i]() -> std::string {
                     auto highscore = Highscores::getHighscore(i);
-                    return fmt::format("TOP {}\t\t\tScore: {}\nTime Passed: {}\tW. Frequency: {}\tW. Speed: {}\nChosen Language: {}",
+                    return fmt::format("TOP {}\t\t\tScore: {}\nTime Passed: {}\tW. Frequency: {}\tW. Speed: {}\nChosen Locale: {}",
                         i + 1, highscore[0], highscore[1], highscore[2], highscore[3], highscore[4]);
                 }
         );
-        dynamicHighscoreLabel->setAlignType(ALIGN_HALFWIDTH);
+        dynamicHighscoreLabel->setAlignType(ALIGN_NONE);
         panel->addElement(dynamicHighscoreLabel);
     }
     panel->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
