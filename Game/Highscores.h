@@ -10,7 +10,7 @@ struct Highscores {
     static void loadHighscores();
     static void saveHighscores();
 
-    static void updateHighScores();
+    static int updateHighScores();
 
     static std::vector<std::string>& getHighscore(int index);
     static void setHighscore(int index, std::vector<std::string> highscoreVecString);

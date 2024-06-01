@@ -410,6 +410,11 @@ void GameInterface::setupPanels() {
     gameOverLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
     panelGameOver->addElement(gameOverLabel);
 
+    auto newHighscoreLabel = new TextLabel("", {0.5, 0.75});
+    newHighscoreLabel->setAlignType(ALIGN_HALFSIZE);
+    newHighscoreLabel->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
+    panelGameOver->addElement(newHighscoreLabel);
+
     auto onGameOverUpdateString = []() -> std::string {
         return fmt::format(
             "General Score:\t {}\nWords Scored:\t {}\nWords Missed:\t {}\nAv. Word/s:\t {}\nTime Passed (s):\t {}",

@@ -23,6 +23,8 @@ class Game {
         void static handleTextEntered(sf::Uint32 unicode);
 
         void static onGameOver();
+
+        void static pause();
     private:
         static GameStates gameState;
 };

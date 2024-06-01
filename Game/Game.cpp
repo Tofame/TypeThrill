@@ -4,16 +4,16 @@
 #include "Highscores.h"
 #include "../UI/Panel.h"
 #include "fmt/core.h"
+#include "../UI/TextLabel.h"
 
 auto event = sf::Event();
 Game::GameStates Game::gameState = Game::STATE_MENU;
 
 void Game::run() {
     window.clear();
-    // What is drawn depends on actual game state.
+    // What is drawn/done depends on actual game state.
     switch(Game::getGameState()) {
         case STATE_PLAYING:
-            // GameInterface here will draw && GameLogic will move everything (words etc)
             GameInterface::drawMenuBackground();
             GameInterface::drawPanels();
             WordSpawner::spawnWord();
@@ -27,7 +27,8 @@ void Game::run() {
             GameInterface::drawPanels();
             break;
         case STATE_PAUSED:
-            // Unsure whether to implement it at all
+            GameInterface::drawMenuBackground();
+            GameInterface::drawPanels();
             break;
         case STATE_GAMEOVER:
             GameInterface::drawMenuBackground();
@@ -54,6 +55,14 @@ void Game::run() {
             case sf::Event::TextEntered:
                 Game::handleTextEntered(event.text.unicode);
                 break;
+            case sf::Event::KeyPressed:
+            {
+                auto keyCode = event.key.code;
+                if (keyCode == sf::Keyboard::Key::Escape) {
+                    Game::pause();
+                }
+                break;
+            }
             case sf::Event::MouseButtonPressed:
                 handleMousePress(event.mouseButton.button);
                 break;
@@ -132,9 +141,9 @@ void Game::setGameState(GameStates state, bool hidePanels) {
         }
         case STATE_PLAYING:
         {
-            auto panelToShow = GameInterface::getPanelByType(PANEL_WORDS);
-            if(panelToShow != nullptr)
-                panelToShow->setVisibility(true);
+            auto panelToShow1 = GameInterface::getPanelByType(PANEL_WORDS);
+            if(panelToShow1 != nullptr)
+                panelToShow1->setVisibility(true);
             auto panelToShow2 = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
             if(panelToShow2 != nullptr)
                 panelToShow2->setVisibility(true);
@@ -174,6 +183,10 @@ Game::GameStates Game::getGameState() {
 }
 
 void Game::handleTextEntered(sf::Uint32 unicode) {
+    auto gameState = Game::getGameState();
+    if(gameState == STATE_PAUSED || gameState == STATE_GAMEOVER)
+        return;
+
     int mode = 0; //0-delete mode (backspace, delete),1-add mode (space and letter(s))
 
     if (unicode == 8) { // Backspace
@@ -203,11 +216,36 @@ void Game::onGameOver() {
         return;
     }
 
+    TextLabel* highscoreTextLabel = nullptr;
+
     // We update uielements, among them can be e.g. DynamicLabels
     for(auto uielement : GameOverPanel->UIElements) {
         uielement->update();
+        if(uielement->getType() == TEXTLABEL) {
+            highscoreTextLabel = static_cast<TextLabel*>(uielement);
+        }
     }
 
     // Check highscores and update them if actual ones are higher
-    Highscores::updateHighScores();
+    auto highscoreCheck = Highscores::updateHighScores();
+    // We decide the text of the TextLabel with returned value from pdateHighScores()
+    if(highscoreTextLabel) {
+        if(highscoreCheck == -1) {
+            highscoreTextLabel->getText().setString("No new highscore!\nBetter Luck Next Time!");
+        } else {
+            // +1 because we index from 0 so it would be Top 0 normally
+            highscoreTextLabel->getText().setString(fmt::format("New Highscore!\nYour score is Top {}", highscoreCheck+1));
+        }
+        highscoreTextLabel->update();
+    }
+}
+
+// Pauses the game if the conditions are met (pause STATE_PLAYING, 'unpause' STATE_PAUSED)
+void Game::pause() {
+    auto gameState = Game::getGameState();
+    if(gameState == STATE_PAUSED) {
+        setGameState(STATE_PLAYING,false);
+    } else if(gameState == STATE_PLAYING) {
+        setGameState(STATE_PAUSED, false);
+    }
 }
