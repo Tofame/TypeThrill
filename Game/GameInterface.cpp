@@ -299,7 +299,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.2f}", Settings::getEndGameCriterium_time().count()),
         {0.5, 0.25},
         "Value: ",
-        L"^[0-9]([.][0-9]{0,5})?$"
+        L"^[0-9]{1,7}([.][0-9]{0,5})?$"
     );
     gameEndCriterium_timeTextField->setOffsetBodyAfterText(90);
     gameEndCriterium_timeTextField->onTextFieldUpdate = [gameEndCriterium_timeTextField]() -> void {
