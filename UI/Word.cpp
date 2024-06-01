@@ -6,7 +6,7 @@
 #include "../Game/GameInterface.h"
 #include "../ResourceManagers/FontManager.h"
 #include "../Settings.h"
-#include "../Translator/WordLanguages.h"
+#include "../Translator/WordLocales.h"
 
 Word::Word() {
     this->setType(WORD);
@@ -21,7 +21,7 @@ Word::Word() {
     sfText.setOutlineColor(sf::Color::Black);
     sfText.setOutlineThickness(1);
 
-    auto randomWord = WordLanguages::getRandomWord();
+    auto randomWord = WordLocales::getRandomWord();
     sf::String sfString = sf::String::fromUtf8(randomWord.begin(), randomWord.end());
     sfText.setString(sfString);
 

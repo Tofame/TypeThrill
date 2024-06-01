@@ -1,4 +1,4 @@
-#include "WordLanguages.h"
+#include "WordLocales.h"
 
 #include <filesystem>
 #include <fstream>
@@ -7,6 +7,7 @@
 #include <random>
 
 #include "../Globals.h"
+#include "../Settings.h"
 #include "fmt/Core.h"
 
 int getRandomInt(int min, int max) {
@@ -16,9 +17,9 @@ int getRandomInt(int min, int max) {
     return dis(gen);
 }
 
-std::map<std::string, std::vector<std::string>> WordLanguages::wordsLocales = std::map<std::string, std::vector<std::string>>();
+std::map<std::string, std::vector<std::string>> WordLocales::wordsLocales = std::map<std::string, std::vector<std::string>>();
 
-void WordLanguages::loadLocales() {
+void WordLocales::loadLocales() {
     auto directory = projectPath + "/Resources/Locales";
 
     for (const auto& entry : std::filesystem::directory_iterator(directory)) {
@@ -40,7 +41,7 @@ void WordLanguages::loadLocales() {
                 }
 
                 file.close();
-                WordLanguages::wordsLocales[filename] = words;
+                WordLocales::wordsLocales[filename] = words;
             } else {
                 throw std::runtime_error("Failed to open file: " + filename);
             }
@@ -48,19 +49,18 @@ void WordLanguages::loadLocales() {
     }
 }
 
-std::string WordLanguages::getRandomWord() {
-    // Needs to be swapped for getLanguage()
-    std::string language = "english";
+std::string WordLocales::getRandomWord() {
+    std::string locale = Settings::getWordLocale();
 
     try {
-        auto words = WordLanguages::wordsLocales.at(language);
+        auto words = WordLocales::wordsLocales.at(locale);
 
         if (!words.empty()) {
             return words[getRandomInt(0, words.size() - 1)];
         } else {
-            throw std::runtime_error("Locales for language: " + language + " has no words.");
+            throw std::runtime_error("Locales for words: " + locale + " is empty (no words).");
         }
     } catch (const std::out_of_range& e) {
-        throw std::runtime_error("There is no locales for language: " + language);
+        throw std::runtime_error("There is no words locale such as: " + locale);
     }
 }

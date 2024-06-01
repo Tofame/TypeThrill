@@ -52,8 +52,8 @@ add_executable(TypeThrill
         ResourceManagers/TextureManager.h
         UI/Word.h
         UI/Word.cpp
-        Translator/WordLanguages.cpp
-        Translator/WordLanguages.h
+        Translator/WordLocales.cpp
+        Translator/WordLocales.h
         Game/WordSpawner.cpp
         Game/WordSpawner.h
         Game/GameStatistics.cpp

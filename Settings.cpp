@@ -41,6 +41,8 @@ void Settings::preLoadSettings(bool resetDefaultSettings) {
         defaultSettingsMap["endGame_missedWords_value"] = "5";
         defaultSettingsMap["endGame_time_value"] = "60";
         defaultSettingsMap["endGame_score_value"] = "20";
+
+        defaultSettingsMap["word_locale"] = "english";
     }
 
     settingsMap = defaultSettingsMap;
@@ -442,4 +444,12 @@ void Settings::setEndGameCriterium_score(std::string value) {
 
 int Settings::getEndGameCriterium_score() {
     return std::stoi(settingsMap["endGame_score_value"]);
+}
+
+void Settings::setWordLocale(std::string &value) {
+    settingsMap["word_locale"] = value;
+}
+
+std::string Settings::getWordLocale() {
+    return settingsMap["word_locale"];
 }

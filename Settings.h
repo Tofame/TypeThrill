@@ -35,6 +35,9 @@ struct Settings {
     void static setUIScale(std::string const& value);
     float static getUIScale(bool defaultValue);
 
+    void static setWordLocale(std::string& value);
+    std::string static getWordLocale();
+
     std::string static buildEndGameSettings();
 
 // Game End Criteriums

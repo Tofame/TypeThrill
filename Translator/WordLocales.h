@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-class WordLanguages {
+class WordLocales {
 private:
     static std::map<std::string, std::vector<std::string>> wordsLocales;
 
