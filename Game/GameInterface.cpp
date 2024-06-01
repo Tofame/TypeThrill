@@ -134,7 +134,7 @@ void GameInterface::setupGameTitle() {
     text.setFillColor(sf::Color::White);
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
-    text.setString("TYPE THRILL");
+    text.setString("TYPETHRILL");
     GameInterface::setGameTitle(text);
 
     // Sets position of GameTitle

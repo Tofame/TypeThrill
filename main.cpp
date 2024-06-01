@@ -15,7 +15,6 @@
 auto run() -> void;
 
 int main() {
-    fmt::println("Hello TypeThrill!");
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
     Settings::preLoadSettings(true); // Setups the std::map (settingsMap)
