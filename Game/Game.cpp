@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "GameInterface.h"
 #include "WordSpawner.h"
+#include "Highscores.h"
 #include "../UI/Panel.h"
 #include "fmt/core.h"
 
@@ -208,4 +209,5 @@ void Game::onGameOver() {
     }
 
     // Check highscores and update them if actual ones are higher
+    Highscores::updateHighScores();
 }

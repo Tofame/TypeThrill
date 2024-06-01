@@ -2,6 +2,7 @@
 
 #include "../Globals.h"
 #include "../UI/UIElementFactory.h"
+#include "GameStatistics.h"
 
 #include <fstream>
 #include <filesystem>
@@ -57,6 +58,8 @@ void Highscores::loadHighscores() {
     file.close();
 }
 
+// We dont have to worry that saveHighscores() creates new empty line (\n) at the end of file,
+// because in loadHighscores() we have "if(index == MAXHIGHSCORES_AMOUNT) break;"
 void Highscores::saveHighscores() {
     std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
     std::fstream file(path);
@@ -79,7 +82,7 @@ void Highscores::saveHighscores() {
 }
 
 std::vector<std::string>& Highscores::getHighscore(int index) {
-    if(index < 0 || index > MAXHIGHSCORES_AMOUNT - 1) {
+    if(index < 0 || index >= MAXHIGHSCORES_AMOUNT) {
         throw std::runtime_error("Highscores::getHighscore() method was called with wrong index: " + index);
     }
 
@@ -87,9 +90,58 @@ std::vector<std::string>& Highscores::getHighscore(int index) {
 }
 
 void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecString) {
-    if(index < 0 || index > MAXHIGHSCORES_AMOUNT - 1) {
+    if(index < 0 || index >= MAXHIGHSCORES_AMOUNT) {
         throw std::runtime_error("Highscores::setHighscore() method was called with wrong index: " + index);
     }
 
     Highscores::highscores[index] = highscoreVecString;
+}
+
+void Highscores::updateHighScores() {
+    auto score = GameStatistics::getWordsGeneralScore();
+
+    int highscoreBeaten = -1; // No highscore was beaten
+    // We do it differently depending on if it was "empty"... or not.
+    // In case it WAS NOT empty we delete the 10th highscore and use vector's insert.
+    bool overridesEmptyHighscore = false;
+
+    for(auto i = 0; i < Highscores::highscores.size(); i++) {
+        auto highscoreInformation = Highscores::highscores[i];
+        if(highscoreInformation[0] == "empty") {
+            highscoreBeaten = i;
+            overridesEmptyHighscore = true;
+            break;
+        }
+
+        auto highscoreScore = std::stoi(highscoreInformation[0]);
+        if(score > highscoreScore) {
+            highscoreBeaten = i;
+            break;
+        }
+    }
+
+    if (highscoreBeaten != -1) {
+        auto newHighscore = std::vector<std::string>{
+                std::to_string(score),
+                GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()),
+                std::to_string(Settings::getWordsFrequency(false)),
+                std::to_string(Settings::getWordsSpeed(false)),
+                Settings::getWordLocale(),
+        };
+
+        if (!overridesEmptyHighscore) {
+            Highscores::highscores.pop_back();
+            Highscores::highscores.insert(Highscores::highscores.begin() + highscoreBeaten, newHighscore);
+        } else {
+            Highscores::highscores[highscoreBeaten] = newHighscore;
+        }
+
+        // Update dynamic text labels
+        auto panelHighscores = GameInterface::getPanelByType(PANEL_HIGHSCORES);
+        if(panelHighscores != nullptr) {
+            panelHighscores->update();
+        }
+        // Update highscores text file
+        Highscores::saveHighscores();
+    }
 }
