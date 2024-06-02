@@ -58,8 +58,8 @@ void Panel::update() {
         this->body.setScale({1.0f, 1.0f});
 
         // Explanation is in Globals.h
-        auto windowSizeStandardX = static_cast<float>(windowSizeStandard.x/originalWindowSize.x);
-        auto windowSizeStandardY = static_cast<float>(windowSizeStandard.y/originalWindowSize.y);
+        auto windowSizeStandardX = static_cast<float>(windowSizeStandard.x)/static_cast<float>(originalWindowSize.x);
+        auto windowSizeStandardY = static_cast<float>(windowSizeStandard.y)/static_cast<float>(originalWindowSize.y);
 
         sf::FloatRect globalBounds = this->body.getGlobalBounds();
 
