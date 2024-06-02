@@ -56,15 +56,20 @@ void Panel::draw() {
 void Panel::update() {
     if (this->parent == nullptr) { // panelWindow is a panel with no parent, its the "father" of all panels
         this->body.setScale({1.0f, 1.0f});
+
+        // Explanation is in Globals.h
+        auto windowSizeStandardX = static_cast<float>(windowSizeStandard.x/originalWindowSize.x);
+        auto windowSizeStandardY = static_cast<float>(windowSizeStandard.y/originalWindowSize.y);
+
         sf::FloatRect globalBounds = this->body.getGlobalBounds();
 
         if (globalBounds.width > window.getSize().x || globalBounds.height > window.getSize().y) {
             float scaleX = window.getSize().x / globalBounds.width;
             float scaleY = window.getSize().y / globalBounds.height;
             float scaleFactor = std::min(scaleX, scaleY);
-            this->body.setScale(scaleFactor * Settings::getUIScale(false), scaleFactor * Settings::getUIScale(false));
+            this->body.setScale(scaleFactor * Settings::getUIScale(false) * windowSizeStandardX, scaleFactor * Settings::getUIScale(false) * windowSizeStandardY);
         } else {
-            this->body.setScale({1.0f * Settings::getUIScale(false), 1.0f * Settings::getUIScale(false)});
+            this->body.setScale({1.0f * Settings::getUIScale(false) * windowSizeStandardX, 1.0f * Settings::getUIScale(false) * windowSizeStandardY});
         }
     } else {
         this->body.setScale(this->parent->body.getScale());
