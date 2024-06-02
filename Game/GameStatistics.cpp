@@ -136,8 +136,24 @@ std::chrono::duration<double> GameStatistics::getTimePassedSinceStart() {
     return currentTime - stat_timeAtStart;
 }
 
+std::chrono::time_point<std::chrono::system_clock> GameStatistics::getTimeAtStart() {
+    return GameStatistics::stat_timeAtStart;
+}
+
+void GameStatistics::setTimePassedSinceStart(std::chrono::time_point<std::chrono::system_clock> time) {
+    stat_timeAtStart = time;
+}
+
 void GameStatistics::updateTimePassedSinceStart() {
     GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+}
+
+void GameStatistics::setPauseTime(std::chrono::high_resolution_clock::time_point time) {
+    pauseTime = time;
+}
+
+std::chrono::high_resolution_clock::time_point GameStatistics::getPauseTime() {
+    return pauseTime;
 }
 
 std::string GameStatistics::formatTime(std::chrono::duration<double> time) {

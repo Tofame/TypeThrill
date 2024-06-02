@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "GameInterface.h"
+#include "GameStatistics.h"
 #include "WordSpawner.h"
 #include "Highscores.h"
 #include "../UI/Panel.h"
@@ -241,11 +242,20 @@ void Game::onGameOver() {
 }
 
 // Pauses the game if the conditions are met (pause STATE_PLAYING, 'unpause' STATE_PAUSED)
+// Updates game statistics variable: 'stat_timeAtStart', because otherwise time would "pass" during the pause
+// To make loading/saving of the game possible I think I will use: https://en.cppreference.com/w/cpp/chrono/system_clock
+// to_time_t and from_time_t methods.
 void Game::pause() {
     auto gameState = Game::getGameState();
+    // UNPAUSE
     if(gameState == STATE_PAUSED) {
+        auto newTime = GameStatistics::getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getPauseTime());
+        GameStatistics::setTimePassedSinceStart(newTime);
+        //fmt::println("newtime {}", std::chrono::system_clock::to_time_t(newTime));
         setGameState(STATE_PLAYING,false);
+    // PAUSE
     } else if(gameState == STATE_PLAYING) {
+        GameStatistics::setPauseTime(std::chrono::high_resolution_clock::now());
         setGameState(STATE_PAUSED, false);
     }
 }

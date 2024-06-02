@@ -28,7 +28,12 @@ public:
 
     static void resetTimePassedSinceStart();
     static std::chrono::duration<double> getTimePassedSinceStart();
+    static std::chrono::time_point<std::chrono::system_clock> getTimeAtStart();
+    static void setTimePassedSinceStart(std::chrono::time_point<std::chrono::system_clock> time);
     static void updateTimePassedSinceStart();
+
+    static void setPauseTime(std::chrono::high_resolution_clock::time_point time);
+    static std::chrono::high_resolution_clock::time_point getPauseTime();
 
     static std::string formatTime(std::chrono::duration<double> time);
 private:
@@ -39,4 +44,5 @@ private:
     // Undefined reference if initialized in GameStatistics.cpp
     inline static std::chrono::duration<double> stat_averageTimePerWord = std::chrono::duration<double>(0);;
     inline static auto stat_timeAtStart = std::chrono::high_resolution_clock::now();
+    inline static auto pauseTime = std::chrono::high_resolution_clock::now();
 };
