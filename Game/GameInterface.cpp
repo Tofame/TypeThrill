@@ -226,7 +226,7 @@ void GameInterface::setupPanels() {
         fmt::format("{:.2f}", Settings::getUIScale(false)),
         {0.01, 0.70},
         "UI Scale (max 5.99)",
-        L"^[0-5]([.][0-9]{0,2})?$"
+        L"^[0-2]([.][0-9]{0,2})?$"
     );
     UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::setUIScale(UIScaleSetting->getInputString()); };
     panelSettings->addElement(UIScaleSetting);
