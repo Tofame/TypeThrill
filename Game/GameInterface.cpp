@@ -429,7 +429,18 @@ void GameInterface::setupPanels() {
     gameOverOverallStats->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
     panelGameOver->addElement(gameOverOverallStats);
 
-    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); WordSpawner::clearWords(true, false, true); }, {0.5, 0.90}, {150, 40}));
+    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::backToMenu(); }, {0.5, 0.90}, {150, 40}));
+    // Setup Pause Panel
+    auto panelPause = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_PAUSE);
+    panelPause->body.setOutlineThickness(4);
+    panelPause->body.setOutlineColor(sf::Color(209, 31, 34));
+    panelPause->body.setFillColor(sf::Color(15, 15, 15, 210));
+
+    auto pauseLabel = new TextLabel("PAUSE", {0.5, 0.01});
+    pauseLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
+    panelPause->addElement(pauseLabel);
+
+    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::backToMenu(); }, {0.5, 0.90}, {150, 40}));
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
@@ -439,6 +450,7 @@ void GameInterface::setupPanels() {
     GameInterface::addPanelToVector(panelGameStatistics);
     GameInterface::addPanelToVector(panelNewGameSetup);
     GameInterface::addPanelToVector(panelGameOver);
+    GameInterface::addPanelToVector(panelPause);
     // Adds Highscores Panel to vector
     setupHighscoresPanel(panelWindow);
 

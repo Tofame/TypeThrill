@@ -25,6 +25,8 @@ class Game {
         void static onGameOver();
 
         void static pause();
+
+        void static backToMenu();
     private:
         static GameStates gameState;
 };

@@ -13,7 +13,8 @@ enum PanelType {
     PANEL_NEWGAMESETUP = 6,
     PANEL_WORDS = 7,
     PANEL_GAMESTATISTICS = 8,
-    PANEL_GAMEOVER = 9
+    PANEL_GAMEOVER = 9,
+    PANEL_PAUSE = 10
 };
 
 class Panel : public UIElement {

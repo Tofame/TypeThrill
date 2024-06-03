@@ -247,15 +247,33 @@ void Game::onGameOver() {
 // to_time_t and from_time_t methods.
 void Game::pause() {
     auto gameState = Game::getGameState();
+
+    auto panelToShow = GameInterface::getPanelByType(PANEL_PAUSE);
+    if(panelToShow == nullptr) {
+        throw std::runtime_error("Error in Game::Pause() - PANEL_PAUSE cannot be found.");
+    }
+
     // UNPAUSE
     if(gameState == STATE_PAUSED) {
         auto newTime = GameStatistics::getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getPauseTime());
         GameStatistics::setTimePassedSinceStart(newTime);
         //fmt::println("newtime {}", std::chrono::system_clock::to_time_t(newTime));
         setGameState(STATE_PLAYING,false);
+        panelToShow->setVisibility(false);
     // PAUSE
     } else if(gameState == STATE_PLAYING) {
         GameStatistics::setPauseTime(std::chrono::high_resolution_clock::now());
         setGameState(STATE_PAUSED, false);
+        panelToShow->setVisibility(true);
     }
+}
+
+void Game::backToMenu() {
+    auto state = getGameState();
+    if(state == STATE_PAUSED || state == STATE_GAMEOVER || state == STATE_PLAYING) {
+        WordSpawner::clearWords(true, false, true);
+    }
+
+    Game::setGameState(STATE_MENU, true);
+    GameInterface::setMenuState(GameInterface::MENU_DEFAULT);
 }
