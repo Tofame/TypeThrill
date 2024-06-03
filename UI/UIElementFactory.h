@@ -11,13 +11,14 @@
 #include "../Globals.h"
 #include "../ResourceManagers/FontManager.h"
 
-inline auto ColorBlue = sf::Color(52, 194, 199);
-inline auto ColorGray = sf::Color(105,104,102);
-inline auto ColorGrayDarkLO = sf::Color(64,64,64, 120);
-inline auto ColorGrayDark = sf::Color(54, 54, 54);
-
 class UIElementFactory {
 public:
+    inline static auto ColorBlue = sf::Color(52, 194, 199);
+    inline static auto ColorGreen = sf::Color(52, 235, 88);
+    inline static auto ColorGray = sf::Color(105,104,102);
+    inline static auto ColorGrayDarkLO = sf::Color(64,64,64, 120);
+    inline static auto ColorGrayDark = sf::Color(54, 54, 54);
+
     static ComboBox* createComboBox(const std::string& fieldValue, sf::Vector2f posRatios, const std::string& textValue) {
         sf::Vector2f size = {200, 30};
         auto element = new ComboBox(size, posRatios);

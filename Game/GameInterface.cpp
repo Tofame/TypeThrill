@@ -246,10 +246,39 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
     // ================= Setting up the STATE_NEWGAMESETUP Panel
-    auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
+    auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {740, 600}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
 
-    auto gameModesLabel = new TextLabel("Check the criteria for game end", {0.5, 0.01});
-    panelNewGameSetup->addElement(gameModesLabel);
+    auto gameCriteriasLabel = new TextLabel("Check the criteria for game end", {0.5, 0.03});
+    panelNewGameSetup->addElement(gameCriteriasLabel);
+
+    auto gameLocaleLabel = new TextLabel("Setup Locale", {0.5, 0.5});
+    panelNewGameSetup->addElement(gameLocaleLabel);
+
+    auto confirmLocaleButton = UIElementFactory::createMenuButton(
+            "Confirm",
+            []() -> void {},
+            {0.75, 0.64},
+            {100, 34}
+    );
+    confirmLocaleButton->onClick = [confirmLocaleButton]() -> void { confirmLocaleButton->body.setFillColor(UIElementFactory::ColorBlue); };
+    panelNewGameSetup->addElement(confirmLocaleButton);
+
+    auto gameLocaleTextField = UIElementFactory::createTextField(
+            fmt::format("{}", Settings::getWordLocale()),
+            {0.2, 0.62},
+            "Word Locale:",
+            L".{0,17}",
+            [confirmLocaleButton]() -> void { confirmLocaleButton->body.setFillColor(sf::Color::Red); }
+    );
+    gameLocaleTextField->setOffsetBodyAfterText(140);
+    panelNewGameSetup->addElement(gameLocaleTextField);
+
+    auto localeExplanationLabel = new TextLabel(
+            "Locales are taken from Resources/Locales/ and you can put your own there.\nYou must follow the format:\n"
+            "cUsTomLocAle.txt -> cUsTomLocAle;\tspaceWords.txt -> spaceWords",
+            {0.5, 0.7}
+        );
+    panelNewGameSetup->addElement(localeExplanationLabel);
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Start",
