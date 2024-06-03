@@ -14,6 +14,7 @@
 #include "../UI/UIElementFactory.h"
 #include "../UI/Word.h"
 #include "../Game/Highscores.h"
+#include "../Translator/WordLocales.h"
 
 #include "fmt/chrono.h"
 
@@ -254,24 +255,25 @@ void GameInterface::setupPanels() {
     auto gameLocaleLabel = new TextLabel("Setup Locale", {0.5, 0.5});
     panelNewGameSetup->addElement(gameLocaleLabel);
 
+    auto gameLocaleTextField = UIElementFactory::createTextField(
+        fmt::format("{}", Settings::getWordLocale(false)),
+        {0.2, 0.62},
+        "Word Locale:",
+        L".{0,17}"
+    );
+    gameLocaleTextField->setOffsetBodyAfterText(140);
+    panelNewGameSetup->addElement(gameLocaleTextField);
+
     auto confirmLocaleButton = UIElementFactory::createMenuButton(
             "Confirm",
             []() -> void {},
             {0.75, 0.64},
             {100, 34}
     );
-    confirmLocaleButton->onClick = [confirmLocaleButton]() -> void { confirmLocaleButton->body.setFillColor(UIElementFactory::ColorBlue); };
     panelNewGameSetup->addElement(confirmLocaleButton);
 
-    auto gameLocaleTextField = UIElementFactory::createTextField(
-            fmt::format("{}", Settings::getWordLocale()),
-            {0.2, 0.62},
-            "Word Locale:",
-            L".{0,17}",
-            [confirmLocaleButton]() -> void { confirmLocaleButton->body.setFillColor(sf::Color::Red); }
-    );
-    gameLocaleTextField->setOffsetBodyAfterText(140);
-    panelNewGameSetup->addElement(gameLocaleTextField);
+    gameLocaleTextField->onTextFieldUpdate = [confirmLocaleButton]() -> void { confirmLocaleButton->body.setFillColor(sf::Color::Red); };
+    confirmLocaleButton->onClick = [confirmLocaleButton, gameLocaleTextField]() -> void { WordLocales::validateLocale(confirmLocaleButton, gameLocaleTextField); };
 
     auto localeExplanationLabel = new TextLabel(
             "Locales are taken from Resources/Locales/ and you can put your own there.\nYou must follow the format:\n"
@@ -413,9 +415,10 @@ void GameInterface::setupPanels() {
         {0.2, 0.85},
         []() -> std::string {
             return fmt::format(
-            "[Selected Settings]\t Font:  {},\t Frequency:  {},\t Speed:  {},\t Size:  {},\t Highlight:  {},\t UIScale:  {}",
+            "[Selected Settings]\t Font:  {},\t Frequency:  {},\t Speed:  {},\t Size:  {},\t Highlight:  {},\t UIScale:  {},\t Locale:  {}",
                             Settings::getWordsFontName(false), Settings::getWordsFrequency(false), Settings::getWordsSpeed(false),
-                            Settings::getWordsSize(false), Settings::isWordsHighlightEnabled(false), Settings::getUIScale(false)
+                            Settings::getWordsSize(false), Settings::isWordsHighlightEnabled(false), Settings::getUIScale(false),
+                            Settings::getWordLocale(false)
             );
         }
     );

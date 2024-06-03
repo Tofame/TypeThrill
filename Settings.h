@@ -36,7 +36,7 @@ struct Settings {
     float static getUIScale(bool defaultValue);
 
     void static setWordLocale(std::string& value);
-    std::string static getWordLocale();
+    std::string static getWordLocale(bool defaultValue);
 
     std::string static buildEndGameSettings();
 

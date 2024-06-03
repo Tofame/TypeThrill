@@ -129,7 +129,7 @@ int Highscores::updateHighScores() {
                 GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()),
                 std::to_string(Settings::getWordsFrequency(false)),
                 std::to_string(Settings::getWordsSpeed(false)),
-                Settings::getWordLocale(),
+                Settings::getWordLocale(false),
         };
 
         if (!overridesEmptyHighscore) {

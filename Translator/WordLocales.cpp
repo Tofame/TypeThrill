@@ -50,7 +50,7 @@ void WordLocales::loadLocales() {
 }
 
 std::string WordLocales::getRandomWord() {
-    std::string locale = Settings::getWordLocale();
+    std::string locale = Settings::getWordLocale(false);
 
     try {
         auto words = WordLocales::wordsLocales.at(locale);
@@ -63,4 +63,19 @@ std::string WordLocales::getRandomWord() {
     } catch (const std::out_of_range& e) {
         throw std::runtime_error("There is no words locale such as: " + locale);
     }
+}
+
+void WordLocales::validateLocale(UIElement* confirmButton, TextField* textfield) {
+    confirmButton->body.setFillColor(UIElementFactory::ColorBlue);
+
+    if(wordsLocales.contains(textfield->getInputString()) == false) {
+        auto defaultLocale = Settings::getWordLocale(true);
+        Settings::setWordLocale(defaultLocale);
+        textfield->setInput(defaultLocale);
+        textfield->update();
+        return;
+    }
+
+    auto localeString = textfield->getInputString().toAnsiString();
+    Settings::setWordLocale(localeString);
 }

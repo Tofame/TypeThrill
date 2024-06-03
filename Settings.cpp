@@ -450,6 +450,10 @@ void Settings::setWordLocale(std::string &value) {
     settingsMap["word_locale"] = value;
 }
 
-std::string Settings::getWordLocale() {
+std::string Settings::getWordLocale(bool defaultValue) {
+    if(defaultValue) {
+        return defaultSettingsMap["word_locale"];
+    }
+
     return settingsMap["word_locale"];
 }
