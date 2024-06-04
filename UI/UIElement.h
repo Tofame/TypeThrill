@@ -42,49 +42,22 @@ public:
     virtual void move(float x, float y) {};
     virtual void setPosition(float x, float y) {};
 
-    void setParent(UIElement* parent) { this->parent = parent; };
-    UIElement* getParent() { return parent; };
+    void setParent(UIElement* parent);
+    UIElement* getParent();
 
-    // Returns the value of 'visibility' field. It decides whether UIElement is drawn or not.
-    bool isVisible() { return visibility; };
-    void setVisibility(bool value) { visibility = value; };
-    void toggleVisibility(bool value) { visibility = !visibility; };
+    bool isVisible();
+    void setVisibility(bool value);
+    void toggleVisibility(bool value);
 
-    // Returns the value of 'enabled' field. It decides whether UIElement is responsive
-    // This means that 'enabled' = false, will mean it can't be: clicked, written, checked etc.
-    bool isEnabled() { return enabled; };
-    void setEnabled(bool value) { enabled = value; };
+    bool isEnabled();
+    void setEnabled(bool value);
 
-    virtual void setState(UIElementState state) {
-        this->state = state;
+    virtual void setState(UIElementState state);
+    UIElementState getState();
 
-        switch(state) {
-            case DEFAULT:
-                this->body.setOutlineColor(sf::Color::White);
-                break;
-            case HOVERED:
-                this->body.setOutlineColor(sf::Color::Yellow);
-                break;
-            case FOCUSED:
-                this->body.setOutlineColor(sf::Color::Cyan);
-                break;
-            case FOCUSED_ALWAYS:
-                this->body.setOutlineColor(sf::Color(196, 113, 18)); // Orange
-                break;
-            default:
-                this->body.setOutlineColor(sf::Color::White);
-        }
-    };
-    UIElementState getState() { return state; };
+    void setType(UIElementType type);
+    UIElementType getType();
 
-
-    void setType(UIElementType type) {
-        this->type = type;
-    }
-
-    UIElementType getType() {
-        return this->type;
-    }
 protected:
     UIElement* parent = nullptr;
 

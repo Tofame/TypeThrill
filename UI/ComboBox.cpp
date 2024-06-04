@@ -165,7 +165,7 @@ void ComboBox::addElement(Button* UIElement) {
     float calculatedPosYRatio = 0.0f;
     if (!this->UIElements.empty()) {
         auto lastElement = this->UIElements.back();
-        calculatedPosYRatio = lastElement->posRatio.getY() + (lastElement->body.getSize().y / this->body.getSize().y);
+        calculatedPosYRatio = lastElement->posRatio.getY() + 0.1 + (lastElement->body.getSize().y / this->body.getSize().y);
     } else {
         calculatedPosYRatio = 1 + UIElement->body.getSize().y / this->body.getSize().y;
     }

@@ -38,6 +38,7 @@ add_executable(TypeThrill
         ResourceManagers/FontManager.h
         UI/Checkbox.cpp
         UI/Checkbox.h
+        UI/UIElement.cpp
         UI/UIElement.h
         UI/Panel.cpp
         UI/Panel.h
