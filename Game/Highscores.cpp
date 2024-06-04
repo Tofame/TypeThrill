@@ -15,7 +15,7 @@ std::vector<std::vector<std::string>> Highscores::highscores(MAXHIGHSCORES_AMOUN
 void Highscores::loadHighscores() {
     std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
 
-    https://stackoverflow.com/questions/478075/creating-files-in-c    James Thompson's comment
+    // https://stackoverflow.com/questions/478075/creating-files-in-c    James Thompson's comment
     // on how to create files in C++ (create an instance of the ofstream class)
     if(std::filesystem::exists(path) == false) {
         std::ofstream newFile(path);

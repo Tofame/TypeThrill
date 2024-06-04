@@ -16,4 +16,5 @@ public:
     static GameSaveManager *getInstance();
 
     void loadGame(int saveSlot);
+    void saveGame(int saveSlot);
 };

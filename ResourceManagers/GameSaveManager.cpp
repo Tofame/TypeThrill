@@ -1,4 +1,7 @@
 #include "GameSaveManager.h"
+
+#include <codecvt>
+
 #include "../Globals.h"
 
 #include <fstream>
@@ -10,9 +13,25 @@
 #include "../Game/GameInterface.h"
 #include "../Game/GameStatistics.h"
 #include "../Game/WordSpawner.h"
-auto maxSaveSlots = 3;
+#include "../UI/Word.h"
 
-GameSaveManager* GameSaveManager::gameSaveManager_= nullptr;;
+auto maxSaveSlots = 3;
+GameSaveManager* GameSaveManager::gameSaveManager_= nullptr;
+
+// https://stackoverflow.com/questions/4804298/how-to-convert-wstring-into-string
+// Author: dk123
+// Why do I need it?
+// It's because I need to save a Word's text that is sf::Text and sf::String.
+// I cant with ofstream use wide string. And if I go by other choices which are
+// .toAnsiString - e.g. "Ł" is cut (and other characters) || .toUtf8 is not supported with ofstream
+std::string ws2s(const std::wstring& wstr)
+{
+    using convert_typeX = std::codecvt_utf8<wchar_t>;
+    std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+    return converterX.to_bytes(wstr);
+}
+
 
 GameSaveManager* GameSaveManager::getInstance()
 {
@@ -133,4 +152,61 @@ void GameSaveManager::loadGame(int saveSlot) {
     }
 
     Game::setGameState(Game::STATE_PLAYING, true);
+}
+
+void GameSaveManager::saveGame(int saveSlot) {
+    if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
+        throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
+    }
+
+    // https://stackoverflow.com/questions/17032970/clear-data-inside-text-file-in-c Author: PureW
+    // ofstream with clear file opening
+    auto file = std::ofstream(projectPath + "/Resources/GameFiles/save" + std::to_string(saveSlot) + ".txt", std::ofstream::out | std::ofstream::trunc);
+
+    if (!file) {
+        throw std::runtime_error(fmt::format("Unable to open a saved game file - {}.txt.", std::to_string(saveSlot)));
+    }
+
+    // Writing to file all the statistics, settings etc.
+    file << ">>settingsANDcriteriums" << "\n";
+    for(auto entryPair : Settings::settingsMap) {
+        file << entryPair.first << "=" << entryPair.second << "\n";
+    }
+    file << ">>settingsANDcriteriumsEnd" << "\n";
+
+    file << ">>statistics" << "\n";
+    file << "wordsScored=" << std::to_string(GameStatistics::getWordsScored()) << "\n";
+    file << "wordsMissed=" << std::to_string(GameStatistics::getWordsMissed()) << "\n";
+    file << "generalScore=" << std::to_string(GameStatistics::getWordsGeneralScore()) << "\n";
+    file << "timePassed=" << GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()) << "\n";
+    file << ">>statisticsEnd" << "\n";
+
+    file << ">>ingame" << "\n";
+    std::string textInput = "";
+    auto statisticsPanel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+    if(statisticsPanel != nullptr) {
+        for(auto uielement : statisticsPanel->UIElements) {
+            if(uielement->getType() == TEXTFIELD) {
+                auto textfield = static_cast<TextField*>(uielement);
+                textInput = textfield->getInputString();
+                break;
+            }
+        }
+    }
+    file << "gameTextFieldInput=" << textInput << "\n";
+    file << ">>ingameEnd" << "\n";
+
+    file << ">>words" << "\n";
+    auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
+    if(wordsPanel != nullptr) {
+        for(auto uielement : wordsPanel->UIElements) {
+            if(uielement->getType() == WORD) {
+                auto word = static_cast<Word*>(uielement);
+                file << std::to_string(word->posRatio.getX()) << "," << std::to_string(word->posRatio.getY()) << "," << ws2s(word->getText().getString().toWideString()) << "\n";
+            }
+        }
+    }
+
+    // Closing
+    file.close();
 }
