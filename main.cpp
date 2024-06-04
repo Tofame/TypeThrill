@@ -9,6 +9,7 @@
 #include "Game/GameInterface.h"
 #include "Game/Highscores.h"
 #include "ResourceManagers/FontManager.h"
+#include "ResourceManagers/GameSaveManager.h"
 #include "ResourceManagers/TextureManager.h"
 #include "Translator/WordLocales.h"
 
@@ -21,6 +22,8 @@ int main() {
     WordLocales::loadLocales();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU, true);
+
+    //GameSaveManager::getInstance()->loadGame(1);
 
     // Game loop that will work the same on different (weaker/stronger) computers
     while (window.isOpen()){

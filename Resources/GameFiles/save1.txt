@@ -1,17 +1,19 @@
 >>settings
-wordSpeed = 0.001000
-wordFrequency=2.10
-wordSize=1.00
-wordHiglight=true
-wordFont=aleoRegular
-wordLocale=english
-uiScale=1.00
+words_speed=0.001000
+words_frequency=2.10
+words_size=1.00
+words_highlight=true
+words_fontName=aleoRegular
+word_locale=english
+ui_scale=1.00
+>>settingsEnd
 >>statistics
 wordsScored=20
 wordsMissed=15
 generalScore=200
 averageWord=2350
 timePassed=10951059
+>>statisticsEnd
 >>criteriums
 endOnMissed=true
 endOnTime=false
@@ -19,8 +21,10 @@ endOnScore=true
 endOnMissedValue=20
 endOnTimeValue=5
 endOnScoreValue=30
+>>criteriumsEnd
 >>ingame
 gameTextFieldInput=blabla
+>>ingameEnd
 >>words
 slon,0.3,0.2
 malpa,0.3,0.2
