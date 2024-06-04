@@ -1,0 +1,27 @@
+>>settings
+wordSpeed = 0.001000
+wordFrequency=2.10
+wordSize=1.00
+wordHiglight=true
+wordFont=aleoRegular
+wordLocale=english
+uiScale=1.00
+>>statistics
+wordsScored=20
+wordsMissed=15
+generalScore=200
+averageWord=2350
+timePassed=10951059
+>>criteriums
+endOnMissed=true
+endOnTime=false
+endOnScore=true
+endOnMissedValue=20
+endOnTimeValue=5
+endOnScoreValue=30
+>>ingame
+gameTextFieldInput=blabla
+>>wordsAmount=2
+slon,0.3,0.2
+malpa,0.3,0.2
+klej,0.3,0.2

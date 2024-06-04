@@ -12,8 +12,6 @@
 #include "ResourceManagers/TextureManager.h"
 #include "Translator/WordLocales.h"
 
-auto run() -> void;
-
 int main() {
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();

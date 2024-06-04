@@ -63,5 +63,7 @@ add_executable(TypeThrill
         Misc/PosRatio.h
         Game/Highscores.cpp
         Game/Highscores.h
+        ResourceManagers/GameSaveManager.cpp
+        ResourceManagers/GameSaveManager.h
 )
 target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
