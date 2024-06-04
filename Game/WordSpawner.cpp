@@ -39,6 +39,22 @@ void WordSpawner::spawnWord() {
     WordSpawner::lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 }
 
+// Spawn word method used when loading the game state from a save file
+void WordSpawner::spawnWord(float ratioX, float ratioY, std::string text) {
+    auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
+    auto word = new Word();
+
+    sf::String sfString = sf::String::fromUtf8(text.begin(), text.end());
+    word->getText().setString(sfString);
+    // Words are not "left upper corner", but they are always -width, so its their position is actually (rightCorner, upper)
+    // Thats why we calculate x ratio here to make them properly aligned to left side of panel
+    word->posRatio.setValues(ratioX, ratioY);
+
+    wordsPanel->addElement(word);
+
+    WordSpawner::lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+}
+
 bool WordSpawner::canSpawnWord() {
     auto currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     auto timeSinceLastSpawn = currentTime - lastSpawnTime;

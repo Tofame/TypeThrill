@@ -4,6 +4,7 @@
 class WordSpawner {
 public:
     static void spawnWord();
+    static void spawnWord(float ratioX, float ratioY, std::string text);
     static bool canSpawnWord();
 
     static void moveWords();
