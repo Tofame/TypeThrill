@@ -14,6 +14,7 @@
 #include "../UI/UIElementFactory.h"
 #include "../UI/Word.h"
 #include "../Game/Highscores.h"
+#include "../ResourceManagers/GameSaveManager.h"
 #include "../Translator/WordLocales.h"
 
 #include "fmt/chrono.h"
@@ -484,6 +485,16 @@ void GameInterface::setupPanels() {
     panelPause->addElement(pauseLabel);
 
     panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::getInstance()->backToMenu(); }, {0.5, 0.90}, {150, 40}));
+
+    auto buttonSave1 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(1); }, {0.2, 0.50}, {140, 160});
+    panelPause->addElement(buttonSave1);
+
+    auto buttonSave2 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(2); }, {0.5, 0.50}, {140, 160});
+    panelPause->addElement(buttonSave2);
+
+    auto buttonSave3 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(3); }, {0.8, 0.50}, {140, 160});
+    panelPause->addElement(buttonSave3);
+    //buttonSave3->posRatio.setX(buttonSave3->posRatio.getX() + (buttonSave3->body.getLocalBounds().width/panelPause->body.getLocalBounds().width));
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);

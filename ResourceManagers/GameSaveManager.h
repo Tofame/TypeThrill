@@ -13,8 +13,10 @@ public:
     // Singleton can't be assigned
     void operator=(const GameSaveManager&) = delete;
 
-    static GameSaveManager *getInstance();
+    static GameSaveManager* getInstance();
 
-    void loadGame(int saveSlot);
+    void loadGameFromFile(int saveSlot);
+    void saveGameToFile(int saveSlot);
+
     void saveGame(int saveSlot);
 };

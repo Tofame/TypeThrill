@@ -41,7 +41,7 @@ GameSaveManager* GameSaveManager::getInstance()
     return gameSaveManager_;
 }
 
-void GameSaveManager::loadGame(int saveSlot) {
+void GameSaveManager::loadGameFromFile(int saveSlot) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
     }
@@ -154,7 +154,7 @@ void GameSaveManager::loadGame(int saveSlot) {
     Game::getInstance()->setGameState(STATE_PLAYING, true);
 }
 
-void GameSaveManager::saveGame(int saveSlot) {
+void GameSaveManager::saveGameToFile(int saveSlot) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
     }
@@ -209,4 +209,10 @@ void GameSaveManager::saveGame(int saveSlot) {
 
     // Closing
     file.close();
+}
+
+void GameSaveManager::saveGame(int saveSlot) {
+    saveGameToFile(saveSlot);
+
+    Game::getInstance()->backToMenu();
 }

@@ -117,7 +117,7 @@ void WordSpawner::manageWords() {
         throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
     }
 
-    auto input = textField->getInputString().toUtf32();
+    auto input = textField->getInputString().toUtf8();
 
     for(int uiIndex = 0; uiIndex < panelWords->UIElements.size(); uiIndex++) {
         auto word = static_cast<Word*>(panelWords->UIElements[uiIndex]);
