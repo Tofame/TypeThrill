@@ -81,6 +81,10 @@ void Game::run() {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
                 for(auto panel : GameInterface::getInstance()->panels) {
+                    if(!panel->isVisible() || !panel->isMouseOver(mousePosition) ) {
+                        continue;
+                    }
+
                     for(auto uielement : panel->UIElements) {
                         if(uielement->isMouseOver(mousePosition))
                         {
@@ -116,8 +120,9 @@ void Game::handleMousePress(sf::Mouse::Button mouseButton) {
 
 void Game::checkUIElementsForClick(sf::Vector2i mousePos) {
     for (auto panel : GameInterface::getInstance()->panels) {
-        if(panel->isVisible() == false)
+        if(!panel->isVisible() || !panel->isMouseOver(mousePos) ) {
             continue;
+        }
 
         for(auto uielement : panel->UIElements) {
             // We skip elements that are FOCUSED_ALWAYS (example of it is TextField used during game for typing)
