@@ -42,6 +42,7 @@ add_executable(TypeThrill
         UI/UIElement.h
         UI/Panel.cpp
         UI/Panel.h
+        UI/UIElementFactory.cpp
         UI/UIElementFactory.h
         UI/TextField.cpp
         UI/TextField.h
