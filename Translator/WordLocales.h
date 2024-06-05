@@ -13,7 +13,7 @@ private:
 
 public:
     static void loadLocales();
-    static std::string& getRandomWord();
+    static std::string getRandomWord();
 
     static void validateLocale(UIElement* confirmButton, TextField* textfield);
 };

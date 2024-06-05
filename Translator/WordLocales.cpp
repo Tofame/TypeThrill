@@ -49,7 +49,7 @@ void WordLocales::loadLocales() {
     }
 }
 
-std::string& WordLocales::getRandomWord() {
+std::string WordLocales::getRandomWord() {
     std::string locale = Settings::getInstance()->getWordLocale(false);
 
     try {
