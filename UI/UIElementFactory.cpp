@@ -6,6 +6,7 @@ sf::Color UIElementFactory::ColorGray = sf::Color(105,104,102);
 sf::Color UIElementFactory::ColorGrayDarkLO = sf::Color(64,64,64, 120);
 sf::Color UIElementFactory::ColorGrayDark = sf::Color(54, 54, 54);
 
+// Returns a ComboBox UIElement and right after that sets a properties that we want for it like a font, size etc..
 ComboBox* UIElementFactory::createComboBox(const std::string& fieldValue, sf::Vector2f posRatios, const std::string& textValue) {
     sf::Vector2f size = {200, 30};
     auto element = new ComboBox(size, posRatios);
@@ -42,6 +43,8 @@ ComboBox* UIElementFactory::createComboBox(const std::string& fieldValue, sf::Ve
     return element;
 }
 
+// Returns a DynamicTextLabel "Statistics" meaning it's size and aligntype properties are unique for this method.
+// (e.g. different character size than other dynamic text labels).
 DynamicTextLabel* UIElementFactory::createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
     auto element = new DynamicTextLabel(ratios, onUpdateString);
 
@@ -51,6 +54,8 @@ DynamicTextLabel* UIElementFactory::createStatisticsDynamicLabel(sf::Vector2f ra
     return element;
 }
 
+// Returns a DynamicTextLabel "Info" meaning it's size and aligntype properties are unique for this method
+// (e.g. different character size than other dynamic text labels).
 DynamicTextLabel* UIElementFactory::createInfoDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString) {
     auto element = new DynamicTextLabel(ratios, onUpdateString);
 
@@ -60,6 +65,8 @@ DynamicTextLabel* UIElementFactory::createInfoDynamicLabel(sf::Vector2f ratios, 
     return element;
 }
 
+// Returns a Checkbox in Menu's style
+// Which for this project is a blue filled rectangle with white outline
 Checkbox* UIElementFactory::createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios, std::string textValue, bool defaultEnabled, std::function<void(bool value)> const& onCheckboxUpdate) {
     auto element = new Checkbox(sizeMultiplier, posRatios, defaultEnabled);
 
@@ -82,6 +89,7 @@ Checkbox* UIElementFactory::createMenuCheckbox(float sizeMultiplier, sf::Vector2
     return element;
 }
 
+// Returns a TextField that doesn't expect initalizing the lambda for it. (Meaning textfield by default wont do anything special)
 TextField* UIElementFactory::createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern) {
     sf::Vector2f size = {200, 30};
     auto element = new TextField(size, posRatios);
@@ -125,6 +133,7 @@ TextField* UIElementFactory::createTextField(const std::string& fieldValue, sf::
     return element;
 }
 
+// Returns a TextField that expects a lambda for it. (Meaning textfield will react to onTextFieldUpdate (text input) in the way we want it to)
 TextField* UIElementFactory::createTextField(const std::string& fieldValue, sf::Vector2f posRatios, std::string textValue, std::wstring pattern, std::function<void()> const& onTextFieldUpdate) {
     auto element = UIElementFactory::createTextField(fieldValue, posRatios, textValue, pattern);
     element->onTextFieldUpdate = onTextFieldUpdate;
@@ -132,11 +141,17 @@ TextField* UIElementFactory::createTextField(const std::string& fieldValue, sf::
     return element;
 }
 
+// Returns a Button in Menu's style
+// Which for this project is a blue filled rectangle with white outline
+// Doesn't accept size parameter and this method does it inside.
 Button* UIElementFactory::createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios) {
     sf::Vector2f size = {200, 50};
     return createMenuButton(name, onClick, posRatios, size);
 }
 
+// Returns a Button in Menu's style
+// Which for this project is a blue filled rectangle with white outline
+// Allows for size parameter
 Button* UIElementFactory::createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size) {
     auto element = new Button(size, posRatios, onClick);
 
@@ -159,6 +174,8 @@ Button* UIElementFactory::createMenuButton(const std::string& name, const std::f
     return element;
 }
 
+// Returns a Panel in the Project's Style
+// Which is transparent body with green outline
 Panel* UIElementFactory::createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType panelType) {
     auto panel = new Panel(parent, size, posRatios);
 
