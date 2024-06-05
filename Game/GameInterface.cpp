@@ -284,14 +284,14 @@ void GameInterface::setupPanels() {
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Start",
-        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING, true); },
+        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING, true); },
         {0.60, 0.95},
         {100, 40}
     ));
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Back",
-        []() -> void { GameStatistics::setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU, true); },
+        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU, true); },
         {0.40, 0.95},
         {100, 40}
     ));
@@ -382,31 +382,31 @@ void GameInterface::setupPanels() {
 
     auto averageTimePerWord = UIElementFactory::createStatisticsDynamicLabel(
         {0.79, 0.10},
-        []() -> std::string { return "Av. word/s: " + GameStatistics::formatTime(GameStatistics::getAverageTimePerWord()); }
+        []() -> std::string { return "Av. word/s: " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getAverageTimePerWord()); }
     );
     panelGameStatistics->addElement(averageTimePerWord);
 
     auto timePassed = UIElementFactory::createStatisticsDynamicLabel(
         {0.79, 0.25},
-        []() -> std::string { return "Time passed (s): " + GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()); }
+        []() -> std::string { return "Time passed (s): " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()); }
     );
     panelGameStatistics->addElement(timePassed);
 
     auto wordsScored = UIElementFactory::createStatisticsDynamicLabel(
         {0.05, 0.10},
-        []() -> std::string { return "Words Scored: " + std::to_string(GameStatistics::getWordsScored()); }
+        []() -> std::string { return "Words Scored: " + std::to_string(GameStatistics::getInstance()->getWordsScored()); }
     );
     panelGameStatistics->addElement(wordsScored);
 
     auto wordsMissed = UIElementFactory::createStatisticsDynamicLabel(
         {0.05, 0.25},
-        []() -> std::string { return "Words Missed: " + std::to_string(GameStatistics::getWordsMissed()); }
+        []() -> std::string { return "Words Missed: " + std::to_string(GameStatistics::getInstance()->getWordsMissed()); }
     );
     panelGameStatistics->addElement(wordsMissed);
 
     auto generalScore = UIElementFactory::createStatisticsDynamicLabel(
         {0.05, 0.40},
-        []() -> std::string { return "General Score: " + std::to_string(GameStatistics::getWordsGeneralScore()); }
+        []() -> std::string { return "General Score: " + std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()); }
     );
     panelGameStatistics->addElement(generalScore);
 
@@ -450,11 +450,11 @@ void GameInterface::setupPanels() {
     auto onGameOverUpdateString = []() -> std::string {
         return fmt::format(
             "General Score:\t {}\nWords Scored:\t {}\nWords Missed:\t {}\nAv. Word/s:\t {}\nTime Passed (s):\t {}",
-            std::to_string(GameStatistics::getWordsGeneralScore()),
-            std::to_string(GameStatistics::getWordsScored()),
-            std::to_string(GameStatistics::getWordsMissed()),
-            GameStatistics::formatTime(GameStatistics::getAverageTimePerWord()),
-            GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart())
+            std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()),
+            std::to_string(GameStatistics::getInstance()->getWordsScored()),
+            std::to_string(GameStatistics::getInstance()->getWordsMissed()),
+            GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getAverageTimePerWord()),
+            GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart())
         );
     };
     auto gameOverOverallStats = new DynamicTextLabel({0.5, 0.22}, onGameOverUpdateString);

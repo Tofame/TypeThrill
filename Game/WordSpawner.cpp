@@ -79,13 +79,13 @@ void WordSpawner::moveWords() {
     }
 
     // Updates dynamic label
-    GameStatistics::updateTimePassedSinceStart();
+    GameStatistics::getInstance()->updateTimePassedSinceStart();
 
     for(auto word : wordsPanel->UIElements) {
         if(word->posRatio.getX() >= 1.0) {
             wordsPanel->removeElement(word);
-            GameStatistics::increaseWordsMissed(1);
-            GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+            GameStatistics::getInstance()->increaseWordsMissed(1);
+            GameStatistics::getInstance()->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
             continue;
         }
 
@@ -159,13 +159,13 @@ void WordSpawner::manageWords() {
                 // DEBUG PRINT: (fmt doesnt by default support strings other than that one)
                 // fmt::println("Completed Word: {}", wordString.toAnsiString());
                 panelWords->removeElement(word);
-                GameStatistics::increaseWordsScored(1);
-                GameStatistics::increaseWordsGeneralScore(wordSize);
+                GameStatistics::getInstance()->increaseWordsScored(1);
+                GameStatistics::getInstance()->increaseWordsGeneralScore(wordSize);
                 textField->setInput("");
                 textField->update();
                 // We reset input so we must reset existing words' bodies as well
                 setAllWordsBodiesToZero(panelWords);
-                GameStatistics::updateStatistics(panelGameStatistics);
+                GameStatistics::getInstance()->updateStatistics(panelGameStatistics);
                 return;
             }
 

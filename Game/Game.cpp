@@ -255,14 +255,14 @@ void Game::pause() {
 
     // UNPAUSE
     if(gameState == STATE_PAUSED) {
-        auto newTime = GameStatistics::getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getPauseTime());
-        GameStatistics::setTimePassedSinceStart(newTime);
+        auto newTime = GameStatistics::getInstance()->getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getInstance()->getPauseTime());
+        GameStatistics::getInstance()->setTimePassedSinceStart(newTime);
         //fmt::println("newtime {}", std::chrono::system_clock::to_time_t(newTime));
         setGameState(STATE_PLAYING,false);
         panelToShow->setVisibility(false);
     // PAUSE
     } else if(gameState == STATE_PLAYING) {
-        GameStatistics::setPauseTime(std::chrono::high_resolution_clock::now());
+        GameStatistics::getInstance()->setPauseTime(std::chrono::high_resolution_clock::now());
         setGameState(STATE_PAUSED, false);
         panelToShow->setVisibility(true);
     }

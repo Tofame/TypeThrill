@@ -387,7 +387,7 @@ std::string Settings::buildEndGameSettings() {
 
     if (Settings::getEndGameCriteriumBool("endGame_time_bool") == true) {
         Settings::setEndGameCriteriumBool("endGame_never_bool", false);
-        result += fmt::format("Ends on:\t{} time\t", GameStatistics::formatTime(getEndGameCriterium_time()));
+        result += fmt::format("Ends on:\t{} time\t", GameStatistics::getInstance()->formatTime(getEndGameCriterium_time()));
     }
 
     if(Settings::getEndGameCriteriumBool("endGame_never_bool") == true) {

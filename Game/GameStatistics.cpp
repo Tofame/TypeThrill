@@ -6,22 +6,37 @@
 #include "../UI/DynamicTextLabel.h"
 #include "fmt/format.h"
 
-int GameStatistics::stat_WordsGeneralScore = 0;
-int GameStatistics::stat_WordsScored = 0;
-int GameStatistics::stat_WordsMissed = 0;
+GameStatistics* GameStatistics::gameStatistics_= nullptr;
+
+GameStatistics::GameStatistics() {
+    this->stat_WordsGeneralScore = 0;
+    this->stat_WordsScored = 0;
+    this->stat_WordsMissed = 0;
+
+    this->stat_averageTimePerWord = std::chrono::duration<double>(0);
+    this->stat_timeAtStart = std::chrono::high_resolution_clock::now();
+    this->pauseTime = std::chrono::high_resolution_clock::now();
+}
+
+GameStatistics* GameStatistics::getInstance() {
+    if(gameStatistics_== nullptr){
+        gameStatistics_ = new GameStatistics();
+    }
+    return gameStatistics_;
+}
 
 void GameStatistics::updateStatistics(Panel* statisticsPanel) {
     if(statisticsPanel == nullptr) {
         throw std::runtime_error("GameStatistics::updateStatistics() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
     }
 
-    updateAverageTimePerWord();
+    this->updateAverageTimePerWord();
 
     for(auto uielement : statisticsPanel->UIElements) {
         uielement->update();
     }
 
-    GameStatistics::checkGameEnd();
+    this->checkGameEnd();
 }
 
 void GameStatistics::checkGameEnd() {
@@ -32,19 +47,19 @@ void GameStatistics::checkGameEnd() {
     auto gameEnd = false;
 
     if(Settings::getEndGameCriteriumBool("endGame_score_bool")) {
-        if(getWordsGeneralScore() >= Settings::getEndGameCriterium_score()) {
+        if(this->getWordsGeneralScore() >= Settings::getEndGameCriterium_score()) {
             gameEnd = true;
         }
     }
 
     if(!gameEnd && Settings::getEndGameCriteriumBool("endGame_missedWords_bool")) {
-        if(getWordsMissed() >= Settings::getEndGameCriterium_missedWords()) {
+        if(this->getWordsMissed() >= Settings::getEndGameCriterium_missedWords()) {
             gameEnd = true;
         }
     }
 
     if(!gameEnd && Settings::getEndGameCriteriumBool("endGame_time_bool")) {
-        if(getTimePassedSinceStart() >= Settings::getEndGameCriterium_time()) {
+        if(this->getTimePassedSinceStart() >= Settings::getEndGameCriterium_time()) {
             gameEnd = true;
         }
     }
@@ -56,21 +71,23 @@ void GameStatistics::checkGameEnd() {
 }
 
 void GameStatistics::setupDefaultStatistics() {
-    stat_WordsGeneralScore = 0;
-    stat_WordsScored = 0;
-    stat_WordsMissed = 0;
-    resetTimePassedSinceStart();
-    updateAverageTimePerWord();
-    GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+    this->setWordsGeneralScore(0);
+    this->setWordsScored(0);
+    this->setWordsMissed(0);
+
+    this->resetTimePassedSinceStart();
+    this->updateAverageTimePerWord();
+
+    this->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setupStatistics(int score, int scored, int missed) {
-    stat_WordsGeneralScore = score;
-    stat_WordsScored = scored;
-    stat_WordsMissed = missed;
+    this->setWordsGeneralScore(score);
+    this->setWordsScored(scored);
+    this->setWordsMissed(missed);
     // time since start
-    updateAverageTimePerWord();
-    GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+    this->updateAverageTimePerWord();
+    this->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setWordsGeneralScore(int score) {
@@ -83,7 +100,7 @@ int GameStatistics::getWordsGeneralScore() {
 
 void GameStatistics::increaseWordsGeneralScore(int baseValue) {
     auto value = baseValue; // Placeholder for future enhancements
-    stat_WordsGeneralScore += value;
+    this->setWordsGeneralScore(this->getWordsGeneralScore() + value);
 }
 
 void GameStatistics::setWordsScored(int scored) {
@@ -95,8 +112,8 @@ int GameStatistics::getWordsScored() {
 }
 
 void GameStatistics::increaseWordsScored(int baseValue) {
-    auto value = baseValue;
-    stat_WordsScored += value;
+    auto value = baseValue; // Placeholder for future enhancements
+    this->setWordsScored(this->getWordsScored() + value);
 }
 
 void GameStatistics::setWordsMissed(int missed) {
@@ -108,8 +125,8 @@ int GameStatistics::getWordsMissed() {
 }
 
 void GameStatistics::increaseWordsMissed(int baseValue) {
-    auto value = baseValue;
-    stat_WordsMissed += value;
+    auto value = baseValue; // Placeholder for future enhancements
+    this->setWordsMissed(this->getWordsMissed() + value);
 }
 
 void GameStatistics::updateAverageTimePerWord() {
@@ -121,6 +138,10 @@ void GameStatistics::updateAverageTimePerWord() {
     } else {
         stat_averageTimePerWord = std::chrono::duration<double>(0);
     }
+}
+
+void GameStatistics::setAverageTimePerWord(std::chrono::duration<double> time) {
+    this->stat_averageTimePerWord = time;
 }
 
 std::chrono::duration<double> GameStatistics::getAverageTimePerWord() {
@@ -137,7 +158,7 @@ std::chrono::duration<double> GameStatistics::getTimePassedSinceStart() {
 }
 
 std::chrono::time_point<std::chrono::system_clock> GameStatistics::getTimeAtStart() {
-    return GameStatistics::stat_timeAtStart;
+    return this->stat_timeAtStart;
 }
 
 void GameStatistics::setTimePassedSinceStart(std::chrono::time_point<std::chrono::system_clock> time) {
@@ -145,7 +166,7 @@ void GameStatistics::setTimePassedSinceStart(std::chrono::time_point<std::chrono
 }
 
 void GameStatistics::updateTimePassedSinceStart() {
-    GameStatistics::updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+    this->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setPauseTime(std::chrono::high_resolution_clock::time_point time) {

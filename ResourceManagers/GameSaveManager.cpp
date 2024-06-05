@@ -94,19 +94,19 @@ void GameSaveManager::loadGame(int saveSlot) {
                     std::string value = matches[2].str();
 
                     if(option == "wordsScored") {
-                        GameStatistics::setWordsScored(std::stoi(value));
+                        GameStatistics::getInstance()->setWordsScored(std::stoi(value));
                     } else if(option == "wordsMissed") {
-                        GameStatistics::setWordsMissed(std::stoi(value));
+                        GameStatistics::getInstance()->setWordsMissed(std::stoi(value));
                     } else if(option == "generalScore") {
-                        GameStatistics::setWordsGeneralScore(std::stoi(value));
+                        GameStatistics::getInstance()->setWordsGeneralScore(std::stoi(value));
                     } else if(option == "timePassed") {
                         // https://stackoverflow.com/questions/17899684/convert-seconds-as-double-to-stdchronoduration
                         // Author: Krellan
                         auto timeValue_as_duration = std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(std::chrono::duration<double>(std::stod(value)));
                         auto newTime = std::chrono::high_resolution_clock::now() - timeValue_as_duration;
 
-                        GameStatistics::setTimePassedSinceStart(newTime);
-                        GameStatistics::updateAverageTimePerWord();
+                        GameStatistics::getInstance()->setTimePassedSinceStart(newTime);
+                        GameStatistics::getInstance()->updateAverageTimePerWord();
                     }
                 } else {
                     throw std::runtime_error("Malformed statistics part, line: " + line + " of save file: save" + std::to_string(saveSlot));
@@ -175,10 +175,10 @@ void GameSaveManager::saveGame(int saveSlot) {
     file << ">>settingsANDcriteriumsEnd" << "\n";
 
     file << ">>statistics" << "\n";
-    file << "wordsScored=" << std::to_string(GameStatistics::getWordsScored()) << "\n";
-    file << "wordsMissed=" << std::to_string(GameStatistics::getWordsMissed()) << "\n";
-    file << "generalScore=" << std::to_string(GameStatistics::getWordsGeneralScore()) << "\n";
-    file << "timePassed=" << GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()) << "\n";
+    file << "wordsScored=" << std::to_string(GameStatistics::getInstance()->getWordsScored()) << "\n";
+    file << "wordsMissed=" << std::to_string(GameStatistics::getInstance()->getWordsMissed()) << "\n";
+    file << "generalScore=" << std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()) << "\n";
+    file << "timePassed=" << GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()) << "\n";
     file << ">>statisticsEnd" << "\n";
 
     file << ">>ingame" << "\n";

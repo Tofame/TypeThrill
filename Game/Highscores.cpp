@@ -110,7 +110,7 @@ void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecSt
 // To determine if highscores were modified a temporary variable is used: highscoreBeaten (-1 = untouched)
 // Returns `highscoreBeaten` that is then used in Game::onGameOver()
 int Highscores::updateHighScores() {
-    auto score = GameStatistics::getWordsGeneralScore();
+    auto score = GameStatistics::getInstance()->getWordsGeneralScore();
 
     int highscoreBeaten = -1; // No highscore was beaten
     // We do it differently depending on if it was "empty"... or not.
@@ -135,7 +135,7 @@ int Highscores::updateHighScores() {
     if (highscoreBeaten != -1) {
         auto newHighscore = std::vector<std::string>{
                 std::to_string(score),
-                GameStatistics::formatTime(GameStatistics::getTimePassedSinceStart()),
+                GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()),
                 std::to_string(Settings::getWordsFrequency(false)),
                 std::to_string(Settings::getWordsSpeed(false)),
                 Settings::getWordLocale(false),
