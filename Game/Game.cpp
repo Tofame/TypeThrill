@@ -73,11 +73,13 @@ void Game::run() {
                     Game::pause();
                 }
 
-                // Clears game text field
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) &&
-                    sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-                {
-                    WordSpawner::getInstance()->clearWords(false, true, true);
+                // Clears game text field with LAlt + Shift OR LAlt + Tilde
+                if(getGameState() == STATE_PLAYING) {
+                    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ||
+                        (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) && sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
+                    {
+                        WordSpawner::getInstance()->clearWords(false, true, true);
+                    }
                 }
 
                 break;
