@@ -1,16 +1,16 @@
 #pragma once
 
 // https://refactoring.guru/design-patterns/singleton/cpp/example
-// We go with Naive Singletton for now as I wouldn't 100% defend in college a thread-safe one.
+// We go with Naive Singleton for now
 class GameSaveManager {
 protected:
     GameSaveManager() = default;
     static GameSaveManager* gameSaveManager_;
 
 public:
-    // Singletton is not cloneable
+    // Singleton is not cloneable
     GameSaveManager(GameSaveManager& other) = delete;
-    // Singletton can't be assigned
+    // Singleton can't be assigned
     void operator=(const GameSaveManager&) = delete;
 
     static GameSaveManager *getInstance();
