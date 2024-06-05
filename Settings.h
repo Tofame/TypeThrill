@@ -5,54 +5,67 @@
 
 #include "UI/TextField.h"
 
+// https://refactoring.guru/design-patterns/singleton/cpp/example
+// We go with Naive Singleton for now
 struct Settings {
-    inline static auto defaultSettingsMap = std::unordered_map<std::string, std::string>();
-    inline static auto settingsMap = std::unordered_map<std::string, std::string>();
+protected:
+    Settings();
+    static Settings* settings_;
+public:
+    // Singleton is not cloneable
+    Settings(Settings& other) = delete;
+    // Singleton can't be assigned
+    void operator=(const Settings&) = delete;
 
-    void static preLoadSettings(bool resetDefaultSettings);
-    void static loadSettings();
-    void static saveSettings();
+    static Settings* getInstance();
 
-    void static restoreDefaultSettings();
-    void static saveSettingsPanel();
+    std::unordered_map<std::string, std::string> defaultSettingsMap;
+    std::unordered_map<std::string, std::string> settingsMap;
 
-    void static setWordsFontName(std::string const& value);
-    std::string static getWordsFontName(bool defaultValue);
+    void preLoadSettings(bool resetDefaultSettings);
+    void loadSettings();
+    void saveSettings();
 
-    void static setWordsFrequency(std::string const& value);
-    double static getWordsFrequency(bool defaultValue);
+    void restoreDefaultSettings();
+    void saveSettingsPanel();
 
-    void static setWordsSpeed(std::string const& value);
-    double static getWordsSpeed(bool defaultValue);
+    void setWordsFontName(std::string const& value);
+    std::string getWordsFontName(bool defaultValue);
 
-    void static setWordsSize(std::string const& value);
-    double static getWordsSize(bool defaultValue);
+    void setWordsFrequency(std::string const& value);
+    double getWordsFrequency(bool defaultValue);
 
-    void static setWordsHighlight(std::string const& value);
-    void static setWordsHighlight(bool const& value);
-    bool static isWordsHighlightEnabled(bool defaultValue);
+    void setWordsSpeed(std::string const& value);
+    double getWordsSpeed(bool defaultValue);
 
-    void static setUIScale(std::string const& value);
-    float static getUIScale(bool defaultValue);
+    void setWordsSize(std::string const& value);
+    double getWordsSize(bool defaultValue);
 
-    void static setWordLocale(std::string& value);
-    std::string static getWordLocale(bool defaultValue);
+    void setWordsHighlight(std::string const& value);
+    void setWordsHighlight(bool const& value);
+    bool isWordsHighlightEnabled(bool defaultValue);
 
-    std::string static buildEndGameSettings();
+    void setUIScale(std::string const& value);
+    float getUIScale(bool defaultValue);
+
+    void setWordLocale(std::string& value);
+    std::string getWordLocale(bool defaultValue);
+
+    std::string buildEndGameSettings();
 
 // Game End Criteriums
-    void static setEndGameCriteriumBool(std::string const& criterium, bool value);
-    bool static getEndGameCriteriumBool(std::string const& criterium);
+    void setEndGameCriteriumBool(std::string const& criterium, bool value);
+    bool getEndGameCriteriumBool(std::string const& criterium);
 
-    void static setEndGameCriterium_missedWords(int value);
-    void static setEndGameCriterium_missedWords(std::string value);
-    int static getEndGameCriterium_missedWords();
+    void setEndGameCriterium_missedWords(int value);
+    void setEndGameCriterium_missedWords(std::string value);
+    int getEndGameCriterium_missedWords();
 
-    void static setEndGameCriterium_time(double value);
-    void static setEndGameCriterium_time(std::string value);
-    std::chrono::duration<double> static getEndGameCriterium_time();
+    void setEndGameCriterium_time(double value);
+    void setEndGameCriterium_time(std::string value);
+    std::chrono::duration<double> getEndGameCriterium_time();
 
-    void static setEndGameCriterium_score(int value);
-    void static setEndGameCriterium_score(std::string value);
-    int static getEndGameCriterium_score();
+    void setEndGameCriterium_score(int value);
+    void setEndGameCriterium_score(std::string value);
+    int getEndGameCriterium_score();
 };

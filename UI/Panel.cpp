@@ -67,9 +67,9 @@ void Panel::update() {
             float scaleX = window.getSize().x / globalBounds.width;
             float scaleY = window.getSize().y / globalBounds.height;
             float scaleFactor = std::min(scaleX, scaleY);
-            this->body.setScale(scaleFactor * Settings::getUIScale(false) * windowSizeStandardX, scaleFactor * Settings::getUIScale(false) * windowSizeStandardY);
+            this->body.setScale(scaleFactor * Settings::getInstance()->getUIScale(false) * windowSizeStandardX, scaleFactor * Settings::getInstance()->getUIScale(false) * windowSizeStandardY);
         } else {
-            this->body.setScale({1.0f * Settings::getUIScale(false) * windowSizeStandardX, 1.0f * Settings::getUIScale(false) * windowSizeStandardY});
+            this->body.setScale({1.0f * Settings::getInstance()->getUIScale(false) * windowSizeStandardX, 1.0f * Settings::getInstance()->getUIScale(false) * windowSizeStandardY});
         }
     } else {
         this->body.setScale(this->parent->body.getScale());

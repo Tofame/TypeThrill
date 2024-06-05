@@ -35,7 +35,7 @@ std::string ws2s(const std::wstring& wstr)
 
 GameSaveManager* GameSaveManager::getInstance()
 {
-    if(gameSaveManager_== nullptr){
+    if(gameSaveManager_ == nullptr){
         gameSaveManager_ = new GameSaveManager();
     }
     return gameSaveManager_;
@@ -73,8 +73,8 @@ void GameSaveManager::loadGame(int saveSlot) {
                     std::string option = matches[1].str();
                     std::string value = matches[2].str();
 
-                    if (Settings::settingsMap.contains(option)) {
-                        Settings::settingsMap[option] = value;
+                    if (Settings::getInstance()->settingsMap.contains(option)) {
+                        Settings::getInstance()->settingsMap[option] = value;
                     } else {
                         throw std::runtime_error(fmt::format("save{}.txt option: {} does not exist in settingsMap.\nThe full line is: {}", std::to_string(saveSlot), option, matches[0].str()));
                     }
@@ -169,7 +169,7 @@ void GameSaveManager::saveGame(int saveSlot) {
 
     // Writing to file all the statistics, settings etc.
     file << ">>settingsANDcriteriums" << "\n";
-    for(auto entryPair : Settings::settingsMap) {
+    for(auto entryPair : Settings::getInstance()->settingsMap) {
         file << entryPair.first << "=" << entryPair.second << "\n";
     }
     file << ">>settingsANDcriteriumsEnd" << "\n";

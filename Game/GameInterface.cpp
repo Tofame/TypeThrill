@@ -131,7 +131,7 @@ void GameInterface::setupBackgroundSprite() {
 void GameInterface::setupGameTitle() {
     auto text = sf::Text();
     text.setFont(FontManager::Fonts["voye"]);
-    text.setCharacterSize(GameInterface::hugeCharacterSize * Settings::getUIScale(false));
+    text.setCharacterSize(GameInterface::hugeCharacterSize * Settings::getInstance()->getUIScale(false));
     text.setFillColor(sf::Color::White);
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
@@ -188,63 +188,63 @@ void GameInterface::setupPanels() {
     panelSettings->addElement(settingsTextLabel);
 
     auto wordSpeedField = UIElementFactory::createTextField(
-        fmt::format("{:.5f}", Settings::getWordsSpeed(false)),
+        fmt::format("{:.5f}", Settings::getInstance()->getWordsSpeed(false)),
         {0.01, 0.05},
         "Word Speed",
         L"^[0-9]([.][0-9]{0,5})?$" // L casts to wchar as we need wstring in wregex
     );
-    wordSpeedField->onTextFieldUpdate = [wordSpeedField]() -> void { Settings::setWordsSpeed(wordSpeedField->getInputString()); };
+    wordSpeedField->onTextFieldUpdate = [wordSpeedField]() -> void { Settings::getInstance()->setWordsSpeed(wordSpeedField->getInputString()); };
     panelSettings->addElement(wordSpeedField);
 
     auto wordFrequencyField = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getWordsFrequency(false)),
+        fmt::format("{:.2f}", Settings::getInstance()->getWordsFrequency(false)),
         {0.01, 0.15},
         "Word Frequency",
         L"^[0-9]([.][0-9]{0,2})?$"
     );
-    wordFrequencyField->onTextFieldUpdate = [wordFrequencyField]() -> void { Settings::setWordsFrequency(wordFrequencyField->getInputString()); };
+    wordFrequencyField->onTextFieldUpdate = [wordFrequencyField]() -> void { Settings::getInstance()->setWordsFrequency(wordFrequencyField->getInputString()); };
     panelSettings->addElement(wordFrequencyField);
 
     auto wordSize = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getWordsSize(false)),
+        fmt::format("{:.2f}", Settings::getInstance()->getWordsSize(false)),
         {0.01, 0.25},
         "Word Size",
         L"^[0-9]([.][0-9]{0,2})?$"
     );
-    wordSize->onTextFieldUpdate = [wordSize]() -> void { Settings::setWordsSize(wordSize->getInputString()); };
+    wordSize->onTextFieldUpdate = [wordSize]() -> void { Settings::getInstance()->setWordsSize(wordSize->getInputString()); };
     panelSettings->addElement(wordSize);
 
     auto wordHighlight = UIElementFactory::createMenuCheckbox(
         1.0,
         {0.01, 0.35},
         "Word Highlight",
-        Settings::isWordsHighlightEnabled(false),
-        [](bool value) -> void { Settings::setWordsHighlight(value); }
+        Settings::getInstance()->isWordsHighlightEnabled(false),
+        [](bool value) -> void { Settings::getInstance()->setWordsHighlight(value); }
     );
     panelSettings->addElement(wordHighlight);
 
     auto UIScaleSetting = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getUIScale(false)),
+        fmt::format("{:.2f}", Settings::getInstance()->getUIScale(false)),
         {0.01, 0.70},
         "UI Scale (max 5.99)",
         L"^[0-2]([.][0-9]{0,2})?$"
     );
-    UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::setUIScale(UIScaleSetting->getInputString()); };
+    UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::getInstance()->setUIScale(UIScaleSetting->getInputString()); };
     panelSettings->addElement(UIScaleSetting);
 
     auto wordFontComboBox = UIElementFactory::createComboBox(
-        fmt::format("{}", Settings::getWordsFontName(false)),
+        fmt::format("{}", Settings::getInstance()->getWordsFontName(false)),
         {0.01, 0.45},
         "Word Font"
     );
-    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::setWordsFontName("voye"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::setWordsFontName("arial"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::getInstance()->setWordsFontName("voye"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::getInstance()->setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
     panelSettings->addElement(wordFontComboBox);
 
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
     // ================= Setting up the STATE_NEWGAMESETUP Panel
     auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {740, 600}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
@@ -256,7 +256,7 @@ void GameInterface::setupPanels() {
     panelNewGameSetup->addElement(gameLocaleLabel);
 
     auto gameLocaleTextField = UIElementFactory::createTextField(
-        fmt::format("{}", Settings::getWordLocale(false)),
+        fmt::format("{}", Settings::getInstance()->getWordLocale(false)),
         {0.2, 0.62},
         "Word Locale:",
         L".{0,17}"
@@ -300,20 +300,20 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.15},
         "End on Words Missed",
-        Settings::getEndGameCriteriumBool("endGame_missedWords_bool"),
-        [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_missedWords_bool", value); }
+        Settings::getInstance()->getEndGameCriteriumBool("endGame_missedWords_bool"),
+        [](bool value) -> void { Settings::getInstance()->setEndGameCriteriumBool("endGame_missedWords_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_wordsMissed);
 
     auto gameEnd_wordsMissedTextField = UIElementFactory::createTextField(
-        fmt::format("{}", Settings::getEndGameCriterium_missedWords()),
+        fmt::format("{}", Settings::getInstance()->getEndGameCriterium_missedWords()),
         {0.5, 0.15},
         "Value: ",
         L"^[1-9]{1}[0-9]{0,9}$"
     );
     gameEnd_wordsMissedTextField->setOffsetBodyAfterText(90);
     gameEnd_wordsMissedTextField->onTextFieldUpdate = [gameEnd_wordsMissedTextField]() -> void {
-        Settings::setEndGameCriterium_missedWords(gameEnd_wordsMissedTextField->getInputString());
+        Settings::getInstance()->setEndGameCriterium_missedWords(gameEnd_wordsMissedTextField->getInputString());
     };
     panelNewGameSetup->addElement(gameEnd_wordsMissedTextField);
 
@@ -321,20 +321,20 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.25},
         "End on Time",
-        Settings::getEndGameCriteriumBool("endGame_time_bool"),
-        [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_time_bool", value); }
+        Settings::getInstance()->getEndGameCriteriumBool("endGame_time_bool"),
+        [](bool value) -> void { Settings::getInstance()->setEndGameCriteriumBool("endGame_time_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_time);
 
     auto gameEndCriterium_timeTextField = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getEndGameCriterium_time().count()),
+        fmt::format("{:.2f}", Settings::getInstance()->getEndGameCriterium_time().count()),
         {0.5, 0.25},
         "Value: ",
         L"^[0-9]{1,7}([.][0-9]{0,5})?$"
     );
     gameEndCriterium_timeTextField->setOffsetBodyAfterText(90);
     gameEndCriterium_timeTextField->onTextFieldUpdate = [gameEndCriterium_timeTextField]() -> void {
-        Settings::setEndGameCriterium_time(gameEndCriterium_timeTextField->getInputString());
+        Settings::getInstance()->setEndGameCriterium_time(gameEndCriterium_timeTextField->getInputString());
     };
     panelNewGameSetup->addElement(gameEndCriterium_timeTextField);
 
@@ -342,20 +342,20 @@ void GameInterface::setupPanels() {
         1.0,
         {0.01, 0.35},
         "End on Score",
-        Settings::getEndGameCriteriumBool("endGame_score_bool"),
-        [](bool value) -> void { Settings::setEndGameCriteriumBool("endGame_score_bool", value); }
+        Settings::getInstance()->getEndGameCriteriumBool("endGame_score_bool"),
+        [](bool value) -> void { Settings::getInstance()->setEndGameCriteriumBool("endGame_score_bool", value); }
     );
     panelNewGameSetup->addElement(gameEndCriterium_score);
 
     auto gameEndCriterium_scoreTextField = UIElementFactory::createTextField(
-        fmt::format("{}", Settings::getEndGameCriterium_score()),
+        fmt::format("{}", Settings::getInstance()->getEndGameCriterium_score()),
         {0.5, 0.35},
         "Value: ",
         L"^[1-9]{1}[0-9]{0,9}$"
     );
     gameEndCriterium_scoreTextField->setOffsetBodyAfterText(90);
     gameEndCriterium_scoreTextField->onTextFieldUpdate = [gameEndCriterium_scoreTextField]() -> void {
-        Settings::setEndGameCriterium_score(gameEndCriterium_scoreTextField->getInputString());
+        Settings::getInstance()->setEndGameCriterium_score(gameEndCriterium_scoreTextField->getInputString());
     };
     panelNewGameSetup->addElement(gameEndCriterium_scoreTextField);
 
@@ -410,15 +410,15 @@ void GameInterface::setupPanels() {
     );
     panelGameStatistics->addElement(generalScore);
 
-    // It cant be normal TextLabel and needs to be Dynamic as it needs updating in Settings::applySettings();
+    // It cant be normal TextLabel and needs to be Dynamic as it needs updating in Settings::getInstance()->applySettings();
     auto whatSettingsLabel = UIElementFactory::createInfoDynamicLabel(
         {0.2, 0.85},
         []() -> std::string {
             return fmt::format(
             "[Selected Settings]\t Font:  {},\t Frequency:  {},\t Speed:  {},\t Size:  {},\t Highlight:  {},\t UIScale:  {},\t Locale:  {}",
-                            Settings::getWordsFontName(false), Settings::getWordsFrequency(false), Settings::getWordsSpeed(false),
-                            Settings::getWordsSize(false), Settings::isWordsHighlightEnabled(false), Settings::getUIScale(false),
-                            Settings::getWordLocale(false)
+                            Settings::getInstance()->getWordsFontName(false), Settings::getInstance()->getWordsFrequency(false), Settings::getInstance()->getWordsSpeed(false),
+                            Settings::getInstance()->getWordsSize(false), Settings::getInstance()->isWordsHighlightEnabled(false), Settings::getInstance()->getUIScale(false),
+                            Settings::getInstance()->getWordLocale(false)
             );
         }
     );
@@ -427,7 +427,7 @@ void GameInterface::setupPanels() {
     auto whatGameSettingsPanel = UIElementFactory::createInfoDynamicLabel(
         {0.2, 0.75},
         []() -> std::string {
-            return fmt::format("[Selected End Criterium]\t {}", Settings::buildEndGameSettings());
+            return fmt::format("[Selected End Criterium]\t {}", Settings::getInstance()->buildEndGameSettings());
         }
     );
     panelGameStatistics->addElement(whatGameSettingsPanel);

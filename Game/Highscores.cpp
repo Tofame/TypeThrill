@@ -9,7 +9,7 @@
 #include <regex>
 #include <fmt/core.h>
 
-Highscores* Highscores::highscores_= nullptr;
+Highscores* Highscores::highscores_ = nullptr;
 // The max amount of highscores (limits text labels, saving/loading etc.)
 auto MAXHIGHSCORES_AMOUNT = 5;
 
@@ -136,9 +136,9 @@ int Highscores::updateHighScores() {
         auto newHighscore = std::vector<std::string>{
                 std::to_string(score),
                 GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()),
-                std::to_string(Settings::getWordsFrequency(false)),
-                std::to_string(Settings::getWordsSpeed(false)),
-                Settings::getWordLocale(false),
+                std::to_string(Settings::getInstance()->getWordsFrequency(false)),
+                std::to_string(Settings::getInstance()->getWordsSpeed(false)),
+                Settings::getInstance()->getWordLocale(false),
         };
 
         if (!overridesEmptyHighscore) {

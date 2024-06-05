@@ -69,7 +69,7 @@ bool WordSpawner::canSpawnWord() {
     auto currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     auto timeSinceLastSpawn = currentTime - lastSpawnTime;
 
-    return timeSinceLastSpawn >= std::chrono::milliseconds(static_cast<int>(Settings::getWordsFrequency(false) * 1000));
+    return timeSinceLastSpawn >= std::chrono::milliseconds(static_cast<int>(Settings::getInstance()->getWordsFrequency(false) * 1000));
 }
 
 void WordSpawner::moveWords() {
@@ -89,7 +89,7 @@ void WordSpawner::moveWords() {
             continue;
         }
 
-        word->posRatio.setValues(word->posRatio.getX() + Settings::getWordsSpeed(false), word->posRatio.getY());
+        word->posRatio.setValues(word->posRatio.getX() + Settings::getInstance()->getWordsSpeed(false), word->posRatio.getY());
         word->update();
     }
 }

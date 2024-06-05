@@ -11,12 +11,12 @@
 Word::Word() {
     this->setType(WORD);
 
-    this->body =sf::RectangleShape({0,static_cast<float>(GameInterface::smallCharacterSize * Settings::getWordsSize(false))});
+    this->body =sf::RectangleShape({0,static_cast<float>(GameInterface::smallCharacterSize * Settings::getInstance()->getWordsSize(false))});
     this->body.setFillColor(sf::Color::Yellow);
 
     auto sfText = sf::Text();
-    sfText.setFont(FontManager::Fonts[Settings::getWordsFontName(false)]);
-    sfText.setCharacterSize(GameInterface::smallCharacterSize * Settings::getWordsSize(false));
+    sfText.setFont(FontManager::Fonts[Settings::getInstance()->getWordsFontName(false)]);
+    sfText.setCharacterSize(GameInterface::smallCharacterSize * Settings::getInstance()->getWordsSize(false));
     sfText.setFillColor(sf::Color::White);
     sfText.setOutlineColor(sf::Color::Black);
     sfText.setOutlineThickness(1);
@@ -32,7 +32,7 @@ Word::Word() {
 
 void Word::draw() {
     if(text.getString().isEmpty() == false) {
-        if(Settings::isWordsHighlightEnabled(false) == true) {
+        if(Settings::getInstance()->isWordsHighlightEnabled(false) == true) {
             window.draw(this->body);
         }
         window.draw(this->text);

@@ -50,7 +50,7 @@ void WordLocales::loadLocales() {
 }
 
 std::string WordLocales::getRandomWord() {
-    std::string locale = Settings::getWordLocale(false);
+    std::string locale = Settings::getInstance()->getWordLocale(false);
 
     try {
         auto words = WordLocales::wordsLocales.at(locale);
@@ -69,13 +69,13 @@ void WordLocales::validateLocale(UIElement* confirmButton, TextField* textfield)
     confirmButton->body.setFillColor(UIElementFactory::ColorBlue);
 
     if(wordsLocales.contains(textfield->getInputString()) == false) {
-        auto defaultLocale = Settings::getWordLocale(true);
-        Settings::setWordLocale(defaultLocale);
+        auto defaultLocale = Settings::getInstance()->getWordLocale(true);
+        Settings::getInstance()->setWordLocale(defaultLocale);
         textfield->setInput(defaultLocale);
         textfield->update();
         return;
     }
 
     auto localeString = textfield->getInputString().toAnsiString();
-    Settings::setWordLocale(localeString);
+    Settings::getInstance()->setWordLocale(localeString);
 }

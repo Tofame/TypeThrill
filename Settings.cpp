@@ -22,6 +22,20 @@ void restoreDefaultCheckboxes(Checkbox* checkBoxPtr);
 void restoreDefaultComboBoxes(ComboBox* comboBoxPtr);
 void setSettingFromComboBoxes(ComboBox* comboBoxPtr);
 
+Settings* Settings::settings_ = nullptr;
+
+Settings::Settings() {
+    defaultSettingsMap = std::unordered_map<std::string, std::string>();
+    settingsMap = std::unordered_map<std::string, std::string>();
+}
+
+Settings* Settings::getInstance() {
+    if(settings_ == nullptr){
+        settings_ = new Settings();
+    }
+    return settings_;
+}
+
 // resetDefaultSettings also could be defined as "bool firstTimePreLoaded" (to give you better grasp of what is it for)
 void Settings::preLoadSettings(bool resetDefaultSettings) {
     if(resetDefaultSettings) {
@@ -109,10 +123,7 @@ void Settings::restoreDefaultSettings() {
     }
 
     // This basically will reset all the keys in the map (meaning it will reset settings)
-    Settings::preLoadSettings(false);
-
-    // Saves settings to .txt
-    Settings::saveSettings();
+    preLoadSettings(false);
 }
 
 void Settings::saveSettingsPanel() {
@@ -129,7 +140,7 @@ void Settings::saveSettingsPanel() {
     }
 
     // Saves settings to .txt
-    Settings::saveSettings();
+    saveSettings();
 }
 
 void Settings::setWordsFontName(std::string const& value) {
@@ -275,55 +286,65 @@ float Settings::getUIScale(bool defaultValue) {
 }
 
 void restoreDefaultTextFields(TextField* txtFieldPtr) {
+    auto instance = Settings::getInstance();
+
     std::string text = txtFieldPtr->getText().getString();
     if (text.starts_with("Word Speed"))
-        txtFieldPtr->setInput(fmt::format("{:.5f}", Settings::getWordsSpeed(true)));
+        txtFieldPtr->setInput(fmt::format("{:.5f}", instance->getWordsSpeed(true)));
     else if (text.starts_with("Word Frequency"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", Settings::getWordsFrequency(true)));
+        txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getWordsFrequency(true)));
     else if (text.starts_with("Word Size"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", Settings::getWordsSize(true)));
+        txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getWordsSize(true)));
     else if (text.starts_with("UI Scale"))
-        txtFieldPtr->setInput(fmt::format("{:.2f}", Settings::getUIScale(true)));
+        txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getUIScale(true)));
 
     txtFieldPtr->update();
 }
 
 void restoreDefaultCheckboxes(Checkbox* checkBoxPtr) {
+    auto instance = Settings::getInstance();
+
     std::string text = checkBoxPtr->getText().getString();
     if (text.starts_with("Word Highlight")) {
-        Settings::isWordsHighlightEnabled(true) == true ? checkBoxPtr->check() : checkBoxPtr->uncheck();
+        instance->isWordsHighlightEnabled(true) == true ? checkBoxPtr->check() : checkBoxPtr->uncheck();
     }
 }
 
 void restoreDefaultComboBoxes(ComboBox* comboBoxPtr) {
+    auto instance = Settings::getInstance();
+
     std::string text = comboBoxPtr->getText().getString();
     if (text.starts_with("Word Font")) {
-        comboBoxPtr->setChosenText(fmt::format("{}", Settings::getWordsFontName(true)));
+        comboBoxPtr->setChosenText(fmt::format("{}", instance->getWordsFontName(true)));
     }
 }
 
 void setSettingFromTextField(TextField* txtFieldPtr) {
+    auto instance = Settings::getInstance();
+
     std::string text = txtFieldPtr->getText().getString();
     auto value = txtFieldPtr->getInputString();
 
     if (text.starts_with("Word Speed"))
-        Settings::setWordsSpeed(value);
+        instance->setWordsSpeed(value);
     else if (text.starts_with("Word Frequency"))
-        Settings::setWordsFrequency(value);
+        instance->setWordsFrequency(value);
     else if (text.starts_with("Word Size"))
-        Settings::setWordsSize(value);
+        instance->setWordsSize(value);
     else if (text.starts_with("UI Scale")) {
-        Settings::setUIScale(value);
+        instance->setUIScale(value);
         GameInterface::updatePanels();
         GameInterface::updateGameTitle();
     }
 }
 
 void setSettingFromComboBoxes(ComboBox* comboBoxPtr) {
+    auto instance = Settings::getInstance();
+
     std::string text = comboBoxPtr->getText().getString();
 
     if (text.starts_with("Word Font")) {
-        Settings::setWordsFontName(comboBoxPtr->getChosenTextString());
+        instance->setWordsFontName(comboBoxPtr->getChosenTextString());
     }
 }
 

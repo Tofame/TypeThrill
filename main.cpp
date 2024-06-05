@@ -16,8 +16,8 @@
 int main() {
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
-    Settings::preLoadSettings(true); // Setups the std::map (settingsMap)
-    Settings::loadSettings(); // Loads values from Settings.txt
+    Settings::getInstance()->preLoadSettings(true); // Setups the std::map (settingsMap)
+    Settings::getInstance()->loadSettings(); // Loads values from Settings.txt
     Highscores::getInstance()->loadHighscores();
     WordLocales::loadLocales();
     GameInterface::setupUI();

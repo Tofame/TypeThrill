@@ -40,26 +40,26 @@ void GameStatistics::updateStatistics(Panel* statisticsPanel) {
 }
 
 void GameStatistics::checkGameEnd() {
-    if(Settings::getEndGameCriteriumBool("endGame_never_bool") == true) {
+    if(Settings::getInstance()->getEndGameCriteriumBool("endGame_never_bool") == true) {
         return;
     }
 
     auto gameEnd = false;
 
-    if(Settings::getEndGameCriteriumBool("endGame_score_bool")) {
-        if(this->getWordsGeneralScore() >= Settings::getEndGameCriterium_score()) {
+    if(Settings::getInstance()->getEndGameCriteriumBool("endGame_score_bool")) {
+        if(this->getWordsGeneralScore() >= Settings::getInstance()->getEndGameCriterium_score()) {
             gameEnd = true;
         }
     }
 
-    if(!gameEnd && Settings::getEndGameCriteriumBool("endGame_missedWords_bool")) {
-        if(this->getWordsMissed() >= Settings::getEndGameCriterium_missedWords()) {
+    if(!gameEnd && Settings::getInstance()->getEndGameCriteriumBool("endGame_missedWords_bool")) {
+        if(this->getWordsMissed() >= Settings::getInstance()->getEndGameCriterium_missedWords()) {
             gameEnd = true;
         }
     }
 
-    if(!gameEnd && Settings::getEndGameCriteriumBool("endGame_time_bool")) {
-        if(this->getTimePassedSinceStart() >= Settings::getEndGameCriterium_time()) {
+    if(!gameEnd && Settings::getInstance()->getEndGameCriteriumBool("endGame_time_bool")) {
+        if(this->getTimePassedSinceStart() >= Settings::getInstance()->getEndGameCriterium_time()) {
             gameEnd = true;
         }
     }
