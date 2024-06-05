@@ -9,6 +9,8 @@
 #include "../UI/word.h"
 #include "fmt/ostream.h"
 
+WordSpawner* WordSpawner::wordSpawner_= nullptr;
+
 double chooseWordYRatio();
 void setAllWordsBodiesToZero(Panel* panel);
 
@@ -19,12 +21,20 @@ float getRandomFloat(float min, float max) {
     return dis(gen);
 }
 
+WordSpawner* WordSpawner::getInstance() {
+    if(wordSpawner_== nullptr){
+        wordSpawner_ = new WordSpawner();
+        wordSpawner_->lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+    }
+    return wordSpawner_;
+}
+
 void WordSpawner::spawnWord() {
     if(Game::getGameState() != Game::STATE_PLAYING) {
         return;
     }
 
-    if(WordSpawner::canSpawnWord() == false) {
+    if(this->canSpawnWord() == false) {
         return;
     }
 
@@ -36,7 +46,7 @@ void WordSpawner::spawnWord() {
 
     wordsPanel->addElement(word);
 
-    WordSpawner::lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+    this->lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 }
 
 // Spawn word method used when loading the game state from a save file
@@ -52,7 +62,7 @@ void WordSpawner::spawnWord(float ratioX, float ratioY, std::string text) {
 
     wordsPanel->addElement(word);
 
-    WordSpawner::lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+    this->lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 }
 
 bool WordSpawner::canSpawnWord() {
@@ -211,12 +221,18 @@ void WordSpawner::clearWords(bool removeWords, bool removeHighlight, bool clearG
     }
 }
 
+// Initialized with random values, all that matters is that they are different
 std::vector<double> lastYRatios = std::vector<double>{0.1, 0.65, 0.4, 0.9};
+
+// There is lastYRatios vector in WordSpawner.cpp that holds last four Y spawn positions of word
+// When calculating Y ratio for new word we check if it is in last four positions chosen (there is a small range included too)
+// Case: It is -> we are trying to find Y ratio again.
+// Case: It isn't -> all is good, we push it to vector and return Y ratio.
 double chooseWordYRatio() {
     auto randomFloat = getRandomFloat(0, 0.95);
 
     for(auto value : lastYRatios) {
-        if(std::abs(randomFloat - value) <= 0.08) {
+        if(std::abs(randomFloat - value) <= 0.08) { // A 0.08 range, so words have some space beetween them if they spawn close
             //fmt::println("Value that is bad: {} because vector has: {}", randomFloat, value);
             return chooseWordYRatio();
         }

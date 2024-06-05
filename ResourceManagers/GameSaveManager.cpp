@@ -35,7 +35,7 @@ std::string ws2s(const std::wstring& wstr)
 
 GameSaveManager* GameSaveManager::getInstance()
 {
-    if(gameSaveManager_==nullptr){
+    if(gameSaveManager_== nullptr){
         gameSaveManager_ = new GameSaveManager();
     }
     return gameSaveManager_;
@@ -143,7 +143,7 @@ void GameSaveManager::loadGame(int saveSlot) {
                     std::string word = matches[3].str();
                     fmt::println("rat {} ray {} wordd {}", ratioX, ratioY, word);
 
-                    WordSpawner::spawnWord(std::stof(ratioX), std::stof(ratioY), word);
+                    WordSpawner::getInstance()->spawnWord(std::stof(ratioX), std::stof(ratioY), word);
                 } else {
                     throw std::runtime_error("Malformed statistics part, line: " + line + " of save file: save" + std::to_string(saveSlot));
                 }

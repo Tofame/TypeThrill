@@ -374,7 +374,7 @@ void GameInterface::setupPanels() {
         {0.5, 0.35},
         "",
         L".{0,35}", // Anything can be in there as its up to user what he types
-        []() -> void { WordSpawner::manageWords(); }
+        []() -> void { WordSpawner::getInstance()->manageWords(); }
     );
     gameInputWords->body.setSize({420, 30});
     gameInputWords->setState(FOCUSED_ALWAYS);

@@ -17,8 +17,8 @@ void Game::run() {
         case STATE_PLAYING:
             GameInterface::drawMenuBackground();
             GameInterface::drawPanels();
-            WordSpawner::spawnWord();
-            WordSpawner::moveWords();
+            WordSpawner::getInstance()->spawnWord();
+            WordSpawner::getInstance()->moveWords();
             break;
         case STATE_MENU:
             GameInterface::drawMenu();
@@ -271,7 +271,7 @@ void Game::pause() {
 void Game::backToMenu() {
     auto state = getGameState();
     if(state == STATE_PAUSED || state == STATE_GAMEOVER || state == STATE_PLAYING) {
-        WordSpawner::clearWords(true, false, true);
+        WordSpawner::getInstance()->clearWords(true, false, true);
     }
 
     Game::setGameState(STATE_MENU, true);
