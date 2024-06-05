@@ -546,7 +546,7 @@ void setupHighscoresPanel(Panel* panelWindow) {
         auto dynamicHighscoreLabel = UIElementFactory::createStatisticsDynamicLabel(
                 {0.03, static_cast<float>(0.19 * i + 0.02)},
                 [i]() -> std::string {
-                    auto highscore = Highscores::getHighscore(i);
+                    auto highscore = Highscores::getInstance()->getHighscore(i);
                     return fmt::format("TOP {}\t\t\tScore: {}\nTime Passed: {}\tW. Frequency: {}\tW. Speed: {}\nChosen Locale: {}",
                         i + 1, highscore[0], highscore[1], highscore[2], highscore[3], highscore[4]);
                 }

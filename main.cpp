@@ -18,7 +18,7 @@ int main() {
     FontManager::loadFonts();
     Settings::preLoadSettings(true); // Setups the std::map (settingsMap)
     Settings::loadSettings(); // Loads values from Settings.txt
-    Highscores::loadHighscores();
+    Highscores::getInstance()->loadHighscores();
     WordLocales::loadLocales();
     GameInterface::setupUI();
     Game::setGameState(Game::STATE_MENU, true);

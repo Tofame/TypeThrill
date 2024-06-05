@@ -9,8 +9,17 @@
 #include <regex>
 #include <fmt/core.h>
 
+Highscores* Highscores::highscores_= nullptr;
+// The max amount of highscores (limits text labels, saving/loading etc.)
 auto MAXHIGHSCORES_AMOUNT = 5;
-std::vector<std::vector<std::string>> Highscores::highscores(MAXHIGHSCORES_AMOUNT);
+
+Highscores * Highscores::getInstance() {
+    if(highscores_== nullptr){
+        highscores_ = new Highscores();
+        highscores_->highscores = std::vector<std::vector<std::string>>(MAXHIGHSCORES_AMOUNT);
+    }
+    return highscores_;
+}
 
 void Highscores::loadHighscores() {
     std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
@@ -24,10 +33,10 @@ void Highscores::loadHighscores() {
             // Each highscore line will look like this:
             // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
             newFile << "empty,empty,empty,empty,empty\n";
-            Highscores::setHighscore(i, {"empty", "empty", "empty", "empty", "empty"});
+            setHighscore(i, {"empty", "empty", "empty", "empty", "empty"});
         }
         newFile << "empty,empty,empty,empty,empty";
-        Highscores::setHighscore(MAXHIGHSCORES_AMOUNT - 1, {"empty", "empty", "empty", "empty", "empty"});
+        setHighscore(MAXHIGHSCORES_AMOUNT - 1, {"empty", "empty", "empty", "empty", "empty"});
 
         newFile.close();
         return;
@@ -50,7 +59,7 @@ void Highscores::loadHighscores() {
             singleHighscoreVector.push_back(highscorePart);
         }
 
-        Highscores::highscores[index] = singleHighscoreVector;
+        highscores[index] = singleHighscoreVector;
         index++;
         if(index == MAXHIGHSCORES_AMOUNT) break;
     }
@@ -68,7 +77,7 @@ void Highscores::saveHighscores() {
         throw std::runtime_error("Unable to open highscores.txt. The path used is: " + path);
     }
 
-    for (auto& highscore : Highscores::highscores) {
+    for (auto& highscore : highscores) {
         for (auto i = 0; i < highscore.size(); ++i) {
             file << highscore[i];
             if (i < highscore.size() - 1) {
@@ -86,7 +95,7 @@ std::vector<std::string>& Highscores::getHighscore(int index) {
         throw std::runtime_error("Highscores::getHighscore() method was called with wrong index: " + index);
     }
 
-    return Highscores::highscores[index];
+    return highscores[index];
 }
 
 void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecString) {
@@ -94,7 +103,7 @@ void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecSt
         throw std::runtime_error("Highscores::setHighscore() method was called with wrong index: " + index);
     }
 
-    Highscores::highscores[index] = highscoreVecString;
+   highscores[index] = highscoreVecString;
 }
 
 // Tries to update highscores and in case the highscores vector was modified saves them to the txt file.
@@ -108,8 +117,8 @@ int Highscores::updateHighScores() {
     // In case it WAS NOT empty we delete the 10th highscore and use vector's insert.
     bool overridesEmptyHighscore = false;
 
-    for(auto i = 0; i < Highscores::highscores.size(); i++) {
-        auto highscoreInformation = Highscores::highscores[i];
+    for(auto i = 0; i < highscores.size(); i++) {
+        auto highscoreInformation = highscores[i];
         if(highscoreInformation[0] == "empty") {
             highscoreBeaten = i;
             overridesEmptyHighscore = true;
@@ -133,10 +142,10 @@ int Highscores::updateHighScores() {
         };
 
         if (!overridesEmptyHighscore) {
-            Highscores::highscores.pop_back();
-            Highscores::highscores.insert(Highscores::highscores.begin() + highscoreBeaten, newHighscore);
+            highscores.pop_back();
+            highscores.insert(highscores.begin() + highscoreBeaten, newHighscore);
         } else {
-            Highscores::highscores[highscoreBeaten] = newHighscore;
+            highscores[highscoreBeaten] = newHighscore;
         }
 
         // Update dynamic text labels
@@ -145,7 +154,8 @@ int Highscores::updateHighScores() {
             panelHighscores->update();
         }
         // Update highscores text file
-        Highscores::saveHighscores();
+        saveHighscores();
+
         return highscoreBeaten;
     }
 

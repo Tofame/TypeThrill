@@ -228,7 +228,7 @@ void Game::onGameOver() {
     }
 
     // Check highscores and update them if actual ones are higher
-    auto highscoreCheck = Highscores::updateHighScores();
+    auto highscoreCheck = Highscores::getInstance()->updateHighScores();
     // We decide the text of the TextLabel with returned value from pdateHighScores()
     if(highscoreTextLabel) {
         if(highscoreCheck == -1) {
