@@ -8,7 +8,16 @@
 #include "../UI/TextLabel.h"
 
 auto event = sf::Event();
-Game::GameStates Game::gameState = Game::STATE_MENU;
+
+Game* Game::game_ = nullptr;
+
+Game* Game::getInstance() {
+    if(game_ == nullptr){
+        game_ = new Game();
+        game_->gameState = STATE_MENU;
+    }
+    return game_;
+}
 
 void Game::run() {
     window.clear();
@@ -179,7 +188,7 @@ void Game::setGameState(GameStates state, bool hidePanels) {
     }
 }
 
-Game::GameStates Game::getGameState() {
+GameStates Game::getGameState() {
     return Game::gameState;
 }
 

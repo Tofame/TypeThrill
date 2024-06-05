@@ -21,12 +21,12 @@ int main() {
     Highscores::getInstance()->loadHighscores();
     WordLocales::loadLocales();
     GameInterface::getInstance()->setupUI();
-    Game::setGameState(Game::STATE_MENU, true);
+    Game::getInstance()->setGameState(STATE_MENU, true);
 
     // Game loop that will work the same on different (weaker/stronger) computers
     while (window.isOpen()){
         auto frameStart = std::chrono::high_resolution_clock ::now();
-        Game::run();
+        Game::getInstance()->run();
         auto frameEnd = std::chrono::high_resolution_clock ::now();
         auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
         auto delay = std::chrono::milliseconds(1000) / 100 - frameDuration; // 100 fps

@@ -151,7 +151,7 @@ void GameSaveManager::loadGame(int saveSlot) {
         }
     }
 
-    Game::setGameState(Game::STATE_PLAYING, true);
+    Game::getInstance()->setGameState(STATE_PLAYING, true);
 }
 
 void GameSaveManager::saveGame(int saveSlot) {

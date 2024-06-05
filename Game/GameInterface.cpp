@@ -31,7 +31,7 @@ GameInterface::GameInterface() {
     panels = std::vector<Panel*>();
 }
 
-GameInterface * GameInterface::getInstance() {
+GameInterface* GameInterface::getInstance() {
     if(gameInterface_ == nullptr){
         gameInterface_ = new GameInterface();
     }
@@ -181,7 +181,7 @@ void GameInterface::setupPanels() {
     auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 440}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP, true); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::getInstance()->setGameState(STATE_NEWGAMESETUP, true); }, {0.5, 0.10}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::getInstance()->setMenuState(MENU_LOAD); }, {0.5, 0.10}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::getInstance()->setMenuState(MENU_SETTINGS); }, {0.5, 0.10}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Highscores", []() -> void { GameInterface::getInstance()->setMenuState(MENU_HIGHSCORES); }, {0.5, 0.10}));
@@ -295,14 +295,14 @@ void GameInterface::setupPanels() {
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Start",
-        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::setGameState(Game::STATE_PLAYING, true); },
+        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::getInstance()->setGameState(STATE_PLAYING, true); },
         {0.60, 0.95},
         {100, 40}
     ));
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Back",
-        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::setGameState(Game::STATE_MENU, true); },
+        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::getInstance()->setGameState(STATE_MENU, true); },
         {0.40, 0.95},
         {100, 40}
     ));
@@ -472,7 +472,7 @@ void GameInterface::setupPanels() {
     gameOverOverallStats->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
     panelGameOver->addElement(gameOverOverallStats);
 
-    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::backToMenu(); }, {0.5, 0.90}, {150, 40}));
+    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::getInstance()->backToMenu(); }, {0.5, 0.90}, {150, 40}));
     // Setup Pause Panel
     auto panelPause = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_PAUSE);
     panelPause->body.setOutlineThickness(4);
@@ -483,7 +483,7 @@ void GameInterface::setupPanels() {
     pauseLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
     panelPause->addElement(pauseLabel);
 
-    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::backToMenu(); }, {0.5, 0.90}, {150, 40}));
+    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::getInstance()->backToMenu(); }, {0.5, 0.90}, {150, 40}));
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);

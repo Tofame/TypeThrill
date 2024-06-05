@@ -30,7 +30,7 @@ WordSpawner* WordSpawner::getInstance() {
 }
 
 void WordSpawner::spawnWord() {
-    if(Game::getGameState() != Game::STATE_PLAYING) {
+    if(Game::getInstance()->getGameState() != STATE_PLAYING) {
         return;
     }
 

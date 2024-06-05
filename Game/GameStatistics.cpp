@@ -65,8 +65,8 @@ void GameStatistics::checkGameEnd() {
     }
 
     if(gameEnd == true) {
-        Game::setGameState(Game::STATE_GAMEOVER, false);
-        Game::onGameOver();
+        Game::getInstance()->setGameState(STATE_GAMEOVER, false);
+        Game::getInstance()->onGameOver();
     }
 }
 

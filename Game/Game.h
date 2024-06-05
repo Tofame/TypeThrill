@@ -2,31 +2,45 @@
 
 #include "../Globals.h"
 
+// https://refactoring.guru/design-patterns/singleton/cpp/example
+// We go with Naive Singleton for now
+
+enum GameStates {
+    STATE_MENU = 0,
+    STATE_NEWGAMESETUP = 1,
+    STATE_PLAYING = 2,
+    STATE_PAUSED = 3,
+    STATE_GAMEOVER = 4
+};
+
 class Game {
-    public:
-        void static run();
+protected:
+    Game() = default;
+    static Game* game_;
 
-        void static handleMousePress(sf::Mouse::Button mouseButton);
-        void static checkUIElementsForClick(sf::Vector2i mousePos);
+public:
+    // Singleton is not cloneable
+    Game(Game& other) = delete;
+    // Singleton can't be assigned
+    void operator=(const Game&) = delete;
 
-        enum GameStates {
-            STATE_MENU = 0,
-            STATE_NEWGAMESETUP = 1,
-            STATE_PLAYING = 2,
-            STATE_PAUSED = 3,
-            STATE_GAMEOVER = 4
-        };
+    static Game* getInstance();
 
-        void static setGameState(GameStates state, bool hidePanels);
-        GameStates static getGameState();
+    void run();
 
-        void static handleTextEntered(sf::Uint32 unicode);
+    void handleMousePress(sf::Mouse::Button mouseButton);
+    void checkUIElementsForClick(sf::Vector2i mousePos);
 
-        void static onGameOver();
+    void setGameState(GameStates state, bool hidePanels);
+    GameStates getGameState();
 
-        void static pause();
+    void handleTextEntered(sf::Uint32 unicode);
 
-        void static backToMenu();
-    private:
-        static GameStates gameState;
+    void onGameOver();
+
+    void pause();
+
+    void backToMenu();
+private:
+    GameStates gameState;
 };

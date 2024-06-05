@@ -108,7 +108,7 @@ void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecSt
 
 // Tries to update highscores and in case the highscores vector was modified saves them to the txt file.
 // To determine if highscores were modified a temporary variable is used: highscoreBeaten (-1 = untouched)
-// Returns `highscoreBeaten` that is then used in Game::onGameOver()
+// Returns `highscoreBeaten` that is then used in Game::getInstance()->onGameOver()
 int Highscores::updateHighScores() {
     auto score = GameStatistics::getInstance()->getWordsGeneralScore();
 
