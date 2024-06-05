@@ -2,9 +2,6 @@
 
 #include "../Globals.h"
 
-// https://refactoring.guru/design-patterns/singleton/cpp/example
-// We go with Naive Singleton for now
-
 enum GameStates {
     STATE_MENU = 0,
     STATE_NEWGAMESETUP = 1,
@@ -13,6 +10,8 @@ enum GameStates {
     STATE_GAMEOVER = 4
 };
 
+// https://refactoring.guru/design-patterns/singleton/cpp/example
+// We go with Naive Singleton for now
 class Game {
 protected:
     Game() = default;
