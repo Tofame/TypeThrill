@@ -119,7 +119,7 @@ void GameSaveManager::loadGame(int saveSlot) {
                 std::string option = matches[1].str();
                 std::string value = matches[2].str();
 
-                auto statisticsPanel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+                auto statisticsPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
                 if(statisticsPanel != nullptr) {
                     for(auto uielement : statisticsPanel->UIElements) {
                         if(uielement->getType() == TEXTFIELD) {
@@ -183,7 +183,7 @@ void GameSaveManager::saveGame(int saveSlot) {
 
     file << ">>ingame" << "\n";
     std::string textInput = "";
-    auto statisticsPanel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+    auto statisticsPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
     if(statisticsPanel != nullptr) {
         for(auto uielement : statisticsPanel->UIElements) {
             if(uielement->getType() == TEXTFIELD) {
@@ -197,7 +197,7 @@ void GameSaveManager::saveGame(int saveSlot) {
     file << ">>ingameEnd" << "\n";
 
     file << ">>words" << "\n";
-    auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
+    auto wordsPanel = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
     if(wordsPanel != nullptr) {
         for(auto uielement : wordsPanel->UIElements) {
             if(uielement->getType() == WORD) {

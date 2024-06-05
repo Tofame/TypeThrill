@@ -20,7 +20,7 @@ int main() {
     Settings::getInstance()->loadSettings(); // Loads values from Settings.txt
     Highscores::getInstance()->loadHighscores();
     WordLocales::loadLocales();
-    GameInterface::setupUI();
+    GameInterface::getInstance()->setupUI();
     Game::setGameState(Game::STATE_MENU, true);
 
     // Game loop that will work the same on different (weaker/stronger) computers

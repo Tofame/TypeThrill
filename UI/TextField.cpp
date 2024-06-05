@@ -48,7 +48,7 @@ void TextField::handleClick() {
     }
 
     // Disable all focused elements
-    for(auto panel : GameInterface::panels) {
+    for(auto panel : GameInterface::getInstance()->panels) {
         if(panel->isVisible()) {
             for(auto uielement : panel->UIElements) {
                 if(uielement->getState() == FOCUSED)

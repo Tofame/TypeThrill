@@ -149,7 +149,7 @@ int Highscores::updateHighScores() {
         }
 
         // Update dynamic text labels
-        auto panelHighscores = GameInterface::getPanelByType(PANEL_HIGHSCORES);
+        auto panelHighscores = GameInterface::getInstance()->getPanelByType(PANEL_HIGHSCORES);
         if(panelHighscores != nullptr) {
             panelHighscores->update();
         }

@@ -15,25 +15,25 @@ void Game::run() {
     // What is drawn/done depends on actual game state.
     switch(Game::getGameState()) {
         case STATE_PLAYING:
-            GameInterface::drawMenuBackground();
-            GameInterface::drawPanels();
+            GameInterface::getInstance()->drawMenuBackground();
+            GameInterface::getInstance()->drawPanels();
             WordSpawner::getInstance()->spawnWord();
             WordSpawner::getInstance()->moveWords();
             break;
         case STATE_MENU:
-            GameInterface::drawMenu();
+            GameInterface::getInstance()->drawMenu();
             break;
         case STATE_NEWGAMESETUP:
-            GameInterface::drawMenuBackground();
-            GameInterface::drawPanels();
+            GameInterface::getInstance()->drawMenuBackground();
+            GameInterface::getInstance()->drawPanels();
             break;
         case STATE_PAUSED:
-            GameInterface::drawMenuBackground();
-            GameInterface::drawPanels();
+            GameInterface::getInstance()->drawMenuBackground();
+            GameInterface::getInstance()->drawPanels();
             break;
         case STATE_GAMEOVER:
-            GameInterface::drawMenuBackground();
-            GameInterface::drawPanels();
+            GameInterface::getInstance()->drawMenuBackground();
+            GameInterface::getInstance()->drawPanels();
             break;
         default:
             break;
@@ -50,8 +50,8 @@ void Game::run() {
                         sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
                         ));
 
-                GameInterface::updatePanels();
-                GameInterface::updateGameTitle();
+                GameInterface::getInstance()->updatePanels();
+                GameInterface::getInstance()->updateGameTitle();
                 break;
             case sf::Event::TextEntered:
                 Game::handleTextEntered(event.text.unicode);
@@ -71,7 +71,7 @@ void Game::run() {
             {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-                for(auto panel : GameInterface::panels) {
+                for(auto panel : GameInterface::getInstance()->panels) {
                     for(auto uielement : panel->UIElements) {
                         if(uielement->isMouseOver(mousePosition))
                         {
@@ -106,7 +106,7 @@ void Game::handleMousePress(sf::Mouse::Button mouseButton) {
 }
 
 void Game::checkUIElementsForClick(sf::Vector2i mousePos) {
-    for (auto panel : GameInterface::panels) {
+    for (auto panel : GameInterface::getInstance()->panels) {
         if(panel->isVisible() == false)
             continue;
 
@@ -131,21 +131,21 @@ void Game::setGameState(GameStates state, bool hidePanels) {
     }
 
     if(hidePanels)
-        GameInterface::hideAllPanels();
+        GameInterface::getInstance()->hideAllPanels();
 
     switch(state) {
         case STATE_MENU:
         {
-            GameInterface::setMenuState(GameInterface::MENU_DEFAULT);
+            GameInterface::getInstance()->setMenuState(GameInterface::getInstance()->MENU_DEFAULT);
             Game::gameState = state;
             break;
         }
         case STATE_PLAYING:
         {
-            auto panelToShow1 = GameInterface::getPanelByType(PANEL_WORDS);
+            auto panelToShow1 = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
             if(panelToShow1 != nullptr)
                 panelToShow1->setVisibility(true);
-            auto panelToShow2 = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+            auto panelToShow2 = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
             if(panelToShow2 != nullptr)
                 panelToShow2->setVisibility(true);
             Game::gameState = state;
@@ -153,7 +153,7 @@ void Game::setGameState(GameStates state, bool hidePanels) {
         }
         case STATE_NEWGAMESETUP:
         {
-            auto panelToShow = GameInterface::getPanelByType(PANEL_NEWGAMESETUP);
+            auto panelToShow = GameInterface::getInstance()->getPanelByType(PANEL_NEWGAMESETUP);
             if(panelToShow != nullptr) {
                 panelToShow->setVisibility(true);
             }
@@ -167,7 +167,7 @@ void Game::setGameState(GameStates state, bool hidePanels) {
         }
         case STATE_GAMEOVER:
         {
-            auto panelToShow = GameInterface::getPanelByType(PANEL_GAMEOVER);
+            auto panelToShow = GameInterface::getInstance()->getPanelByType(PANEL_GAMEOVER);
             if(panelToShow != nullptr) {
                 panelToShow->setVisibility(true);
             }
@@ -198,7 +198,7 @@ void Game::handleTextEntered(sf::Uint32 unicode) {
         return;
     }
 
-    for(auto panel : GameInterface::panels) {
+    for(auto panel : GameInterface::getInstance()->panels) {
         if(panel->isVisible()) {
             for(auto uielement : panel->UIElements) {
                 if(uielement->getState() == FOCUSED || uielement->getState() == FOCUSED_ALWAYS) {
@@ -211,7 +211,7 @@ void Game::handleTextEntered(sf::Uint32 unicode) {
 }
 
 void Game::onGameOver() {
-    auto GameOverPanel = GameInterface::getPanelByType(PANEL_GAMEOVER);
+    auto GameOverPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMEOVER);
     if(GameOverPanel == nullptr) {
         throw std::runtime_error("Game::onGameOver() is called when PANEL_GAMEOVER doesn't exist (yet?).");
         return;
@@ -248,7 +248,7 @@ void Game::onGameOver() {
 void Game::pause() {
     auto gameState = Game::getGameState();
 
-    auto panelToShow = GameInterface::getPanelByType(PANEL_PAUSE);
+    auto panelToShow = GameInterface::getInstance()->getPanelByType(PANEL_PAUSE);
     if(panelToShow == nullptr) {
         throw std::runtime_error("Error in Game::Pause() - PANEL_PAUSE cannot be found.");
     }
@@ -275,5 +275,5 @@ void Game::backToMenu() {
     }
 
     Game::setGameState(STATE_MENU, true);
-    GameInterface::setMenuState(GameInterface::MENU_DEFAULT);
+    GameInterface::getInstance()->setMenuState(GameInterface::getInstance()->MENU_DEFAULT);
 }

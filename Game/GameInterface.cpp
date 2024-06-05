@@ -18,34 +18,45 @@
 
 #include "fmt/chrono.h"
 
-GameInterface::MenuStates GameInterface::menuState = GameInterface::MENU_DEFAULT;
-sf::Sprite GameInterface::backgroundSprite = sf::Sprite();
-sf::Texture GameInterface::backgroundTexture = sf::Texture();
-sf::Text GameInterface::gameTitle = sf::Text();
-
-std::vector<Panel*> GameInterface::panels = std::vector<Panel*>();
-
 void setupHighscoresPanel(Panel* panelWindow);
 
+GameInterface* GameInterface::gameInterface_ = nullptr;
+
+GameInterface::GameInterface() {
+    menuState = MENU_DEFAULT;
+    backgroundSprite = sf::Sprite();
+    backgroundTexture = sf::Texture();
+    gameTitle = sf::Text();
+
+    panels = std::vector<Panel*>();
+}
+
+GameInterface * GameInterface::getInstance() {
+    if(gameInterface_ == nullptr){
+        gameInterface_ = new GameInterface();
+    }
+    return gameInterface_;
+}
+
 void GameInterface::drawMenu() {
-    GameInterface::drawMenuBackground();
-    GameInterface::drawPanels();
+    drawMenuBackground();
+    drawPanels();
 }
 
 void GameInterface::drawMenuBackground() {
-    window.draw(GameInterface::getBackgroundSprite());
-    window.draw(GameInterface::getGameTitle());
+    window.draw(getBackgroundSprite());
+    window.draw(getGameTitle());
 }
 
 void GameInterface::drawPanels() {
-    for (auto panel : GameInterface::panels) {
+    for (auto panel : panels) {
         if(panel->isVisible())
             panel->draw();
     }
 }
 
 void GameInterface::hideAllPanels() {
-    for (auto panel : GameInterface::panels) {
+    for (auto panel : panels) {
         panel->setVisibility(false);
     }
 }
@@ -54,7 +65,7 @@ void GameInterface::setMenuState(MenuStates state) {
     // We wont make a check for getState != state here as its called in Game:setGameState and we need it.
 
     // Hide all panels and in switch we will show whatever panels should be visible
-    GameInterface::hideAllPanels();
+    hideAllPanels();
 
     switch(state) {
         case MENU_DEFAULT:
@@ -62,7 +73,7 @@ void GameInterface::setMenuState(MenuStates state) {
             auto panelToShow = getPanelByType(PANEL_MENU);
             if(panelToShow != nullptr)
                 panelToShow->setVisibility(true);
-            GameInterface::menuState = state;
+            menuState = state;
             break;
         }
         case MENU_SETTINGS:
@@ -70,7 +81,7 @@ void GameInterface::setMenuState(MenuStates state) {
             auto panelToShow = getPanelByType(PANEL_SETTINGS);
             if(panelToShow != nullptr)
                 panelToShow->setVisibility(true);
-            GameInterface::menuState = state;
+            menuState = state;
             break;
         }
         case MENU_LOAD:
@@ -78,7 +89,7 @@ void GameInterface::setMenuState(MenuStates state) {
             auto panelToShow = getPanelByType(PANEL_LOADGAME);
             if(panelToShow != nullptr)
                 panelToShow->setVisibility(true);
-            GameInterface::menuState = state;
+            menuState = state;
             break;
         }
         case MENU_HIGHSCORES:
@@ -86,7 +97,7 @@ void GameInterface::setMenuState(MenuStates state) {
             auto panelToShow = getPanelByType(PANEL_HIGHSCORES);
             if(panelToShow != nullptr)
                 panelToShow->setVisibility(true);
-            GameInterface::menuState = state;
+            menuState = state;
             break;
         }
         default:
@@ -95,7 +106,7 @@ void GameInterface::setMenuState(MenuStates state) {
 }
 
 GameInterface::MenuStates GameInterface::getMenuState() {
-    return GameInterface::menuState;
+    return menuState;
 }
 
 // SFML also provides a way to draw to a texture instead of directly to a window: https://www.sfml-dev.org/tutorials/2.6/graphics-draw.php
@@ -123,9 +134,9 @@ void GameInterface::setupBackgroundSprite() {
     }
     // Update backgroundTexture
     BG_RenderTexture.display();
-    GameInterface::backgroundTexture = BG_RenderTexture.getTexture();
+    backgroundTexture = BG_RenderTexture.getTexture();
 
-    GameInterface::backgroundSprite.setTexture(GameInterface::backgroundTexture);
+    backgroundSprite.setTexture(backgroundTexture);
 }
 
 void GameInterface::setupGameTitle() {
@@ -136,14 +147,14 @@ void GameInterface::setupGameTitle() {
     text.setOutlineColor(sf::Color::Black);
     text.setOutlineThickness(2);
     text.setString("TYPETHRILL");
-    GameInterface::setGameTitle(text);
+    setGameTitle(text);
 
     // Sets position of GameTitle
-    GameInterface::updateGameTitle();
+    updateGameTitle();
 }
 
 void GameInterface::updateGameTitle() {
-    sf::Text text = GameInterface::getGameTitle();
+    sf::Text text = getGameTitle();
 
     auto parentScale = panels[0]->body.getScale();
     text.setScale(parentScale);
@@ -158,7 +169,7 @@ void GameInterface::updateGameTitle() {
 
     text.setPosition(textCenter);
 
-    GameInterface::setGameTitle(text);
+    setGameTitle(text);
 }
 
 void GameInterface::setupPanels() {
@@ -171,9 +182,9 @@ void GameInterface::setupPanels() {
     panelMenu->setVisibility(true);
 
     panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::setGameState(Game::STATE_NEWGAMESETUP, true); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::setMenuState(MENU_LOAD); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::setMenuState(MENU_SETTINGS); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Highscores", []() -> void { GameInterface::setMenuState(MENU_HIGHSCORES); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::getInstance()->setMenuState(MENU_LOAD); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::getInstance()->setMenuState(MENU_SETTINGS); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::createMenuButton("Highscores", []() -> void { GameInterface::getInstance()->setMenuState(MENU_HIGHSCORES); }, {0.5, 0.10}));
     panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.10}));
     int i = 0;
     for(auto uielement : panelMenu->UIElements) {
@@ -242,7 +253,7 @@ void GameInterface::setupPanels() {
     wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
     panelSettings->addElement(wordFontComboBox);
 
-    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
@@ -554,7 +565,8 @@ void setupHighscoresPanel(Panel* panelWindow) {
         dynamicHighscoreLabel->setAlignType(ALIGN_NONE);
         panel->addElement(dynamicHighscoreLabel);
     }
-    panel->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
 
-    GameInterface::addPanelToVector(panel);
+    panel->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
+
+    GameInterface::getInstance()->addPanelToVector(panel);
 }

@@ -93,7 +93,7 @@ void Settings::loadSettings() {
 
 void Settings::restoreDefaultSettings() {
     // Reset values in TextField(s) etc.
-    auto settingsPanel = GameInterface::getPanelByType(PANEL_SETTINGS);
+    auto settingsPanel = GameInterface::getInstance()->getPanelByType(PANEL_SETTINGS);
     for(auto uielement : settingsPanel->UIElements) {
         // https://en.cppreference.com/w/cpp/language/dynamic_cast
         // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
@@ -128,7 +128,7 @@ void Settings::restoreDefaultSettings() {
 
 void Settings::saveSettingsPanel() {
     // Update DynamicTextLabel in GameStatistics
-    auto gameStatisticsPanel = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+    auto gameStatisticsPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
     if(gameStatisticsPanel == nullptr) {
         throw std::runtime_error("Settings::saveSettingsPanel() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
     }
@@ -205,10 +205,10 @@ void Settings::setUIScale(std::string const& value) {
     }
 
     // Refresh panel sizes
-    for(auto panel : GameInterface::panels) {
+    for(auto panel : GameInterface::getInstance()->panels) {
         panel->update();
     }
-    GameInterface::updateGameTitle();
+    GameInterface::getInstance()->updateGameTitle();
 }
 
 std::string Settings::getWordsFontName(bool defaultValue) {
@@ -333,8 +333,8 @@ void setSettingFromTextField(TextField* txtFieldPtr) {
         instance->setWordsSize(value);
     else if (text.starts_with("UI Scale")) {
         instance->setUIScale(value);
-        GameInterface::updatePanels();
-        GameInterface::updateGameTitle();
+        GameInterface::getInstance()->updatePanels();
+        GameInterface::getInstance()->updateGameTitle();
     }
 }
 

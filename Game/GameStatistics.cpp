@@ -78,7 +78,7 @@ void GameStatistics::setupDefaultStatistics() {
     this->resetTimePassedSinceStart();
     this->updateAverageTimePerWord();
 
-    this->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+    this->updateStatistics(GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setupStatistics(int score, int scored, int missed) {
@@ -87,7 +87,7 @@ void GameStatistics::setupStatistics(int score, int scored, int missed) {
     this->setWordsMissed(missed);
     // time since start
     this->updateAverageTimePerWord();
-    this->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+    this->updateStatistics(GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setWordsGeneralScore(int score) {
@@ -166,7 +166,7 @@ void GameStatistics::setTimePassedSinceStart(std::chrono::time_point<std::chrono
 }
 
 void GameStatistics::updateTimePassedSinceStart() {
-    this->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+    this->updateStatistics(GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS));
 }
 
 void GameStatistics::setPauseTime(std::chrono::high_resolution_clock::time_point time) {

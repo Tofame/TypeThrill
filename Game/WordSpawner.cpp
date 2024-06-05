@@ -38,7 +38,7 @@ void WordSpawner::spawnWord() {
         return;
     }
 
-    auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
+    auto wordsPanel = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
     auto word = new Word();
     // Words are not "left upper corner", but they are always -width, so its their position is actually (rightCorner, upper)
     // Thats why we calculate x ratio here to make them properly aligned to left side of panel
@@ -51,7 +51,7 @@ void WordSpawner::spawnWord() {
 
 // Spawn word method used when loading the game state from a save file
 void WordSpawner::spawnWord(float ratioX, float ratioY, std::string text) {
-    auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
+    auto wordsPanel = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
     auto word = new Word();
 
     sf::String sfString = sf::String::fromUtf8(text.begin(), text.end());
@@ -73,7 +73,7 @@ bool WordSpawner::canSpawnWord() {
 }
 
 void WordSpawner::moveWords() {
-    auto wordsPanel = GameInterface::getPanelByType(PANEL_WORDS);
+    auto wordsPanel = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
     if(wordsPanel == nullptr) {
         return;
     }
@@ -85,7 +85,7 @@ void WordSpawner::moveWords() {
         if(word->posRatio.getX() >= 1.0) {
             wordsPanel->removeElement(word);
             GameStatistics::getInstance()->increaseWordsMissed(1);
-            GameStatistics::getInstance()->updateStatistics(GameInterface::getPanelByType(PANEL_GAMESTATISTICS));
+            GameStatistics::getInstance()->updateStatistics(GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS));
             continue;
         }
 
@@ -95,9 +95,9 @@ void WordSpawner::moveWords() {
 }
 
 void WordSpawner::manageWords() {
-    auto panelGameStatistics = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+    auto panelGameStatistics = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
     if(panelGameStatistics == nullptr) {
-        throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
+        throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
     }
 
     TextField* textField = nullptr;
@@ -109,12 +109,12 @@ void WordSpawner::manageWords() {
     }
 
     if(textField == nullptr) {
-        throw std::runtime_error("WordSpawner::manageWords() can't seem to find TextField in PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
+        throw std::runtime_error("WordSpawner::manageWords() can't seem to find TextField in PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
     }
 
-    auto panelWords = GameInterface::getPanelByType(PANEL_WORDS);
+    auto panelWords = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
     if(panelWords == nullptr) {
-        throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::setupPanels())");
+        throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
     }
 
     auto input = textField->getInputString().toUtf32();
@@ -179,10 +179,10 @@ void WordSpawner::manageWords() {
 // Useful method when you want to clear e.g. input or when the game is over and you want to remove all the words
 void WordSpawner::clearWords(bool removeWords, bool removeHighlight, bool clearGameTextField) {
     if(removeWords || removeHighlight) {
-        auto panelWords = GameInterface::getPanelByType(PANEL_WORDS);
+        auto panelWords = GameInterface::getInstance()->getPanelByType(PANEL_WORDS);
         if (panelWords == nullptr) {
             throw std::runtime_error(
-                    "WordSpawner::clearWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::setupPanels())");
+                    "WordSpawner::clearWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
         }
 
         if(removeWords) {
@@ -202,9 +202,9 @@ void WordSpawner::clearWords(bool removeWords, bool removeHighlight, bool clearG
     }
 
     if(clearGameTextField) {
-        auto panelGameStatistics = GameInterface::getPanelByType(PANEL_GAMESTATISTICS);
+        auto panelGameStatistics = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
         if(panelGameStatistics == nullptr) {
-            throw std::runtime_error("WordSpawner::clearWords() can't seem to find PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::setupPanels())");
+            throw std::runtime_error("WordSpawner::clearWords() can't seem to find PANEL_GAMESTATISTICS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
         }
 
         for(auto uielement : panelGameStatistics->UIElements) {
