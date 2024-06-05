@@ -63,6 +63,7 @@ void Game::run() {
                 GameInterface::getInstance()->updateGameTitle();
                 break;
             case sf::Event::TextEntered:
+                fmt::println("uni {}", event.text.unicode);
                 Game::handleTextEntered(event.text.unicode);
                 break;
             case sf::Event::KeyPressed:
@@ -71,6 +72,14 @@ void Game::run() {
                 if (keyCode == sf::Keyboard::Key::Escape) {
                     Game::pause();
                 }
+
+                // Clears game text field
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) &&
+                    sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                {
+                    WordSpawner::getInstance()->clearWords(false, true, true);
+                }
+
                 break;
             }
             case sf::Event::MouseButtonPressed:
