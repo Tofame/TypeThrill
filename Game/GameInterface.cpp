@@ -63,7 +63,7 @@ void GameInterface::hideAllPanels() {
 }
 
 void GameInterface::setMenuState(MenuStates state) {
-    // We wont make a check for getState != state here as its called in Game:setGameState and we need it.
+    // We wont make a check for getState != state here as its called in Game:setGameState and we need it to not return prematurely.
 
     // Hide all panels and in switch we will show whatever panels should be visible
     hideAllPanels();

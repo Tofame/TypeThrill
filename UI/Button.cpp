@@ -29,6 +29,13 @@ void Button::handleClick() {
         return;
 
     this->onClick();
+
+    // If onClick made the button invisible then we remove the "Hovered" state.
+    // Example where without this code things would look weird:
+    // In main menu click 'Settings', then in Settings click 'Back'. DON`T move mouse. Then the 'Settings' button would be hovered.
+    if(this->isVisible() == false || this->getParent() && this->getParent()->isVisible() == false) {
+        this->setState(DEFAULT);
+    }
 }
 
 void Button::update() {
