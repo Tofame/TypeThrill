@@ -141,7 +141,6 @@ void GameSaveManager::loadGameFromFile(int saveSlot) {
                     std::string ratioX = matches[1].str();
                     std::string ratioY = matches[2].str();
                     std::string word = matches[3].str();
-                    fmt::println("rat {} ray {} wordd {}", ratioX, ratioY, word);
 
                     WordSpawner::getInstance()->spawnWord(std::stof(ratioX), std::stof(ratioY), word);
                 } else {
@@ -218,4 +217,5 @@ void GameSaveManager::saveGame(int saveSlot) {
 void GameSaveManager::loadGame(int saveSlot) {
     loadGameFromFile(saveSlot);
     Game::getInstance()->setGameState(STATE_PLAYING, true);
+    Game::getInstance()->pause();
 }

@@ -63,7 +63,6 @@ void Game::run() {
                 GameInterface::getInstance()->updateGameTitle();
                 break;
             case sf::Event::TextEntered:
-                fmt::println("uni {}", event.text.unicode);
                 Game::handleTextEntered(event.text.unicode);
                 break;
             case sf::Event::KeyPressed:
