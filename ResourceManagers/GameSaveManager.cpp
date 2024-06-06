@@ -151,6 +151,18 @@ bool GameSaveManager::loadGameFromFile(int saveSlot) {
         }
     }
 
+    // Update DynamicTextLabel in GameStatistics
+    auto gameStatisticsPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
+    if(gameStatisticsPanel == nullptr) {
+        throw std::runtime_error("GameSaveManager::loadGameFromFile() can't seem to find PANEL_GAMESTATISTICS. Does it exist at that time?");
+    }
+
+    for(auto uielement : gameStatisticsPanel->UIElements) {
+        if(uielement->getType() == DYNAMICTEXTLABEL) {
+            uielement->update();
+        }
+    }
+
     return true;
 }
 
