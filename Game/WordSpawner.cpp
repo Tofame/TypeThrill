@@ -117,6 +117,7 @@ void WordSpawner::manageWords() {
         throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
     }
 
+    // sf::String converted to utf32 string as we later in code below use e.g.: sf::Uint32 letter = wordString[index];
     auto input = textField->getInputString().toUtf32();
 
     for(int uiIndex = 0; uiIndex < panelWords->UIElements.size(); uiIndex++) {
