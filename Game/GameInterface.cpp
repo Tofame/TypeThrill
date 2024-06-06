@@ -280,6 +280,9 @@ void GameInterface::setupPanels() {
     UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::getInstance()->setUIScale(UIScaleSetting->getInputString()); };
     panelSettings->addElement(UIScaleSetting);
 
+    // Make UIScale hidden when ComboBox is active (otherwise they would overlap)
+    wordFontComboBox->addElementToHide(UIScaleSetting);
+
     panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
     panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));

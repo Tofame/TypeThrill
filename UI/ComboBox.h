@@ -20,8 +20,8 @@ public:
 
     bool isMouseOver(const sf::Vector2i& mousePos) override;
 
-    void addElementToHide();
-    void getElementsToHide();
+    void addElementToHide(UIElement* element);
+    void removeElementToHide(UIElement* element);
 
     std::vector<Button*> comboButtons = std::vector<Button*>();
     void addComboButton(std::string buttonText, std::function<void()> const& onClick);
@@ -49,5 +49,5 @@ private:
     // elementsToHide is a vector that stores elements that could overlap with radio buttons
     // of a combobox. elementsToHide's purpose is to hide those elements when activate()/deactivate()
     // methods are called
-    std::vector<UIElement*> elementsToHide = std::vector<UIElement*>(3);
+    std::vector<UIElement*> elementsToHide = std::vector<UIElement*>();
 };

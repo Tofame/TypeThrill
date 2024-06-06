@@ -126,10 +126,17 @@ bool ComboBox::isMouseOver(const sf::Vector2i& mousePos) {
     return mouseOverButton || body.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
 }
 
-void ComboBox::addElementToHide() {
+// Adds specified element to elementsToHide vector
+void ComboBox::addElementToHide(UIElement* element) {
+    this->elementsToHide.push_back(element);
 }
 
-void ComboBox::getElementsToHide() {
+// Removes specified element from elementsToHide vector
+void ComboBox::removeElementToHide(UIElement* element) {
+    // https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position
+    // Author of comment: Georg Fritzsche
+    // This combination is also known as the erase-remove idiom.
+    this->elementsToHide.erase(std::remove(elementsToHide.begin(), elementsToHide.end(), element), elementsToHide.end());
 }
 
 sf::Text& ComboBox::getText() {
@@ -199,11 +206,19 @@ Button* ComboBox::getElement(int index) {
 
 void ComboBox::activate() {
     active = true;
+
+    for(auto elementToHide : this->elementsToHide) {
+        elementToHide->setVisibility(false);
+    }
 }
 
 void ComboBox::deactivate() {
     active = false;
     this->setState(DEFAULT);
+
+    for(auto elementToHide : this->elementsToHide) {
+        elementToHide->setVisibility(true);
+    }
 }
 
 bool ComboBox::isActive() {
