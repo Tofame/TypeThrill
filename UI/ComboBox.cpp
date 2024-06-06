@@ -31,8 +31,8 @@ ComboBox::ComboBox(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios)
 }
 
 ComboBox::~ComboBox() {
-    for(auto uielement : UIElements) {
-        this->removeElement(uielement);
+    for(auto comboButton : comboButtons) {
+        this->removeElement(comboButton);
     }
 }
 
@@ -47,8 +47,8 @@ void ComboBox::draw() {
     }
 
     if(this->isActive() && this->isEnabled()) {
-        for(auto uielement : UIElements) {
-            uielement->draw();
+        for(auto comboButton : comboButtons) {
+            comboButton->draw();
         }
     }
 }
@@ -84,10 +84,10 @@ void ComboBox::update() {
     this->chosenText.setPosition(bodyPosition);
     this->chosenText.setScale(parentScale);
 
-    for(auto uielement : this->UIElements) {
-        uielement->update();
-        uielement->setPosition(this->body.getPosition().x, uielement->body.getPosition().y);
-        uielement->getText().setOrigin(-2 * parentScale.x,0);
+    for(auto comboButton : this->comboButtons) {
+        comboButton->update();
+        comboButton->setPosition(this->body.getPosition().x, comboButton->body.getPosition().y);
+        comboButton->getText().setOrigin(-2 * parentScale.x,0);
     }
 }
 
@@ -98,9 +98,9 @@ void ComboBox::handleClick() {
     if(this->isActive()) {
         this->deactivate();
 
-        for(auto uielement : this->UIElements) {
-            if(uielement->isMouseOver(sf::Mouse::getPosition(window))) {
-                uielement->handleClick();
+        for(auto comboButton : this->comboButtons) {
+            if(comboButton->isMouseOver(sf::Mouse::getPosition(window))) {
+                comboButton->handleClick();
                 break;
             }
         }
@@ -113,17 +113,23 @@ bool ComboBox::isMouseOver(const sf::Vector2i& mousePos) {
     auto mouseOverButton = false;
 
     if(isActive()) {
-        for(auto uielement : this->UIElements) {
-            if(uielement->isMouseOver(mousePos)) {
-                uielement->setState(HOVERED);
+        for(auto comboButton : this->comboButtons) {
+            if(comboButton->isMouseOver(mousePos)) {
+                comboButton->setState(HOVERED);
                 mouseOverButton = true;
             } else {
-                uielement->setState(DEFAULT);
+                comboButton->setState(DEFAULT);
             }
         }
     }
 
     return mouseOverButton || body.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos));
+}
+
+void ComboBox::addElementToHide() {
+}
+
+void ComboBox::getElementsToHide() {
 }
 
 sf::Text& ComboBox::getText() {
@@ -139,7 +145,7 @@ void ComboBox::addComboButton(std::string buttonText, std::function<void()> cons
     button->body = sf::RectangleShape({this->body.getSize().x, 30});
     button->body.setOutlineThickness(2);
     button->body.setOutlineColor(sf::Color::Black);
-    if(this->UIElements.size() % 2 == 0) {
+    if(this->comboButtons.size() % 2 == 0) {
         button->body.setFillColor(sf::Color(115, 114, 114));
     } else {
         button->body.setFillColor(sf::Color(77, 77, 77));
@@ -158,37 +164,37 @@ void ComboBox::addComboButton(std::string buttonText, std::function<void()> cons
     this->addElement(button);
 }
 
-void ComboBox::addElement(Button* UIElement) {
-    UIElement->setParent(this);
+void ComboBox::addElement(Button* comboButton) {
+    comboButton->setParent(this);
 
     // Automatic adjusting of ratios when adding to ComboBox
     float calculatedPosYRatio = 0.0f;
-    if (!this->UIElements.empty()) {
-        auto lastElement = this->UIElements.back();
+    if (!this->comboButtons.empty()) {
+        auto lastElement = this->comboButtons.back();
         calculatedPosYRatio = lastElement->posRatio.getY() + 0.1 + (lastElement->body.getSize().y / this->body.getSize().y);
     } else {
-        calculatedPosYRatio = 1 + UIElement->body.getSize().y / this->body.getSize().y;
+        calculatedPosYRatio = 1 + comboButton->body.getSize().y / this->body.getSize().y;
     }
 
-    UIElement->posRatio.setValues(this->posRatio.getX(), calculatedPosYRatio);
+    comboButton->posRatio.setValues(this->posRatio.getX(), calculatedPosYRatio);
 
-    UIElement->update();
-    this->UIElements.push_back(UIElement);
+    comboButton->update();
+    this->comboButtons.push_back(comboButton);
 }
 
-void ComboBox::removeElement(Button* UIElement) {
-    auto it = std::find(this->UIElements.begin(), UIElements.end(), UIElement);
-    if (it != UIElements.end()) {
+void ComboBox::removeElement(Button* comboButton) {
+    auto it = std::find(this->comboButtons.begin(), comboButtons.end(), comboButton);
+    if (it != comboButtons.end()) {
         delete *it;
-        UIElements.erase(it);
+        comboButtons.erase(it);
     }
 }
 
 Button* ComboBox::getElement(int index) {
-    if (index < 0 || index >= UIElements.size()) {
+    if (index < 0 || index >= comboButtons.size()) {
         throw std::out_of_range("Index " + std::to_string(index) + " out of range in Panel::getElement");
     }
-    return this->UIElements.at(index);
+    return this->comboButtons.at(index);
 }
 
 void ComboBox::activate() {
