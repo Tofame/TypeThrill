@@ -56,7 +56,7 @@ void GameSaveManager::loadGameFromFile(int saveSlot) {
     std::regex pattern("([a-zA-Z_]+)[=]{1}(.+)");
 
     // Pattern for words as they are e.g.: 0.3,0.2,slon while options are option=value
-    std::regex patternWord("([0-1][.][0-9]{1,2}),([0-1][.][0-9]),(.+)");
+    std::regex patternWord("([0-1][.][0-9]+),([0-1][.][0-9]+),(.+)");
 
     std::smatch matches;
 
@@ -150,8 +150,6 @@ void GameSaveManager::loadGameFromFile(int saveSlot) {
             }
         }
     }
-
-    Game::getInstance()->setGameState(STATE_PLAYING, true);
 }
 
 void GameSaveManager::saveGameToFile(int saveSlot) {
@@ -215,4 +213,9 @@ void GameSaveManager::saveGame(int saveSlot) {
     saveGameToFile(saveSlot);
 
     Game::getInstance()->backToMenu();
+}
+
+void GameSaveManager::loadGame(int saveSlot) {
+    loadGameFromFile(saveSlot);
+    Game::getInstance()->setGameState(STATE_PLAYING, true);
 }

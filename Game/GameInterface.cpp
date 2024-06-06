@@ -494,7 +494,24 @@ void GameInterface::setupPanels() {
 
     auto buttonSave3 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(3); }, {0.8, 0.50}, {140, 160});
     panelPause->addElement(buttonSave3);
-    //buttonSave3->posRatio.setX(buttonSave3->posRatio.getX() + (buttonSave3->body.getLocalBounds().width/panelPause->body.getLocalBounds().width));
+
+    // Load Game Panel Setup
+    auto panelLoadGame = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_LOADGAME);
+
+    auto loadGameLabel = new TextLabel("LOAD GAME", {0.5, 0.01});
+    loadGameLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
+    panelLoadGame->addElement(loadGameLabel);
+
+    panelLoadGame->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.5, 0.94}, {100, 40}));
+
+    auto buttonLoad1 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.2, 0.50}, {140, 160});
+    panelLoadGame->addElement(buttonLoad1);
+
+    auto buttonLoad2 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {140, 160});
+    panelLoadGame->addElement(buttonLoad2);
+
+    auto buttonLoad3 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.8, 0.50}, {140, 160});
+    panelLoadGame->addElement(buttonLoad3);
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
@@ -505,6 +522,7 @@ void GameInterface::setupPanels() {
     GameInterface::addPanelToVector(panelNewGameSetup);
     GameInterface::addPanelToVector(panelGameOver);
     GameInterface::addPanelToVector(panelPause);
+    GameInterface::addPanelToVector(panelLoadGame);
     // Adds Highscores Panel to vector
     setupHighscoresPanel(panelWindow);
 

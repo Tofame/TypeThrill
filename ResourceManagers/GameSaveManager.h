@@ -19,4 +19,5 @@ public:
     void saveGameToFile(int saveSlot);
 
     void saveGame(int saveSlot);
+    void loadGame(int saveSlot);
 };
