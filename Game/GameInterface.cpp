@@ -194,9 +194,9 @@ void GameInterface::setupPanels() {
     }
 
     // ================= Setting up the Settings Panel
-    auto panelSettings = UIElementFactory::createPanel(panelWindow, {700, 600}, {0.5, 0.30}, PANEL_SETTINGS);
+    auto panelSettings = UIElementFactory::createPanel(panelWindow, {740, 740}, {0.5, 0.20}, PANEL_SETTINGS);
 
-    auto settingsTextLabel = new TextLabel("Click 'Save' to keep changes even after game is closed.", {0.5, 0.80});
+    auto settingsTextLabel = new TextLabel("Click 'Save' to keep changes even after game is closed.", {0.5, 0.84});
     panelSettings->addElement(settingsTextLabel);
 
     auto wordSpeedField = UIElementFactory::createTextField(
@@ -235,54 +235,21 @@ void GameInterface::setupPanels() {
     );
     panelSettings->addElement(wordHighlight);
 
-    auto UIScaleSetting = UIElementFactory::createTextField(
-        fmt::format("{:.2f}", Settings::getInstance()->getUIScale(false)),
-        {0.01, 0.70},
-        "UI Scale (max 5.99)",
-        L"^[0-2]([.][0-9]{0,2})?$"
-    );
-    UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::getInstance()->setUIScale(UIScaleSetting->getInputString()); };
-    panelSettings->addElement(UIScaleSetting);
-
-    auto wordFontComboBox = UIElementFactory::createComboBox(
-        fmt::format("{}", Settings::getInstance()->getWordsFontName(false)),
-        {0.01, 0.45},
-        "Word Font"
-    );
-    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::getInstance()->setWordsFontName("voye"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::getInstance()->setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
-    panelSettings->addElement(wordFontComboBox);
-
-    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
-
-    // ================= Setting up the STATE_NEWGAMESETUP Panel
-    auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {740, 600}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
-
-    auto gameCriteriasLabel = new TextLabel("Check the criteria for game end", {0.5, 0.03});
-    panelNewGameSetup->addElement(gameCriteriasLabel);
-
-    auto gameLocaleLabel = new TextLabel("Setup Locale", {0.5, 0.5});
-    panelNewGameSetup->addElement(gameLocaleLabel);
-
     auto gameLocaleTextField = UIElementFactory::createTextField(
         fmt::format("{}", Settings::getInstance()->getWordLocale(false)),
-        {0.2, 0.62},
+        {0.01, 0.45},
         "Word Locale:",
         L".{0,17}"
     );
-    gameLocaleTextField->setOffsetBodyAfterText(140);
-    panelNewGameSetup->addElement(gameLocaleTextField);
+    panelSettings->addElement(gameLocaleTextField);
 
     auto confirmLocaleButton = UIElementFactory::createMenuButton(
             "Confirm",
             []() -> void {},
-            {0.75, 0.64},
+            {0.75, 0.47},
             {100, 34}
     );
-    panelNewGameSetup->addElement(confirmLocaleButton);
+    panelSettings->addElement(confirmLocaleButton);
 
     gameLocaleTextField->onTextFieldUpdate = [confirmLocaleButton]() -> void { confirmLocaleButton->body.setFillColor(sf::Color::Red); };
     confirmLocaleButton->onClick = [confirmLocaleButton, gameLocaleTextField]() -> void { WordLocales::validateLocale(confirmLocaleButton, gameLocaleTextField); };
@@ -290,21 +257,50 @@ void GameInterface::setupPanels() {
     auto localeExplanationLabel = new TextLabel(
             "Locales are taken from Resources/Locales/ and you can put your own there.\nYou must follow the format:\n"
             "cUsTomLocAle.txt -> cUsTomLocAle;\tspaceWords.txt -> spaceWords",
-            {0.5, 0.7}
+            {0.5, 0.50}
         );
-    panelNewGameSetup->addElement(localeExplanationLabel);
+    panelSettings->addElement(localeExplanationLabel);
+
+    auto wordFontComboBox = UIElementFactory::createComboBox(
+        fmt::format("{}", Settings::getInstance()->getWordsFontName(false)),
+        {0.01, 0.65},
+        "Word Font"
+    );
+    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::getInstance()->setWordsFontName("voye"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::getInstance()->setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
+    panelSettings->addElement(wordFontComboBox);
+
+    auto UIScaleSetting = UIElementFactory::createTextField(
+        fmt::format("{:.2f}", Settings::getInstance()->getUIScale(false)),
+        {0.01, 0.75},
+        "UI Scale (max 5.99)",
+        L"^[0-2]([.][0-9]{0,2})?$"
+    );
+    UIScaleSetting->onTextFieldUpdate = [UIScaleSetting]() -> void { Settings::getInstance()->setUIScale(UIScaleSetting->getInputString()); };
+    panelSettings->addElement(UIScaleSetting);
+
+    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
+    panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
+
+    // ================= Setting up the STATE_NEWGAMESETUP Panel
+    auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {740, 440}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
+
+    auto gameCriteriasLabel = new TextLabel("Check the criteria for game end", {0.5, 0.03});
+    panelNewGameSetup->addElement(gameCriteriasLabel);
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Start",
         []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::getInstance()->setGameState(STATE_PLAYING, true); },
-        {0.60, 0.95},
+        {0.60, 0.90},
         {100, 40}
     ));
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Back",
         []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::getInstance()->setGameState(STATE_MENU, true); },
-        {0.40, 0.95},
+        {0.40, 0.90},
         {100, 40}
     ));
 
@@ -331,7 +327,7 @@ void GameInterface::setupPanels() {
 
     auto gameEndCriterium_time = UIElementFactory::createMenuCheckbox(
         1.0,
-        {0.01, 0.25},
+        {0.01, 0.30},
         "End on Time",
         Settings::getInstance()->getEndGameCriteriumBool("endGame_time_bool"),
         [](bool value) -> void { Settings::getInstance()->setEndGameCriteriumBool("endGame_time_bool", value); }
@@ -340,7 +336,7 @@ void GameInterface::setupPanels() {
 
     auto gameEndCriterium_timeTextField = UIElementFactory::createTextField(
         fmt::format("{:.2f}", Settings::getInstance()->getEndGameCriterium_time().count()),
-        {0.5, 0.25},
+        {0.5, 0.30},
         "Value: ",
         L"^[0-9]{1,7}([.][0-9]{0,5})?$"
     );
@@ -352,7 +348,7 @@ void GameInterface::setupPanels() {
 
     auto gameEndCriterium_score = UIElementFactory::createMenuCheckbox(
         1.0,
-        {0.01, 0.35},
+        {0.01, 0.45},
         "End on Score",
         Settings::getInstance()->getEndGameCriteriumBool("endGame_score_bool"),
         [](bool value) -> void { Settings::getInstance()->setEndGameCriteriumBool("endGame_score_bool", value); }
@@ -361,7 +357,7 @@ void GameInterface::setupPanels() {
 
     auto gameEndCriterium_scoreTextField = UIElementFactory::createTextField(
         fmt::format("{}", Settings::getInstance()->getEndGameCriterium_score()),
-        {0.5, 0.35},
+        {0.5, 0.45},
         "Value: ",
         L"^[1-9]{1}[0-9]{0,9}$"
     );

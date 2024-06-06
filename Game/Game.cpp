@@ -88,28 +88,7 @@ void Game::run() {
                 break;
             case sf::Event::MouseMoved:
             {
-                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-
-                for(auto panel : GameInterface::getInstance()->panels) {
-                    if(!panel->isVisible() || !panel->isMouseOver(mousePosition) ) {
-                        continue;
-                    }
-
-                    for(auto uielement : panel->UIElements) {
-                        if(uielement->isMouseOver(mousePosition))
-                        {
-                            if(uielement->getState() == DEFAULT) {
-                                uielement->setState(HOVERED);
-                            }
-                            break;
-                        } else {
-                            if(uielement->getState() == HOVERED) {
-                                uielement->setState(DEFAULT);
-                            }
-                        }
-                    }
-                }
-
+                Game::onMouseMove();
                 break;
             }
             default:
@@ -262,6 +241,30 @@ void Game::onGameOver() {
             highscoreTextLabel->getText().setString(fmt::format("New Highscore!\nYour score is Top {}", highscoreCheck+1));
         }
         highscoreTextLabel->update();
+    }
+}
+
+void Game::onMouseMove() {
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+    for(auto panel : GameInterface::getInstance()->panels) {
+        if(!panel->isVisible() || !panel->isMouseOver(mousePosition) ) {
+            continue;
+        }
+
+        for(auto uielement : panel->UIElements) {
+            if(uielement->isMouseOver(mousePosition))
+            {
+                if(uielement->getState() == DEFAULT) {
+                    uielement->setState(HOVERED);
+                }
+                break;
+            } else {
+                if(uielement->getState() == HOVERED) {
+                    uielement->setState(DEFAULT);
+                }
+            }
+        }
     }
 }
 

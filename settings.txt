@@ -18,6 +18,10 @@ words_size=1.00
 // Possible: true,false
 words_highlight=true
 
+// Locale is a file that contains list of possible words that can appear in-game
+// Check resources folder to see existing .txt
+word_locale=english
+
 // ============ Interface Settings
 // UI Size: scales all kinds of elements like buttons etc.
 ui_scale=1.00

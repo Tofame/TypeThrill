@@ -1,5 +1,7 @@
 #include "Settings.h"
 
+#include <codecvt>
+
 #include "Globals.h"
 
 #include <fstream>
@@ -295,6 +297,8 @@ void restoreDefaultTextFields(TextField* txtFieldPtr) {
         txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getWordsFrequency(true)));
     else if (text.starts_with("Word Size"))
         txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getWordsSize(true)));
+    else if (text.starts_with("Word Locale"))
+        txtFieldPtr->setInput(fmt::format("{}", instance->getWordLocale(true)));
     else if (text.starts_with("UI Scale"))
         txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getUIScale(true)));
 
@@ -331,6 +335,8 @@ void setSettingFromTextField(TextField* txtFieldPtr) {
         instance->setWordsFrequency(value);
     else if (text.starts_with("Word Size"))
         instance->setWordsSize(value);
+    else if (text.starts_with("Word Locale"))
+        instance->setWordLocale(value);
     else if (text.starts_with("UI Scale")) {
         instance->setUIScale(value);
         GameInterface::getInstance()->updatePanels();
@@ -373,6 +379,8 @@ void Settings::saveSettings() {
                 newValue = fmt::format("{:.5f}", Settings::getWordsSpeed(false));
             } else if (option == "words_size") {
                 newValue = fmt::format("{:.2f}", Settings::getWordsSize(false));
+            } else if (option == "word_locale") {
+                newValue = fmt::format("{}", Settings::getWordLocale(false));
             } else if (option == "words_highlight") {
                 newValue = Settings::isWordsHighlightEnabled(false) ? "true" : "false";
             } else if (option == "ui_scale") {
@@ -467,7 +475,7 @@ int Settings::getEndGameCriterium_score() {
     return std::stoi(settingsMap["endGame_score_value"]);
 }
 
-void Settings::setWordLocale(std::string &value) {
+void Settings::setWordLocale(std::string value) {
     settingsMap["word_locale"] = value;
 }
 

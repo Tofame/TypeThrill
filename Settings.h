@@ -48,7 +48,7 @@ public:
     void setUIScale(std::string const& value);
     float getUIScale(bool defaultValue);
 
-    void setWordLocale(std::string& value);
+    void setWordLocale(std::string value);
     std::string getWordLocale(bool defaultValue);
 
     std::string buildEndGameSettings();
