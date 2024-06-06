@@ -503,13 +503,13 @@ void GameInterface::setupPanels() {
 
     panelLoadGame->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.5, 0.94}, {100, 40}));
 
-    auto buttonLoad1 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.2, 0.50}, {140, 160});
+    auto buttonLoad1 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.5, 0.25}, {600, 100});
     panelLoadGame->addElement(buttonLoad1);
 
-    auto buttonLoad2 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {140, 160});
+    auto buttonLoad2 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {600, 100});
     panelLoadGame->addElement(buttonLoad2);
 
-    auto buttonLoad3 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.8, 0.50}, {140, 160});
+    auto buttonLoad3 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.5, 0.75}, {600, 100});
     panelLoadGame->addElement(buttonLoad3);
 
     // Adding each Panel to Panels Vector

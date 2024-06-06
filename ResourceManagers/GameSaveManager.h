@@ -15,8 +15,8 @@ public:
 
     static GameSaveManager* getInstance();
 
-    void loadGameFromFile(int saveSlot);
-    void saveGameToFile(int saveSlot);
+    bool loadGameFromFile(int saveSlot);
+    bool saveGameToFile(int saveSlot);
 
     void saveGame(int saveSlot);
     void loadGame(int saveSlot);

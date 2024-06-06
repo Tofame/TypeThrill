@@ -41,7 +41,7 @@ GameSaveManager* GameSaveManager::getInstance()
     return gameSaveManager_;
 }
 
-void GameSaveManager::loadGameFromFile(int saveSlot) {
+bool GameSaveManager::loadGameFromFile(int saveSlot) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
     }
@@ -49,7 +49,8 @@ void GameSaveManager::loadGameFromFile(int saveSlot) {
     auto file = std::fstream(projectPath + "/Resources/GameFiles/save" + std::to_string(saveSlot) + ".txt");
 
     if (!file) {
-        throw std::runtime_error("Unable to open a saved game file - .txt.");
+        return false;
+        //throw std::runtime_error("Unable to open a saved game file - .txt.");
     }
 
     // Pattern for everything besides Words
@@ -149,9 +150,11 @@ void GameSaveManager::loadGameFromFile(int saveSlot) {
             }
         }
     }
+
+    return true;
 }
 
-void GameSaveManager::saveGameToFile(int saveSlot) {
+bool GameSaveManager::saveGameToFile(int saveSlot) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
     }
@@ -161,7 +164,8 @@ void GameSaveManager::saveGameToFile(int saveSlot) {
     auto file = std::ofstream(projectPath + "/Resources/GameFiles/save" + std::to_string(saveSlot) + ".txt", std::ofstream::out | std::ofstream::trunc);
 
     if (!file) {
-        throw std::runtime_error(fmt::format("Unable to open a saved game file - {}.txt.", std::to_string(saveSlot)));
+        return false;
+        //throw std::runtime_error(fmt::format("Unable to open a saved game file - {}.txt.", std::to_string(saveSlot)));
     }
 
     // Writing to file all the statistics, settings etc.
@@ -206,6 +210,8 @@ void GameSaveManager::saveGameToFile(int saveSlot) {
 
     // Closing
     file.close();
+
+    return true;
 }
 
 void GameSaveManager::saveGame(int saveSlot) {
@@ -215,7 +221,10 @@ void GameSaveManager::saveGame(int saveSlot) {
 }
 
 void GameSaveManager::loadGame(int saveSlot) {
-    loadGameFromFile(saveSlot);
+    if(!loadGameFromFile(saveSlot)) {
+        return;
+    };
+
     Game::getInstance()->setGameState(STATE_PLAYING, true);
     Game::getInstance()->pause();
 }
