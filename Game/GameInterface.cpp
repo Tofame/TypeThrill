@@ -266,9 +266,9 @@ void GameInterface::setupPanels() {
         {0.01, 0.65},
         "Word Font"
     );
-    wordFontComboBox->addRadioButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::getInstance()->setWordsFontName("voye"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::getInstance()->setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
-    wordFontComboBox->addRadioButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addComboButton("voye", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("voye"); Settings::getInstance()->setWordsFontName("voye"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addComboButton("aleoRegular", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("aleoRegular"); Settings::getInstance()->setWordsFontName("aleoRegular"); wordFontComboBox->deactivate(); });
+    wordFontComboBox->addComboButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
     panelSettings->addElement(wordFontComboBox);
 
     auto UIScaleSetting = UIElementFactory::createTextField(

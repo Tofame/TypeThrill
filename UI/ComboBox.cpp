@@ -134,7 +134,7 @@ void ComboBox::setText(sf::Text &text) {
     this->text = text;
 }
 
-void ComboBox::addRadioButton(std::string buttonText, std::function<void()> const& onClick) {
+void ComboBox::addComboButton(std::string buttonText, std::function<void()> const& onClick) {
     auto button = new Button();
     button->body = sf::RectangleShape({this->body.getSize().x, 30});
     button->body.setOutlineThickness(2);

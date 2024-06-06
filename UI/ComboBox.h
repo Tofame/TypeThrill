@@ -22,7 +22,7 @@ public:
 
     std::vector<Button*> UIElements = std::vector<Button*>();
 
-    void addRadioButton(std::string buttonText, std::function<void()> const& onClick);
+    void addComboButton(std::string buttonText, std::function<void()> const& onClick);
 
     void addElement(Button* ptrUIElement);
     void removeElement(Button* ptrUIElement);
