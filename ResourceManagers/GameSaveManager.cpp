@@ -248,7 +248,7 @@ void GameSaveManager::saveGame(int saveSlot) {
     );
     this->updateSlotUIElements();
 
-    Game::getInstance()->backToMenu();
+    GameSaveManager::getInstance()->lambdaHideSaveSlots();
 }
 
 void GameSaveManager::loadGame(int saveSlot) {

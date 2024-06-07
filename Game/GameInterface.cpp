@@ -504,14 +504,14 @@ void GameInterface::setupPanels() {
         {0.01, 0.01}, 3 /* save slot index */, panelPause, buttonSave3
     );
 
-    std::function<void()> lambdaHideSaveSlots = [buttonSave1, buttonSave2, buttonSave3, saveDescriptionLabel1, saveDescriptionLabel2, saveDescriptionLabel3]() -> void
+    GameSaveManager::getInstance()->lambdaHideSaveSlots = [buttonSave1, buttonSave2, buttonSave3, saveDescriptionLabel1, saveDescriptionLabel2, saveDescriptionLabel3]() -> void
     {
         if(!buttonSave1->isVisible()) return;
         buttonSave1->toggleVisibility(); buttonSave2->toggleVisibility(); buttonSave3->toggleVisibility();
         saveDescriptionLabel1->toggleVisibility(), saveDescriptionLabel2->toggleVisibility(), saveDescriptionLabel3->toggleVisibility();
     };
 
-    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", [lambdaHideSaveSlots]() -> void { lambdaHideSaveSlots(); Game::getInstance()->backToMenu(); }, {0.85, 0.94}, {150, 40}));
+    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { GameSaveManager::getInstance()->lambdaHideSaveSlots(); Game::getInstance()->backToMenu(); }, {0.85, 0.94}, {150, 40}));
     panelPause->addElement(UIElementFactory::createMenuButton(
         "Show Save Slots",
         [buttonSave1, buttonSave2, buttonSave3, saveDescriptionLabel1, saveDescriptionLabel2, saveDescriptionLabel3]() -> void

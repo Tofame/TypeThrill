@@ -32,6 +32,9 @@ public:
     std::vector<std::string> getSavedGameInformation(int slotIndex);
     std::string getSlotDescription(int slotIndex);
 
+    // A lambda that is properly initialized in GameInterface::setupUI
+    // It will hide the save slots that are visible in Pause Panel during the game
+    std::function<void()> lambdaHideSaveSlots = []() -> void {};
 private:
     // Contains 'maxSaveSlots' keys after calling GameSaveManager::preloadInitialInformation()
     // Depending on existence of a game save file it will either have a string vetor containing "empty" at index 0
