@@ -68,4 +68,4 @@ add_executable(TypeThrill
         ResourceManagers/GameSaveManager.cpp
         ResourceManagers/GameSaveManager.h
 )
-target_link_libraries(TypeThrill sfml-graphics sfml-audio fmt)
+target_link_libraries(TypeThrill sfml-graphics fmt)
