@@ -231,6 +231,10 @@ bool GameSaveManager::saveGameToFile(int saveSlot) {
 }
 
 void GameSaveManager::saveGame(int saveSlot) {
+    // We must first add pause time to the variable that holds time passed since start, because otherwise the time 'passes' during pause
+    auto newTime = GameStatistics::getInstance()->getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getInstance()->getPauseTime());
+    GameStatistics::getInstance()->setTimePassedSinceStart(newTime);
+
     saveGameToFile(saveSlot);
 
     setSavedGameInformation(
