@@ -438,7 +438,7 @@ void Settings::loadSetingsOnNewGame() {
 
                 std::string text = comboBoxPtr->getText().getString();
                 if (text.starts_with("Word Font")) {
-                    settingsMap["words_font"] = comboBoxPtr->getChosenTextString();
+                    settingsMap["words_fontName"] = comboBoxPtr->getChosenTextString();
                 }
                 break;
             }
