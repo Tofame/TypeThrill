@@ -47,7 +47,7 @@ public:
 
     bool isVisible();
     void setVisibility(bool value);
-    void toggleVisibility(bool value);
+    void toggleVisibility();
 
     bool isEnabled();
     void setEnabled(bool value);

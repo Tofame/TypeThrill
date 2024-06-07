@@ -1,5 +1,7 @@
 #include "UIElementFactory.h"
 
+#include "../ResourceManagers/GameSaveManager.h"
+
 sf::Color UIElementFactory::ColorBlue = sf::Color(52, 194, 199);
 sf::Color UIElementFactory::ColorGreen = sf::Color(52, 235, 88);
 sf::Color UIElementFactory::ColorGray = sf::Color(105,104,102);
@@ -187,4 +189,49 @@ Panel* UIElementFactory::createPanel(UIElement* parent, sf::Vector2f size, sf::V
     rect.setOutlineThickness(3);
 
     return panel;
+}
+
+Button* UIElementFactory::createSaveSlot(const std::string& name, sf::Vector2f posRatios, sf::Vector2f size, int slotIndex) {
+    auto element = new Button(size, posRatios);
+    element->onClick = [slotIndex]() -> void { GameSaveManager::getInstance()->saveGame(slotIndex); };
+
+    auto& rect = element->body;
+    rect.setFillColor(sf::Color(48, 48, 47));
+    rect.setOutlineColor(sf::Color::White);
+    rect.setOutlineThickness(3);
+
+    auto text = sf::Text();
+    text.setFont(FontManager::Fonts["jaro"]);
+    text.setCharacterSize(GameInterface::smallCharacterSize);
+    text.setFillColor(sf::Color::White);
+    text.setOutlineColor(sf::Color::Black);
+    text.setOutlineThickness(1);
+    text.setString(name);
+    text.setPosition(rect.getPosition());
+    text.move(rect.getSize().x/2 - text.getGlobalBounds().width/2, rect.getSize().y/2 - text.getGlobalBounds().height + text.getGlobalBounds().height/3);
+    element->setText(text);
+
+    element->setVisibility(false);
+    return element;
+}
+
+DynamicTextLabel* UIElementFactory::createSaveSlotDynamicLabel(sf::Vector2f ratios, int slotIndex, Panel* panelToFitInto, Button* saveButton) {
+    auto onUpdateString = [slotIndex]() -> std::string {
+        return GameSaveManager::getInstance()->getSlotDescription(slotIndex);
+    };
+
+    auto element = new DynamicTextLabel(ratios, onUpdateString);
+
+    element->getText().setCharacterSize(GameInterface::smallCharacterSize);
+    element->setAlignType(ALIGN_NONE);
+
+    // This adds description label to the panel so it will be drawn
+    panelToFitInto->addElement(element);
+
+    // And then we set parent of the said label to the element (Save button)
+    // so the update() function can position it based on element's position.
+    element->setParent(saveButton);
+
+    element->setVisibility(false);
+    return element;
 }

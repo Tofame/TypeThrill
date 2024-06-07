@@ -17,11 +17,15 @@ int main() {
     // Always place resource loaders first, then loadSettings second  (the following classes use them)
     FontManager::loadFonts();
     WordLocales::loadLocales();
-    
+
     Settings::getInstance()->preLoadSettings(true); // Setups the std::map (settingsMap)
     Settings::getInstance()->loadSettings(); // Loads values from Settings.txt
     Highscores::getInstance()->loadHighscores();
     GameInterface::getInstance()->setupUI();
+
+    // Order of calling the method below doesn't matter, it just should be after setupUI (as it uses some panels)
+    GameSaveManager::getInstance()->preloadInitialInformation();
+
     Game::getInstance()->setGameState(STATE_MENU, true);
 
     // Game loop that will work the same on different (weaker/stronger) computers

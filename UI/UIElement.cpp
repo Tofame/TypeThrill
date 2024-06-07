@@ -6,7 +6,7 @@ UIElement* UIElement::getParent() { return parent; };
 // Returns the value of 'visibility' field. It decides whether UIElement is drawn or not.
 bool UIElement::isVisible() { return visibility; };
 void UIElement::setVisibility(bool value) { visibility = value; };
-void UIElement::toggleVisibility(bool value) { visibility = !visibility; };
+void UIElement::toggleVisibility() { visibility = !visibility; };
 
 // Returns the value of 'enabled' field. It decides whether UIElement is responsive
 // This means that 'enabled' = false, will mean it can't be: clicked, written, checked etc.

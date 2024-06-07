@@ -33,6 +33,10 @@ std::string ws2s(const std::wstring& wstr)
 }
 
 
+GameSaveManager::GameSaveManager() {
+    this->savedGamesInformation = std::map<int, std::vector<std::string>>();
+}
+
 GameSaveManager* GameSaveManager::getInstance()
 {
     if(gameSaveManager_ == nullptr){
@@ -229,6 +233,17 @@ bool GameSaveManager::saveGameToFile(int saveSlot) {
 void GameSaveManager::saveGame(int saveSlot) {
     saveGameToFile(saveSlot);
 
+    setSavedGameInformation(
+        saveSlot,
+        {
+            "W. Scored: " + std::to_string(GameStatistics::getInstance()->getWordsScored()),
+            "W. Missed: " + std::to_string(GameStatistics::getInstance()->getWordsMissed()),
+            "Score: " + std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()),
+            "Time Passed: " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart())
+        }
+    );
+    this->updateSlotUIElements();
+
     Game::getInstance()->backToMenu();
 }
 
@@ -239,4 +254,122 @@ void GameSaveManager::loadGame(int saveSlot) {
 
     Game::getInstance()->setGameState(STATE_PLAYING, true);
     Game::getInstance()->pause();
+}
+
+// This method is meant to setup a collection (savedGamesInformation) that will store basic save information and this info
+// will be used in load/save buttons in panels. So they show either "<EMPTY>" or some statistics.
+// savedGamesInformation comments contain more information on that matter.
+void GameSaveManager::preloadInitialInformation() {
+    for(auto slotIndex = 1; slotIndex <= maxSaveSlots; slotIndex++) {
+        // Initializes vector with empty strings, without it we will have segmentation fault due to calling e.g. [slotIndex][0]
+        this->savedGamesInformation[slotIndex] = {"", "", "", ""};
+
+        auto file = std::fstream(projectPath + "/Resources/GameFiles/save" + std::to_string(slotIndex) + ".txt");
+        if (!file) {
+            this->savedGamesInformation[slotIndex][0] = "empty";
+            continue;
+        }
+
+        // Pattern for everything besides Words
+        std::regex pattern("([a-zA-Z_]+)[=]{1}(.+)");
+
+        std::smatch matches;
+
+        // Helpful variable to break loop below quicker
+        bool statisticsObtained = false;
+
+        for (auto line = std::string(); std::getline(file, line); ) {
+            if(line == ">>statistics") {
+                while(std::getline(file, line) && line != ">>statisticsEnd") {
+                    if(line.empty() || line[0] == '/')
+                        continue;
+
+                    if (std::regex_match(line, matches, pattern)) {
+                        std::string option = matches[1].str();
+                        std::string value = matches[2].str();
+
+                        if(option == "wordsScored") {
+                            this->savedGamesInformation[slotIndex][0] = "W. Scored: " + value;
+                        } else if(option == "wordsMissed") {
+                            this->savedGamesInformation[slotIndex][1] = "W. Missed: " + value;
+                        } else if(option == "generalScore") {
+                            this->savedGamesInformation[slotIndex][2] = "Score: " + value;
+                        } else if(option == "timePassed") {
+                            this->savedGamesInformation[slotIndex][3] = "Time Passed: " + value;
+                        }
+                    } else {
+                        throw std::runtime_error("[GameSaveManager::preloadInitialInformation()] Malformed statistics part, line: " + line + " of save file: save" + std::to_string(slotIndex));
+                    }
+                }
+                statisticsObtained = true;
+            }
+
+            // We stop looping through lines in this save
+            if(statisticsObtained) break;
+        }
+    }
+
+    this->updateSlotUIElements();
+}
+
+void GameSaveManager::updateSlotUIElements() {
+    auto loadSlots = std::vector<UIElement*>(3);
+    auto saveSlots = std::vector<UIElement*>(3);
+
+    auto loadGamePanel = GameInterface::getInstance()->getPanelByType(PANEL_LOADGAME);
+    if(loadGamePanel == nullptr) {
+        throw std::runtime_error("GameSaveManager::updateSlotUIElements() couldn't find PANEL_LOADGAME");
+    }
+    auto pausePanel = GameInterface::getInstance()->getPanelByType(PANEL_PAUSE);
+    if(pausePanel == nullptr) {
+        throw std::runtime_error("GameSaveManager::updateSlotUIElements() couldn't find PANEL_PAUSE");
+    }
+
+    for(auto uielement : loadGamePanel->UIElements) {
+        if(uielement->getType() == DYNAMICTEXTLABEL) {
+            uielement->update();
+        }
+    }
+
+    for(auto uielement : pausePanel->UIElements) {
+        if(uielement->getType() == DYNAMICTEXTLABEL) {
+            uielement->update();
+        }
+    }
+}
+
+void GameSaveManager::setSavedGameInformation(int slotIndex, std::vector<std::string> params) {
+    if(slotIndex <= 0 || slotIndex > maxSaveSlots) {
+        throw std::runtime_error("GameSaveManager::getSavedGameInformation() index "
+                            + std::to_string(slotIndex) + " is out of bounds (" + std::to_string(maxSaveSlots) + ")");
+    }
+
+    savedGamesInformation[slotIndex] = params;
+}
+
+std::vector<std::string> GameSaveManager::getSavedGameInformation(int slotIndex) {
+    if(slotIndex <= 0 || slotIndex > maxSaveSlots) {
+        throw std::runtime_error("GameSaveManager::getSavedGameInformation() index "
+                            + std::to_string(slotIndex) + " is out of bounds (" + std::to_string(maxSaveSlots) + ")");
+    }
+
+    if(savedGamesInformation.contains(slotIndex)) {
+        return savedGamesInformation[slotIndex];
+    }
+
+    return {};
+}
+
+std::string GameSaveManager::getSlotDescription(int slotIndex) {
+    std::string desc;
+    auto infoVec = GameSaveManager::getInstance()->getSavedGameInformation(slotIndex);
+    if(infoVec.empty() == false) {
+        for(auto info : infoVec) {
+            desc += info + "\n";
+        }
+    } else {
+        desc = "EMPTY";
+    }
+
+    return desc;
 }

@@ -1,10 +1,14 @@
 #pragma once
+#include <functional>
+#include <map>
+#include <string>
+#include <vector>
 
 // https://refactoring.guru/design-patterns/singleton/cpp/example
 // We go with Naive Singleton for now
 class GameSaveManager {
 protected:
-    GameSaveManager() = default;
+    GameSaveManager();
     static GameSaveManager* gameSaveManager_;
 
 public:
@@ -20,4 +24,17 @@ public:
 
     void saveGame(int saveSlot);
     void loadGame(int saveSlot);
+
+    void preloadInitialInformation();
+    void updateSlotUIElements();
+
+    void setSavedGameInformation(int slotIndex, std::vector<std::string> params);
+    std::vector<std::string> getSavedGameInformation(int slotIndex);
+    std::string getSlotDescription(int slotIndex);
+
+private:
+    // Contains 'maxSaveSlots' keys after calling GameSaveManager::preloadInitialInformation()
+    // Depending on existence of a game save file it will either have a string vetor containing "empty" at index 0
+    // or it will have all statistics - 0 = wordsScored, 1 = wordsMissed, 2 = generalScore, 3 = timePassed
+    std::map<int, std::vector<std::string>> savedGamesInformation;
 };

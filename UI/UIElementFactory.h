@@ -39,4 +39,7 @@ public:
     static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size);
 
     static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType panelType);
+
+    static Button* createSaveSlot(const std::string& name, sf::Vector2f posRatios, sf::Vector2f size, int slotIndex);
+    static DynamicTextLabel* createSaveSlotDynamicLabel(sf::Vector2f ratios, int slotIndex, Panel* panelToFitInto, Button* saveButton);
 };

@@ -483,19 +483,47 @@ void GameInterface::setupPanels() {
     pauseLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
     panelPause->addElement(pauseLabel);
 
-    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::getInstance()->backToMenu(); }, {0.5, 0.90}, {150, 40}));
-
-    auto buttonSave1 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(1); }, {0.2, 0.50}, {140, 160});
+    auto buttonSave1 = UIElementFactory::createSaveSlot("Save Slot", {0.5, 0.25}, {640, 120}, 1 /* save slot index */);
     panelPause->addElement(buttonSave1);
+    // Dynamic text label that will show description of save/load file
+    auto saveDescriptionLabel1 = UIElementFactory::createSaveSlotDynamicLabel(
+        {0.01, 0.01}, 1 /* save slot index */, panelPause, buttonSave1
+    );
 
-    auto buttonSave2 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(2); }, {0.5, 0.50}, {140, 160});
+    auto buttonSave2 = UIElementFactory::createSaveSlot("Save Slot", {0.5, 0.50}, {640, 120}, 2 /* save slot index */);
     panelPause->addElement(buttonSave2);
+    // Dynamic text label that will show description of save/load file
+    auto saveDescriptionLabel2 = UIElementFactory::createSaveSlotDynamicLabel(
+        {0.01, 0.01}, 2 /* save slot index */, panelPause, buttonSave2
+    );
 
-    auto buttonSave3 = UIElementFactory::createMenuButton("Save Slot", []() -> void { GameSaveManager::getInstance()->saveGame(3); }, {0.8, 0.50}, {140, 160});
+    auto buttonSave3 = UIElementFactory::createSaveSlot("Save Slot", {0.5, 0.75}, {640, 120}, 3 /* save slot index */);
     panelPause->addElement(buttonSave3);
+    // Dynamic text label that will show description of save/load file
+    auto saveDescriptionLabel3 = UIElementFactory::createSaveSlotDynamicLabel(
+        {0.01, 0.01}, 3 /* save slot index */, panelPause, buttonSave3
+    );
+
+    std::function<void()> lambdaShowSaveSlots = [buttonSave1, buttonSave2, buttonSave3, saveDescriptionLabel1, saveDescriptionLabel2, saveDescriptionLabel3]() -> void
+    {
+        buttonSave1->toggleVisibility(); buttonSave2->toggleVisibility(); buttonSave3->toggleVisibility();
+        saveDescriptionLabel1->toggleVisibility(), saveDescriptionLabel2->toggleVisibility(), saveDescriptionLabel3->toggleVisibility();
+    };
+
+    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", [lambdaShowSaveSlots]() -> void { lambdaShowSaveSlots(); Game::getInstance()->backToMenu(); }, {0.85, 0.94}, {150, 40}));
+    panelPause->addElement(UIElementFactory::createMenuButton(
+        "Show Save Slots",
+        [buttonSave1, buttonSave2, buttonSave3, saveDescriptionLabel1, saveDescriptionLabel2, saveDescriptionLabel3]() -> void
+        {
+            buttonSave1->toggleVisibility(); buttonSave2->toggleVisibility(); buttonSave3->toggleVisibility();
+            saveDescriptionLabel1->toggleVisibility(), saveDescriptionLabel2->toggleVisibility(), saveDescriptionLabel3->toggleVisibility();
+        },
+        {0.15, 0.94}, {150, 40})
+    );
+    panelPause->addElement(UIElementFactory::createMenuButton("Resume", []() -> void { Game::getInstance()->pause(); }, {0.5, 0.94}, {150, 40}));
 
     // Load Game Panel Setup
-    auto panelLoadGame = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_LOADGAME);
+    auto panelLoadGame = UIElementFactory::createPanel(panelWindow, {700, 660}, {0.5, 0.25}, PANEL_LOADGAME);
 
     auto loadGameLabel = new TextLabel("LOAD GAME", {0.5, 0.01});
     loadGameLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
@@ -503,14 +531,38 @@ void GameInterface::setupPanels() {
 
     panelLoadGame->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.5, 0.94}, {100, 40}));
 
-    auto buttonLoad1 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.5, 0.25}, {600, 100});
+    auto buttonLoad1 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.5, 0.25}, {600, 120});
     panelLoadGame->addElement(buttonLoad1);
+    auto buttonLoadDescriptionLabel1 = UIElementFactory::createInfoDynamicLabel(
+        {0.01, 0.01},
+        []() -> std::string {
+            return GameSaveManager::getInstance()->getSlotDescription(1);
+        }
+    );
+    panelLoadGame->addElement(buttonLoadDescriptionLabel1);
+    buttonLoadDescriptionLabel1->setParent(buttonLoad1);
 
-    auto buttonLoad2 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {600, 100});
+    auto buttonLoad2 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {600, 120});
     panelLoadGame->addElement(buttonLoad2);
+    auto buttonLoadDescriptionLabel2 = UIElementFactory::createInfoDynamicLabel(
+        {0.01, 0.01},
+        []() -> std::string {
+            return GameSaveManager::getInstance()->getSlotDescription(2);
+        }
+    );
+    panelLoadGame->addElement(buttonLoadDescriptionLabel2);
+    buttonLoadDescriptionLabel2->setParent(buttonLoad2);
 
-    auto buttonLoad3 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.5, 0.75}, {600, 100});
+    auto buttonLoad3 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.5, 0.75}, {600, 120});
     panelLoadGame->addElement(buttonLoad3);
+    auto buttonLoadDescriptionLabel3 = UIElementFactory::createInfoDynamicLabel(
+        {0.01, 0.01},
+        []() -> std::string {
+            return GameSaveManager::getInstance()->getSlotDescription(3);
+        }
+    );
+    panelLoadGame->addElement(buttonLoadDescriptionLabel3);
+    buttonLoadDescriptionLabel3->setParent(buttonLoad3);
 
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
