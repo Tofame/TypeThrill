@@ -126,6 +126,12 @@ void Settings::restoreDefaultSettings() {
 
     // This basically will reset all the keys in the map (meaning it will reset settings)
     preLoadSettings(false);
+
+    // We reset UIScale to default and so we should refresh UI
+    for(auto panel : GameInterface::getInstance()->panels) {
+        panel->update();
+    }
+    GameInterface::getInstance()->updateGameTitle();
 }
 
 void Settings::saveSettingsPanel() {
@@ -299,8 +305,9 @@ void restoreDefaultTextFields(TextField* txtFieldPtr) {
         txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getWordsSize(true)));
     else if (text.starts_with("Word Locale"))
         txtFieldPtr->setInput(fmt::format("{}", instance->getWordLocale(true)));
-    else if (text.starts_with("UI Scale"))
+    else if (text.starts_with("UI Scale")) {
         txtFieldPtr->setInput(fmt::format("{:.2f}", instance->getUIScale(true)));
+    }
 
     txtFieldPtr->update();
 }
