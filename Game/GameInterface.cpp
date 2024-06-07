@@ -179,14 +179,14 @@ void GameInterface::setupPanels() {
     panelWindow->setPanelType(PANEL_WINDOW);
 
     // ================= Setting up the Menu Panel
-    auto panelMenu = UIElementFactory::createPanel(panelWindow, {300, 440}, {0.5, 0.45}, PANEL_MENU);
+    auto panelMenu = UIElementFactory::getInstance()->createPanel(panelWindow, {300, 440}, {0.5, 0.45}, PANEL_MENU);
     panelMenu->setVisibility(true);
 
-    panelMenu->addElement(UIElementFactory::createMenuButton("New Game", []() -> void { Game::getInstance()->setGameState(STATE_NEWGAMESETUP, true); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Load Game", []() -> void { GameInterface::getInstance()->setMenuState(MENU_LOAD); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Settings", []() -> void { GameInterface::getInstance()->setMenuState(MENU_SETTINGS); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Highscores", []() -> void { GameInterface::getInstance()->setMenuState(MENU_HIGHSCORES); }, {0.5, 0.10}));
-    panelMenu->addElement(UIElementFactory::createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::getInstance()->createMenuButton("New Game", []() -> void { Game::getInstance()->setGameState(STATE_NEWGAMESETUP, true); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::getInstance()->createMenuButton("Load Game", []() -> void { GameInterface::getInstance()->setMenuState(MENU_LOAD); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::getInstance()->createMenuButton("Settings", []() -> void { GameInterface::getInstance()->setMenuState(MENU_SETTINGS); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::getInstance()->createMenuButton("Highscores", []() -> void { GameInterface::getInstance()->setMenuState(MENU_HIGHSCORES); }, {0.5, 0.10}));
+    panelMenu->addElement(UIElementFactory::getInstance()->createMenuButton("Exit", []() -> void { exit(0); }, {0.5, 0.10}));
     int i = 0;
     for(auto uielement : panelMenu->UIElements) {
         uielement->posRatio.setValues(0.5, (uielement->posRatio.getY() + i * 0.19) + 0.02);
@@ -194,12 +194,12 @@ void GameInterface::setupPanels() {
     }
 
     // ================= Setting up the Settings Panel
-    auto panelSettings = UIElementFactory::createPanel(panelWindow, {740, 740}, {0.5, 0.20}, PANEL_SETTINGS);
+    auto panelSettings = UIElementFactory::getInstance()->createPanel(panelWindow, {740, 740}, {0.5, 0.20}, PANEL_SETTINGS);
 
     auto settingsTextLabel = new TextLabel("Click 'Save' to keep changes even after game is closed.", {0.5, 0.84});
     panelSettings->addElement(settingsTextLabel);
 
-    auto wordSpeedField = UIElementFactory::createTextField(
+    auto wordSpeedField = UIElementFactory::getInstance()->createTextField(
         fmt::format("{:.5f}", Settings::getInstance()->getWordsSpeed(false)),
         {0.01, 0.05},
         "Word Speed",
@@ -208,7 +208,7 @@ void GameInterface::setupPanels() {
     wordSpeedField->onTextFieldUpdate = [wordSpeedField]() -> void { Settings::getInstance()->setWordsSpeed(wordSpeedField->getInputString()); };
     panelSettings->addElement(wordSpeedField);
 
-    auto wordFrequencyField = UIElementFactory::createTextField(
+    auto wordFrequencyField = UIElementFactory::getInstance()->createTextField(
         fmt::format("{:.2f}", Settings::getInstance()->getWordsFrequency(false)),
         {0.01, 0.15},
         "Word Frequency",
@@ -217,7 +217,7 @@ void GameInterface::setupPanels() {
     wordFrequencyField->onTextFieldUpdate = [wordFrequencyField]() -> void { Settings::getInstance()->setWordsFrequency(wordFrequencyField->getInputString()); };
     panelSettings->addElement(wordFrequencyField);
 
-    auto wordSize = UIElementFactory::createTextField(
+    auto wordSize = UIElementFactory::getInstance()->createTextField(
         fmt::format("{:.2f}", Settings::getInstance()->getWordsSize(false)),
         {0.01, 0.25},
         "Word Size",
@@ -226,7 +226,7 @@ void GameInterface::setupPanels() {
     wordSize->onTextFieldUpdate = [wordSize]() -> void { Settings::getInstance()->setWordsSize(wordSize->getInputString()); };
     panelSettings->addElement(wordSize);
 
-    auto wordHighlight = UIElementFactory::createMenuCheckbox(
+    auto wordHighlight = UIElementFactory::getInstance()->createMenuCheckbox(
         1.0,
         {0.01, 0.35},
         "Word Highlight",
@@ -235,7 +235,7 @@ void GameInterface::setupPanels() {
     );
     panelSettings->addElement(wordHighlight);
 
-    auto gameLocaleTextField = UIElementFactory::createTextField(
+    auto gameLocaleTextField = UIElementFactory::getInstance()->createTextField(
         fmt::format("{}", Settings::getInstance()->getWordLocale(false)),
         {0.01, 0.45},
         "Word Locale:",
@@ -243,7 +243,7 @@ void GameInterface::setupPanels() {
     );
     panelSettings->addElement(gameLocaleTextField);
 
-    auto confirmLocaleButton = UIElementFactory::createMenuButton(
+    auto confirmLocaleButton = UIElementFactory::getInstance()->createMenuButton(
             "Confirm",
             []() -> void {},
             {0.75, 0.47},
@@ -261,7 +261,7 @@ void GameInterface::setupPanels() {
         );
     panelSettings->addElement(localeExplanationLabel);
 
-    auto wordFontComboBox = UIElementFactory::createComboBox(
+    auto wordFontComboBox = UIElementFactory::getInstance()->createComboBox(
         fmt::format("{}", Settings::getInstance()->getWordsFontName(false)),
         {0.01, 0.65},
         "Word Font"
@@ -271,7 +271,7 @@ void GameInterface::setupPanels() {
     wordFontComboBox->addComboButton("arial", [wordFontComboBox]() -> void { wordFontComboBox->setChosenText("arial"); Settings::getInstance()->setWordsFontName("arial"); wordFontComboBox->deactivate(); });
     panelSettings->addElement(wordFontComboBox);
 
-    auto UIScaleSetting = UIElementFactory::createTextField(
+    auto UIScaleSetting = UIElementFactory::getInstance()->createTextField(
         fmt::format("{:.2f}", Settings::getInstance()->getUIScale(false)),
         {0.01, 0.75},
         "UI Scale (max 5.99)",
@@ -283,31 +283,31 @@ void GameInterface::setupPanels() {
     // Make UIScale hidden when ComboBox is active (otherwise they would overlap)
     wordFontComboBox->addElementToHide(UIScaleSetting);
 
-    panelSettings->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
-    panelSettings->addElement(UIElementFactory::createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
+    panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
 
     // ================= Setting up the STATE_NEWGAMESETUP Panel
-    auto panelNewGameSetup = UIElementFactory::createPanel(panelWindow, {740, 440}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
+    auto panelNewGameSetup = UIElementFactory::getInstance()->createPanel(panelWindow, {740, 440}, {0.5, 0.30}, PANEL_NEWGAMESETUP);
 
     auto gameCriteriasLabel = new TextLabel("Check the criteria for game end", {0.5, 0.03});
     panelNewGameSetup->addElement(gameCriteriasLabel);
 
-    panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
+    panelNewGameSetup->addElement(UIElementFactory::getInstance()->createMenuButton(
         "Start",
         []() -> void { Game::getInstance()->onGameStart(); },
         {0.60, 0.90},
         {100, 40}
     ));
 
-    panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
+    panelNewGameSetup->addElement(UIElementFactory::getInstance()->createMenuButton(
         "Back",
         []() -> void { Game::getInstance()->setGameState(STATE_MENU, true); },
         {0.40, 0.90},
         {100, 40}
     ));
 
-    auto gameEndCriterium_wordsMissed = UIElementFactory::createMenuCheckbox(
+    auto gameEndCriterium_wordsMissed = UIElementFactory::getInstance()->createMenuCheckbox(
         1.0,
         {0.01, 0.15},
         "End on Words Missed",
@@ -316,7 +316,7 @@ void GameInterface::setupPanels() {
     );
     panelNewGameSetup->addElement(gameEndCriterium_wordsMissed);
 
-    auto gameEnd_wordsMissedTextField = UIElementFactory::createTextField(
+    auto gameEnd_wordsMissedTextField = UIElementFactory::getInstance()->createTextField(
         fmt::format("{}", Settings::getInstance()->getEndGameCriterium_missedWords()),
         {0.5, 0.15},
         "Value: ",
@@ -328,7 +328,7 @@ void GameInterface::setupPanels() {
     };
     panelNewGameSetup->addElement(gameEnd_wordsMissedTextField);
 
-    auto gameEndCriterium_time = UIElementFactory::createMenuCheckbox(
+    auto gameEndCriterium_time = UIElementFactory::getInstance()->createMenuCheckbox(
         1.0,
         {0.01, 0.30},
         "End on Time",
@@ -337,7 +337,7 @@ void GameInterface::setupPanels() {
     );
     panelNewGameSetup->addElement(gameEndCriterium_time);
 
-    auto gameEndCriterium_timeTextField = UIElementFactory::createTextField(
+    auto gameEndCriterium_timeTextField = UIElementFactory::getInstance()->createTextField(
         fmt::format("{:.2f}", Settings::getInstance()->getEndGameCriterium_time().count()),
         {0.5, 0.30},
         "Value: ",
@@ -349,7 +349,7 @@ void GameInterface::setupPanels() {
     };
     panelNewGameSetup->addElement(gameEndCriterium_timeTextField);
 
-    auto gameEndCriterium_score = UIElementFactory::createMenuCheckbox(
+    auto gameEndCriterium_score = UIElementFactory::getInstance()->createMenuCheckbox(
         1.0,
         {0.01, 0.45},
         "End on Score",
@@ -358,7 +358,7 @@ void GameInterface::setupPanels() {
     );
     panelNewGameSetup->addElement(gameEndCriterium_score);
 
-    auto gameEndCriterium_scoreTextField = UIElementFactory::createTextField(
+    auto gameEndCriterium_scoreTextField = UIElementFactory::getInstance()->createTextField(
         fmt::format("{}", Settings::getInstance()->getEndGameCriterium_score()),
         {0.5, 0.45},
         "Value: ",
@@ -371,16 +371,16 @@ void GameInterface::setupPanels() {
     panelNewGameSetup->addElement(gameEndCriterium_scoreTextField);
 
     // ================= Setting up the Panels for the actual Game (WORDS and GAMESTATISTICS)
-    auto panelWords = UIElementFactory::createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);
+    auto panelWords = UIElementFactory::getInstance()->createPanel(panelWindow, {1700, 500}, {0.5, 0.20}, PANEL_WORDS);
     panelWords->body.setOutlineThickness(4);
     panelWords->body.setFillColor(sf::Color(153, 153, 153, 60));
 
-    auto panelGameStatistics = UIElementFactory::createPanel(panelWindow, {1700, 280}, {0.5, 0.67}, PANEL_GAMESTATISTICS);
+    auto panelGameStatistics = UIElementFactory::getInstance()->createPanel(panelWindow, {1700, 280}, {0.5, 0.67}, PANEL_GAMESTATISTICS);
     panelGameStatistics->body.setOutlineThickness(4);
     panelGameStatistics->body.setOutlineColor(sf::Color(219, 170, 44));
     panelGameStatistics->body.setFillColor(sf::Color(153, 153, 153, 60));
 
-    auto gameInputWords = UIElementFactory::createTextField(
+    auto gameInputWords = UIElementFactory::getInstance()->createTextField(
         "",
         {0.5, 0.35},
         "",
@@ -391,38 +391,38 @@ void GameInterface::setupPanels() {
     gameInputWords->setState(FOCUSED_ALWAYS);
     panelGameStatistics->addElement(gameInputWords);
 
-    auto averageTimePerWord = UIElementFactory::createStatisticsDynamicLabel(
+    auto averageTimePerWord = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
         {0.79, 0.10},
         []() -> std::string { return "Av. word/s: " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getAverageTimePerWord()); }
     );
     panelGameStatistics->addElement(averageTimePerWord);
 
-    auto timePassed = UIElementFactory::createStatisticsDynamicLabel(
+    auto timePassed = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
         {0.79, 0.25},
         []() -> std::string { return "Time passed (s): " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()); }
     );
     panelGameStatistics->addElement(timePassed);
 
-    auto wordsScored = UIElementFactory::createStatisticsDynamicLabel(
+    auto wordsScored = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
         {0.05, 0.10},
         []() -> std::string { return "Words Scored: " + std::to_string(GameStatistics::getInstance()->getWordsScored()); }
     );
     panelGameStatistics->addElement(wordsScored);
 
-    auto wordsMissed = UIElementFactory::createStatisticsDynamicLabel(
+    auto wordsMissed = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
         {0.05, 0.25},
         []() -> std::string { return "Words Missed: " + std::to_string(GameStatistics::getInstance()->getWordsMissed()); }
     );
     panelGameStatistics->addElement(wordsMissed);
 
-    auto generalScore = UIElementFactory::createStatisticsDynamicLabel(
+    auto generalScore = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
         {0.05, 0.40},
         []() -> std::string { return "General Score: " + std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()); }
     );
     panelGameStatistics->addElement(generalScore);
 
     // It cant be normal TextLabel and needs to be Dynamic as it needs updating in Settings::getInstance()->applySettings();
-    auto whatSettingsLabel = UIElementFactory::createInfoDynamicLabel(
+    auto whatSettingsLabel = UIElementFactory::getInstance()->createInfoDynamicLabel(
         {0.2, 0.85},
         []() -> std::string {
             return fmt::format(
@@ -435,7 +435,7 @@ void GameInterface::setupPanels() {
     );
     panelGameStatistics->addElement(whatSettingsLabel);
 
-    auto whatGameSettingsPanel = UIElementFactory::createInfoDynamicLabel(
+    auto whatGameSettingsPanel = UIElementFactory::getInstance()->createInfoDynamicLabel(
         {0.2, 0.75},
         []() -> std::string {
             return fmt::format("[Selected End Criterium]\t {}", Settings::getInstance()->buildEndGameSettings());
@@ -444,7 +444,7 @@ void GameInterface::setupPanels() {
     panelGameStatistics->addElement(whatGameSettingsPanel);
 
     // Game Over Panel
-    auto panelGameOver = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_GAMEOVER);
+    auto panelGameOver = UIElementFactory::getInstance()->createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_GAMEOVER);
     panelGameOver->body.setOutlineThickness(4);
     panelGameOver->body.setOutlineColor(sf::Color(209, 31, 34));
     panelGameOver->body.setFillColor(sf::Color(15, 15, 15, 210));
@@ -472,9 +472,9 @@ void GameInterface::setupPanels() {
     gameOverOverallStats->getText().setCharacterSize(GameInterface::mediumLiteCharacterSize);
     panelGameOver->addElement(gameOverOverallStats);
 
-    panelGameOver->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { Game::getInstance()->backToMenu(); }, {0.5, 0.90}, {150, 40}));
+    panelGameOver->addElement(UIElementFactory::getInstance()->createMenuButton("Back to Menu", []() -> void { Game::getInstance()->backToMenu(); }, {0.5, 0.90}, {150, 40}));
     // Setup Pause Panel
-    auto panelPause = UIElementFactory::createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_PAUSE);
+    auto panelPause = UIElementFactory::getInstance()->createPanel(panelWindow, {700, 560}, {0.5, 0.25}, PANEL_PAUSE);
     panelPause->body.setOutlineThickness(4);
     panelPause->body.setOutlineColor(sf::Color(209, 31, 34));
     panelPause->body.setFillColor(sf::Color(15, 15, 15, 210));
@@ -483,24 +483,24 @@ void GameInterface::setupPanels() {
     pauseLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
     panelPause->addElement(pauseLabel);
 
-    auto buttonSave1 = UIElementFactory::createSaveSlot("Save Slot", {0.5, 0.25}, {640, 120}, 1 /* save slot index */);
+    auto buttonSave1 = UIElementFactory::getInstance()->createSaveSlot("Save Slot", {0.5, 0.25}, {640, 120}, 1 /* save slot index */);
     panelPause->addElement(buttonSave1);
     // Dynamic text label that will show description of save/load file
-    auto saveDescriptionLabel1 = UIElementFactory::createSaveSlotDynamicLabel(
+    auto saveDescriptionLabel1 = UIElementFactory::getInstance()->createSaveSlotDynamicLabel(
         {0.01, 0.01}, 1 /* save slot index */, panelPause, buttonSave1
     );
 
-    auto buttonSave2 = UIElementFactory::createSaveSlot("Save Slot", {0.5, 0.50}, {640, 120}, 2 /* save slot index */);
+    auto buttonSave2 = UIElementFactory::getInstance()->createSaveSlot("Save Slot", {0.5, 0.50}, {640, 120}, 2 /* save slot index */);
     panelPause->addElement(buttonSave2);
     // Dynamic text label that will show description of save/load file
-    auto saveDescriptionLabel2 = UIElementFactory::createSaveSlotDynamicLabel(
+    auto saveDescriptionLabel2 = UIElementFactory::getInstance()->createSaveSlotDynamicLabel(
         {0.01, 0.01}, 2 /* save slot index */, panelPause, buttonSave2
     );
 
-    auto buttonSave3 = UIElementFactory::createSaveSlot("Save Slot", {0.5, 0.75}, {640, 120}, 3 /* save slot index */);
+    auto buttonSave3 = UIElementFactory::getInstance()->createSaveSlot("Save Slot", {0.5, 0.75}, {640, 120}, 3 /* save slot index */);
     panelPause->addElement(buttonSave3);
     // Dynamic text label that will show description of save/load file
-    auto saveDescriptionLabel3 = UIElementFactory::createSaveSlotDynamicLabel(
+    auto saveDescriptionLabel3 = UIElementFactory::getInstance()->createSaveSlotDynamicLabel(
         {0.01, 0.01}, 3 /* save slot index */, panelPause, buttonSave3
     );
 
@@ -511,8 +511,8 @@ void GameInterface::setupPanels() {
         saveDescriptionLabel1->toggleVisibility(), saveDescriptionLabel2->toggleVisibility(), saveDescriptionLabel3->toggleVisibility();
     };
 
-    panelPause->addElement(UIElementFactory::createMenuButton("Back to Menu", []() -> void { GameSaveManager::getInstance()->lambdaHideSaveSlots(); Game::getInstance()->backToMenu(); }, {0.85, 0.94}, {150, 40}));
-    panelPause->addElement(UIElementFactory::createMenuButton(
+    panelPause->addElement(UIElementFactory::getInstance()->createMenuButton("Back to Menu", []() -> void { GameSaveManager::getInstance()->lambdaHideSaveSlots(); Game::getInstance()->backToMenu(); }, {0.85, 0.94}, {150, 40}));
+    panelPause->addElement(UIElementFactory::getInstance()->createMenuButton(
         "Show Save Slots",
         [buttonSave1, buttonSave2, buttonSave3, saveDescriptionLabel1, saveDescriptionLabel2, saveDescriptionLabel3]() -> void
         {
@@ -521,20 +521,20 @@ void GameInterface::setupPanels() {
         },
         {0.15, 0.94}, {150, 40})
     );
-    panelPause->addElement(UIElementFactory::createMenuButton("Resume", []() -> void { Game::getInstance()->pause(); }, {0.5, 0.94}, {150, 40}));
+    panelPause->addElement(UIElementFactory::getInstance()->createMenuButton("Resume", []() -> void { Game::getInstance()->pause(); }, {0.5, 0.94}, {150, 40}));
 
     // Load Game Panel Setup
-    auto panelLoadGame = UIElementFactory::createPanel(panelWindow, {700, 660}, {0.5, 0.25}, PANEL_LOADGAME);
+    auto panelLoadGame = UIElementFactory::getInstance()->createPanel(panelWindow, {700, 660}, {0.5, 0.25}, PANEL_LOADGAME);
 
     auto loadGameLabel = new TextLabel("LOAD GAME", {0.5, 0.01});
     loadGameLabel->getText().setCharacterSize(GameInterface::bigCharacterSize);
     panelLoadGame->addElement(loadGameLabel);
 
-    panelLoadGame->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.5, 0.94}, {100, 40}));
+    panelLoadGame->addElement(UIElementFactory::getInstance()->createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.5, 0.94}, {100, 40}));
 
-    auto buttonLoad1 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.5, 0.25}, {600, 120});
+    auto buttonLoad1 = UIElementFactory::getInstance()->createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(1); }, {0.5, 0.25}, {600, 120});
     panelLoadGame->addElement(buttonLoad1);
-    auto buttonLoadDescriptionLabel1 = UIElementFactory::createInfoDynamicLabel(
+    auto buttonLoadDescriptionLabel1 = UIElementFactory::getInstance()->createInfoDynamicLabel(
         {0.01, 0.01},
         []() -> std::string {
             return GameSaveManager::getInstance()->getSlotDescription(1);
@@ -543,9 +543,9 @@ void GameInterface::setupPanels() {
     panelLoadGame->addElement(buttonLoadDescriptionLabel1);
     buttonLoadDescriptionLabel1->setParent(buttonLoad1);
 
-    auto buttonLoad2 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {600, 120});
+    auto buttonLoad2 = UIElementFactory::getInstance()->createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(2); }, {0.5, 0.50}, {600, 120});
     panelLoadGame->addElement(buttonLoad2);
-    auto buttonLoadDescriptionLabel2 = UIElementFactory::createInfoDynamicLabel(
+    auto buttonLoadDescriptionLabel2 = UIElementFactory::getInstance()->createInfoDynamicLabel(
         {0.01, 0.01},
         []() -> std::string {
             return GameSaveManager::getInstance()->getSlotDescription(2);
@@ -554,9 +554,9 @@ void GameInterface::setupPanels() {
     panelLoadGame->addElement(buttonLoadDescriptionLabel2);
     buttonLoadDescriptionLabel2->setParent(buttonLoad2);
 
-    auto buttonLoad3 = UIElementFactory::createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.5, 0.75}, {600, 120});
+    auto buttonLoad3 = UIElementFactory::getInstance()->createMenuButton("Load Slot", []() -> void { GameSaveManager::getInstance()->loadGame(3); }, {0.5, 0.75}, {600, 120});
     panelLoadGame->addElement(buttonLoad3);
-    auto buttonLoadDescriptionLabel3 = UIElementFactory::createInfoDynamicLabel(
+    auto buttonLoadDescriptionLabel3 = UIElementFactory::getInstance()->createInfoDynamicLabel(
         {0.01, 0.01},
         []() -> std::string {
             return GameSaveManager::getInstance()->getSlotDescription(3);
@@ -630,12 +630,12 @@ Panel* GameInterface::getPanelByType(PanelType panelType) {
 }
 
 void setupHighscoresPanel(Panel* panelWindow) {
-    auto panel = UIElementFactory::createPanel(panelWindow, {880, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
+    auto panel = UIElementFactory::getInstance()->createPanel(panelWindow, {880, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
     auto MAXHIGHSCORES_AMOUNT = 5;
 
     for(auto i = 0; i < MAXHIGHSCORES_AMOUNT; i++) {
         // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
-        auto dynamicHighscoreLabel = UIElementFactory::createStatisticsDynamicLabel(
+        auto dynamicHighscoreLabel = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
                 {0.03, static_cast<float>(0.19 * i + 0.02)},
                 [i]() -> std::string {
                     auto highscore = Highscores::getInstance()->getHighscore(i);
@@ -647,7 +647,7 @@ void setupHighscoresPanel(Panel* panelWindow) {
         panel->addElement(dynamicHighscoreLabel);
     }
 
-    panel->addElement(UIElementFactory::createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
+    panel->addElement(UIElementFactory::getInstance()->createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
 
     GameInterface::getInstance()->addPanelToVector(panel);
 }

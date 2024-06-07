@@ -8,6 +8,15 @@ sf::Color UIElementFactory::ColorGray = sf::Color(105,104,102);
 sf::Color UIElementFactory::ColorGrayDarkLO = sf::Color(64,64,64, 120);
 sf::Color UIElementFactory::ColorGrayDark = sf::Color(54, 54, 54);
 
+UIElementFactory* UIElementFactory::UIElementFactory_= nullptr;
+
+UIElementFactory * UIElementFactory::getInstance() {
+    if(UIElementFactory_ == nullptr){
+        UIElementFactory_ = new UIElementFactory();
+    }
+    return UIElementFactory_;
+}
+
 // Returns a ComboBox UIElement and right after that sets a properties that we want for it like a font, size etc..
 ComboBox* UIElementFactory::createComboBox(const std::string& fieldValue, sf::Vector2f posRatios, const std::string& textValue) {
     sf::Vector2f size = {200, 30};

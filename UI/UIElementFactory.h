@@ -11,35 +11,48 @@
 #include "../Globals.h"
 #include "../ResourceManagers/FontManager.h"
 
+// https://refactoring.guru/design-patterns/singleton/cpp/example
+// We go with Naive Singleton for now
 class UIElementFactory {
+protected:
+    UIElementFactory() = default;
+    static UIElementFactory* UIElementFactory_;
+
 public:
+    // Singleton is not cloneable
+    UIElementFactory(UIElementFactory& other) = delete;
+    // Singleton can't be assigned
+    void operator=(const UIElementFactory&) = delete;
+
+    static UIElementFactory* getInstance();
+
     static sf::Color ColorBlue;
     static sf::Color ColorGreen;
     static sf::Color ColorGray;
     static sf::Color ColorGrayDarkLO;
     static sf::Color ColorGrayDark;
 
-    static ComboBox* createComboBox(const std::string& fieldValue, sf::Vector2f posRatios, const std::string& textValue);
+    ComboBox* createComboBox(const std::string& fieldValue, sf::Vector2f posRatios, const std::string& textValue);
 
-    static DynamicTextLabel* createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString);
+    DynamicTextLabel* createStatisticsDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString);
 
-    static DynamicTextLabel* createInfoDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString);
+    DynamicTextLabel* createInfoDynamicLabel(sf::Vector2f ratios, std::function<std::string()> const& onUpdateString);
 
-    static Checkbox* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios,
+    Checkbox* createMenuCheckbox(float sizeMultiplier, sf::Vector2f posRatios,
         std::string textValue, bool defaultEnabled, std::function<void(bool value)> const& onCheckboxUpdate);
 
-    static TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios,
+    TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios,
         std::string textValue, std::wstring pattern);
 
-    static TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios,
+    TextField* createTextField(const std::string& fieldValue, sf::Vector2f posRatios,
         std::string textValue, std::wstring pattern, std::function<void()> const& onTextFieldUpdate);
 
-    static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios);
+    Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios);
 
-    static Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size);
+    Button* createMenuButton(const std::string& name, const std::function<void()>& onClick, sf::Vector2f posRatios, sf::Vector2f size);
 
-    static Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType panelType);
+    Panel* createPanel(UIElement* parent, sf::Vector2f size, sf::Vector2f posRatios, PanelType panelType);
 
-    static Button* createSaveSlot(const std::string& name, sf::Vector2f posRatios, sf::Vector2f size, int slotIndex);
-    static DynamicTextLabel* createSaveSlotDynamicLabel(sf::Vector2f ratios, int slotIndex, Panel* panelToFitInto, Button* saveButton);
+    Button* createSaveSlot(const std::string& name, sf::Vector2f posRatios, sf::Vector2f size, int slotIndex);
+    DynamicTextLabel* createSaveSlotDynamicLabel(sf::Vector2f ratios, int slotIndex, Panel* panelToFitInto, Button* saveButton);
 };
