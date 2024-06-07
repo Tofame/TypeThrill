@@ -256,6 +256,10 @@ void GameSaveManager::loadGame(int saveSlot) {
         return;
     };
 
+    // loadGameFromFile sets the game's text field input that was saved
+    // So, we also want the words to have the higlight
+    WordSpawner::getInstance()->manageWords();
+
     Game::getInstance()->setGameState(STATE_PLAYING, true);
     Game::getInstance()->pause();
 }
