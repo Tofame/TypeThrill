@@ -35,6 +35,7 @@ public:
 
     void handleTextEntered(sf::Uint32 unicode);
 
+    void onGameStart();
     void onGameOver();
     void onMouseMove();
 

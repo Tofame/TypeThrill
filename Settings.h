@@ -26,6 +26,8 @@ public:
     void loadSettings();
     void saveSettings();
 
+    void loadSetingsOnNewGame();
+
     void restoreDefaultSettings();
     void saveSettingsPanel();
 

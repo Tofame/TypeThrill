@@ -400,6 +400,76 @@ void Settings::saveSettings() {
     outFile.close();
 }
 
+// Loads settings and updates the settings map based on values in UIElements of Settings Panel
+// It's crucial, because "loadGame()" overrides settings map and "New Game" wouldn't have correct settings
+// then (after some game load happened)
+void Settings::loadSetingsOnNewGame() {
+    auto settingsPanel = GameInterface::getInstance()->getPanelByType(PANEL_SETTINGS);
+    if(settingsPanel == nullptr) {
+        throw std::runtime_error("Unable to find settingsPanel while calling Settings::loadSetingsOnNewGame() method");
+    }
+
+    // This will be used for updating game end criteriums
+    auto newGameSetupPanel = GameInterface::getInstance()->getPanelByType(PANEL_NEWGAMESETUP);
+    if(newGameSetupPanel == nullptr) {
+        throw std::runtime_error("Unable to find newGameSetupPanel while calling Settings::loadSetingsOnNewGame() method");
+    }
+
+    for(auto uielement : settingsPanel->UIElements) {
+        // https://en.cppreference.com/w/cpp/language/dynamic_cast
+        // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
+        // Im using static_cast though, as its cheaper and I am sure uielement is parent class
+        switch(uielement->getType()) {
+            case CHECKBOX:
+            {
+                auto checkBoxPtr = static_cast<Checkbox*>(uielement);
+                checkBoxPtr->onCheckboxUpdate(checkBoxPtr->isChecked());
+                break;
+            }
+            case TEXTFIELD:
+            {
+                auto txtFieldPtr = static_cast<TextField*>(uielement);
+                txtFieldPtr->onTextFieldUpdate();
+                break;
+            }
+            case COMBOBOX:
+            {
+                auto comboBoxPtr = static_cast<ComboBox*>(uielement);
+
+                std::string text = comboBoxPtr->getText().getString();
+                if (text.starts_with("Word Font")) {
+                    settingsMap["words_font"] = comboBoxPtr->getChosenTextString();
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    for(auto uielement : newGameSetupPanel->UIElements) {
+        // https://en.cppreference.com/w/cpp/language/dynamic_cast
+        // Safely converts pointers and references to classes up, down, and sideways along the inheritance hierarchy.
+        // Im using static_cast though, as its cheaper and I am sure uielement is parent class
+        switch(uielement->getType()) {
+            case CHECKBOX:
+            {
+                auto checkBoxPtr = static_cast<Checkbox*>(uielement);
+                checkBoxPtr->onCheckboxUpdate(checkBoxPtr->isChecked());
+                break;
+            }
+            case TEXTFIELD:
+            {
+                auto txtFieldPtr = static_cast<TextField*>(uielement);
+                txtFieldPtr->onTextFieldUpdate();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
 std::string Settings::buildEndGameSettings() {
     std::string result;
     Settings::setEndGameCriteriumBool("endGame_never_bool", true);

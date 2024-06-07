@@ -295,14 +295,14 @@ void GameInterface::setupPanels() {
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Start",
-        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::getInstance()->setGameState(STATE_PLAYING, true); },
+        []() -> void { Game::getInstance()->onGameStart(); },
         {0.60, 0.90},
         {100, 40}
     ));
 
     panelNewGameSetup->addElement(UIElementFactory::createMenuButton(
         "Back",
-        []() -> void { GameStatistics::getInstance()->setupDefaultStatistics(); Game::getInstance()->setGameState(STATE_MENU, true); },
+        []() -> void { Game::getInstance()->setGameState(STATE_MENU, true); },
         {0.40, 0.90},
         {100, 40}
     ));

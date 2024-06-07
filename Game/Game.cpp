@@ -3,6 +3,7 @@
 #include "GameStatistics.h"
 #include "WordSpawner.h"
 #include "Highscores.h"
+#include "../Settings.h"
 #include "../UI/Panel.h"
 #include "fmt/core.h"
 #include "../UI/TextLabel.h"
@@ -211,6 +212,12 @@ void Game::handleTextEntered(sf::Uint32 unicode) {
             }
         }
     }
+}
+
+void Game::onGameStart() {
+    Settings::getInstance()->loadSetingsOnNewGame();
+    GameStatistics::getInstance()->setupDefaultStatistics();
+    this->setGameState(STATE_PLAYING, true);
 }
 
 void Game::onGameOver() {
