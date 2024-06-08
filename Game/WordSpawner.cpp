@@ -10,6 +10,8 @@
 #include "fmt/ostream.h"
 
 WordSpawner* WordSpawner::wordSpawner_= nullptr;
+// Holds last Pos Y Ratio values, so words cannot by chance appear on the same position after spawn
+std::vector<double> lastYRatios;
 
 double chooseWordYRatio();
 void setAllWordsBodiesToZero(Panel* panel);
@@ -25,6 +27,8 @@ WordSpawner* WordSpawner::getInstance() {
     if(wordSpawner_== nullptr){
         wordSpawner_ = new WordSpawner();
         wordSpawner_->lastSpawnTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+        // Initialized with random values, all that matters is that they are different
+        lastYRatios = std::vector<double>{0.1, 0.65, 0.4, 0.9};
     }
     return wordSpawner_;
 }
@@ -221,9 +225,6 @@ void WordSpawner::clearWords(bool removeWords, bool removeHighlight, bool clearG
         }
     }
 }
-
-// Initialized with random values, all that matters is that they are different
-std::vector<double> lastYRatios = std::vector<double>{0.1, 0.65, 0.4, 0.9};
 
 // There is lastYRatios vector in WordSpawner.cpp that holds last four Y spawn positions of word
 // When calculating Y ratio for new word we check if it is in last four positions chosen (there is a small range included too)
