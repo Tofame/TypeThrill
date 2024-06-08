@@ -402,7 +402,16 @@ void GameInterface::setupPanels() {
 
     auto timePassed = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
         {0.79, 0.25},
-        []() -> std::string { return "Time passed (s): " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()); }
+        []() -> std::string {
+            std::string strTime;
+            if(Game::getInstance()->getGameState() == STATE_PAUSED) {
+                auto timePassed = std::chrono::high_resolution_clock::now() - GameStatistics::getInstance()->getTimeSinceStartWithPause();
+                strTime = GameStatistics::getInstance()->formatTime(timePassed);
+            } else {
+                strTime = GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart());
+            }
+            return "Time passed (s): " + strTime;
+        }
     );
     panelGameStatistics->addElement(timePassed);
 

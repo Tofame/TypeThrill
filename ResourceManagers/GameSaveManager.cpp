@@ -179,7 +179,8 @@ bool GameSaveManager::loadGameFromFile(int saveSlot) {
 // Uses getters to get all needed values and then writes each one to the file.
 // Returns true if game was successfully saved.
 // Shouldn't be called, it's meant to be called only in saveGame() as it's a part of that
-bool GameSaveManager::saveGameToFile(int saveSlot) {
+// Requires timePassed as parameter, as it's already calculated in saveGame()
+bool GameSaveManager::saveGameToFile(int saveSlot, std::string timePassed) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
     }
@@ -204,7 +205,7 @@ bool GameSaveManager::saveGameToFile(int saveSlot) {
     file << "wordsScored=" << std::to_string(GameStatistics::getInstance()->getWordsScored()) << "\n";
     file << "wordsMissed=" << std::to_string(GameStatistics::getInstance()->getWordsMissed()) << "\n";
     file << "generalScore=" << std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()) << "\n";
-    file << "timePassed=" << GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart()) << "\n";
+    file << "timePassed=" << timePassed << "\n";
     file << ">>statisticsEnd" << "\n";
 
     file << ">>ingame" << "\n";
@@ -243,10 +244,12 @@ bool GameSaveManager::saveGameToFile(int saveSlot) {
 // Saves game to .txt file, updates dynamic text labels, so they show new values in the "save slot"
 void GameSaveManager::saveGame(int saveSlot) {
     // We must first add pause time to the variable that holds time passed since start, because otherwise the time 'passes' during pause
-    auto newTime = GameStatistics::getInstance()->getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getInstance()->getPauseTime());
-    GameStatistics::getInstance()->setTimePassedSinceStart(newTime);
+    auto timeSinceStartWithPause = GameStatistics::getInstance()->getTimeSinceStartWithPause();
+    auto timePassed = std::chrono::high_resolution_clock::now() - timeSinceStartWithPause;
 
-    saveGameToFile(saveSlot);
+    auto stringTimePassed = GameStatistics::getInstance()->formatTime(timePassed);
+
+    saveGameToFile(saveSlot, stringTimePassed);
 
     setSavedGameInformation(
         saveSlot,
@@ -254,7 +257,7 @@ void GameSaveManager::saveGame(int saveSlot) {
             "W. Scored: " + std::to_string(GameStatistics::getInstance()->getWordsScored()),
             "W. Missed: " + std::to_string(GameStatistics::getInstance()->getWordsMissed()),
             "Score: " + std::to_string(GameStatistics::getInstance()->getWordsGeneralScore()),
-            "Time Passed: " + GameStatistics::getInstance()->formatTime(GameStatistics::getInstance()->getTimePassedSinceStart())
+            "Time Passed: " + stringTimePassed
         }
     );
     this->updateSlotUIElements();

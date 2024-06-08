@@ -179,6 +179,11 @@ std::chrono::high_resolution_clock::time_point GameStatistics::getPauseTime() {
     return pauseTime;
 }
 
+// Makes calculations so time at start is coupled with pause time, so time doesn't 'pass' during pause
+std::chrono::high_resolution_clock::time_point GameStatistics::getTimeSinceStartWithPause() {
+    return getTimeAtStart() + (std::chrono::high_resolution_clock::now() - getPauseTime());
+}
+
 std::string GameStatistics::formatTime(std::chrono::duration<double> time) {
     double seconds = time.count();
 

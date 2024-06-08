@@ -290,7 +290,7 @@ void Game::pause() {
 
     // UNPAUSE
     if(gameState == STATE_PAUSED) {
-        auto newTime = GameStatistics::getInstance()->getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getInstance()->getPauseTime());
+        auto newTime = GameStatistics::getInstance()->getTimeSinceStartWithPause();
         GameStatistics::getInstance()->setTimePassedSinceStart(newTime);
         //fmt::println("newtime {}", std::chrono::system_clock::to_time_t(newTime));
         setGameState(STATE_PLAYING,false);

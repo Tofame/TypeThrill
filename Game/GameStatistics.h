@@ -47,6 +47,7 @@ public:
 
     void setPauseTime(std::chrono::high_resolution_clock::time_point time);
     std::chrono::high_resolution_clock::time_point getPauseTime();
+    std::chrono::high_resolution_clock::time_point getTimeSinceStartWithPause();
 
     std::string formatTime(std::chrono::duration<double> time);
 private:

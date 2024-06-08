@@ -20,7 +20,7 @@ public:
     static GameSaveManager* getInstance();
 
     bool loadGameFromFile(int saveSlot);
-    bool saveGameToFile(int saveSlot);
+    bool saveGameToFile(int saveSlot, std::string timePassed);
 
     void saveGame(int saveSlot);
     void loadGame(int saveSlot);
