@@ -8,8 +8,8 @@
 
 #include "../Globals.h"
 #include "../Settings.h"
-#include "fmt/Core.h"
 
+// Returns random int value from chosen range [min, max]
 int getRandomInt(int min, int max) {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -19,6 +19,8 @@ int getRandomInt(int min, int max) {
 
 std::map<std::string, std::vector<std::string>> WordLocales::wordsLocales = std::map<std::string, std::vector<std::string>>();
 
+// From path /Resources/Locales, loads all .txt files and saves each line to a vector
+// Creates a wordsLocales map that is [key: name of .txt; value: vector of all words line by line]
 void WordLocales::loadLocales() {
     auto directory = projectPath + "/Resources/Locales";
 
@@ -49,6 +51,7 @@ void WordLocales::loadLocales() {
     }
 }
 
+// Returns std::string that is a random word from a chosen locale (list of words from .txt file)
 std::string WordLocales::getRandomWord() {
     std::string locale = Settings::getInstance()->getWordLocale(false);
 
@@ -65,6 +68,9 @@ std::string WordLocales::getRandomWord() {
     }
 }
 
+// Used to check whether text field passed in method's parameter has an input
+// that matches any of the existing locales (that are loaded into a wordLocales map at app startup)
+// Validating the locale turns the color filling of pointed button (1st parameter) to the blue (default color)
 void WordLocales::validateLocale(UIElement* confirmButton, TextField* textfield) {
     confirmButton->body.setFillColor(UIElementFactory::ColorBlue);
 
