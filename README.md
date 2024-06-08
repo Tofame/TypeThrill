@@ -6,7 +6,7 @@ Developed by Tofame as part of PJATK education process.
 
 ## Description
 
-TypeThrill is a fast-paced typing game designed to test your typing speed and accuracy. The objective is simple: type the displayed words as quickly and accurately as possible before time runs out.
+TypeThrill is a fast-paced typing game designed to test your typing speed and accuracy. The objective is simple: type the displayed words as quickly and accurately as possible before they disappear.
 
 ## Features
 
