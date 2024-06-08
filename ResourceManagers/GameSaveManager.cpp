@@ -45,6 +45,10 @@ GameSaveManager* GameSaveManager::getInstance()
     return gameSaveManager_;
 }
 
+// Accepts int parameter that will decide which file we will load (its used in building path string)
+// Goes through all lines of file and sets settings, criteriums and other loaded values.
+// Returns true if game was successfully loaded.
+// Shouldn't be called, it's meant to be called only in loadGame() as it's a part of that
 bool GameSaveManager::loadGameFromFile(int saveSlot) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
@@ -52,6 +56,7 @@ bool GameSaveManager::loadGameFromFile(int saveSlot) {
 
     auto file = std::fstream(projectPath + "/Resources/GameFiles/save" + std::to_string(saveSlot) + ".txt");
 
+    // If file doesn't exist, the save slot is just "empty"
     if (!file) {
         return false;
         //throw std::runtime_error("Unable to open a saved game file - .txt.");
@@ -170,6 +175,10 @@ bool GameSaveManager::loadGameFromFile(int saveSlot) {
     return true;
 }
 
+// Accepts int parameter that will decide which file we will save to (its used in building path string)
+// Uses getters to get all needed values and then writes each one to the file.
+// Returns true if game was successfully saved.
+// Shouldn't be called, it's meant to be called only in saveGame() as it's a part of that
 bool GameSaveManager::saveGameToFile(int saveSlot) {
     if(saveSlot <= 0 || saveSlot > maxSaveSlots) {
         throw std::runtime_error("Tried to load a save file that exceeds the maximum limit. The slot: " + saveSlot);
@@ -230,6 +239,8 @@ bool GameSaveManager::saveGameToFile(int saveSlot) {
     return true;
 }
 
+// Handles saving to the save slot
+// Saves game to .txt file, updates dynamic text labels, so they show new values in the "save slot"
 void GameSaveManager::saveGame(int saveSlot) {
     // We must first add pause time to the variable that holds time passed since start, because otherwise the time 'passes' during pause
     auto newTime = GameStatistics::getInstance()->getTimeAtStart() + (std::chrono::high_resolution_clock::now() - GameStatistics::getInstance()->getPauseTime());
@@ -251,6 +262,8 @@ void GameSaveManager::saveGame(int saveSlot) {
     GameSaveManager::getInstance()->lambdaHideSaveSlots();
 }
 
+// method that handles loading game, if loadGameFromFile() is true then it
+// prepares the game and sets game state to STATE_PLAYING
 void GameSaveManager::loadGame(int saveSlot) {
     if(!loadGameFromFile(saveSlot)) {
         return;
@@ -320,6 +333,8 @@ void GameSaveManager::preloadInitialInformation() {
     this->updateSlotUIElements();
 }
 
+// Calls update on all dynamic text labels in PANEL_LOADGAME, PANEL_PAUSE
+// (so after saving/loading they show correct info)
 void GameSaveManager::updateSlotUIElements() {
     auto loadSlots = std::vector<UIElement*>(3);
     auto saveSlots = std::vector<UIElement*>(3);
@@ -346,6 +361,10 @@ void GameSaveManager::updateSlotUIElements() {
     }
 }
 
+// Method simplifying process of updating savedGamesInformation map
+// that stores information of save slots (e.g. missed words etc.)
+// Example usage: setSavedGameInformation(1, {"wordsMissed: 20", "wordsScored: 10"};
+// It is used in saveGame()
 void GameSaveManager::setSavedGameInformation(int slotIndex, std::vector<std::string> params) {
     if(slotIndex <= 0 || slotIndex > maxSaveSlots) {
         throw std::runtime_error("GameSaveManager::getSavedGameInformation() index "
@@ -355,6 +374,8 @@ void GameSaveManager::setSavedGameInformation(int slotIndex, std::vector<std::st
     savedGamesInformation[slotIndex] = params;
 }
 
+// Returns vector of strings, each of them being an information that will be used in save slot's description
+// (dynamic text label).
 std::vector<std::string> GameSaveManager::getSavedGameInformation(int slotIndex) {
     if(slotIndex <= 0 || slotIndex > maxSaveSlots) {
         throw std::runtime_error("GameSaveManager::getSavedGameInformation() index "
@@ -368,6 +389,8 @@ std::vector<std::string> GameSaveManager::getSavedGameInformation(int slotIndex)
     return {};
 }
 
+// Method to be used by Dynamic Text Labels, so they will get ready to display string returned by this method
+// If the vector returned by getSavedGameInformation() doesn't contain anything then "EMPTY" string is returned.
 std::string GameSaveManager::getSlotDescription(int slotIndex) {
     std::string desc;
     auto infoVec = GameSaveManager::getInstance()->getSavedGameInformation(slotIndex);

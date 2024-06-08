@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+// Method meant to simplify process of loading for example .png's
+// Example use: loadResource("UI/checkbox.png");
 sf::Texture TextureManager::loadResource(std::string path) {
     std::string pathToFile = projectPath + "/Resources/" + path;
 

@@ -4,6 +4,8 @@
 
 std::map<std::string, sf::Font> FontManager::Fonts;
 
+// Loads all possible files from /Resources/Fonts
+// The conditional statement is that they must be a file and of a type ".ttf" (a font)
 void FontManager::loadFonts() {
     std::string fontDirectory = projectPath + "/Resources/Fonts";
 

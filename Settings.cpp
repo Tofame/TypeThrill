@@ -466,6 +466,9 @@ void Settings::loadSetingsOnNewGame() {
     }
 }
 
+// Returns string that dynamic text label in game statistics (during the game) uses.
+// Depending on checked options like game ending on missed words it will 'build' a string
+// and then dynamic label will show it nicely.
 std::string Settings::buildEndGameSettings() {
     std::string result;
     Settings::setEndGameCriteriumBool("endGame_never_bool", true);
