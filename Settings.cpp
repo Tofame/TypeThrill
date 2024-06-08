@@ -39,6 +39,9 @@ Settings* Settings::getInstance() {
 }
 
 // resetDefaultSettings also could be defined as "bool firstTimePreLoaded" (to give you better grasp of what is it for)
+// This method setups the `defaultSettingsMap` with specified values
+// Each time it is called the 'settingsMap' is set to 'defaultSettingsMap'
+// Meaning it is called not only to setup initial map values, but also to reset 'settingsMap' back to default.
 void Settings::preLoadSettings(bool resetDefaultSettings) {
     if(resetDefaultSettings) {
         defaultSettingsMap["words_fontName"] = "aleoRegular";
@@ -64,7 +67,8 @@ void Settings::preLoadSettings(bool resetDefaultSettings) {
     settingsMap = defaultSettingsMap;
 }
 
-void Settings::loadSettings() {
+// Loads settings from settings.txt file to a 'settingsMap'
+void Settings::loadSettingsFromTxt() {
     auto file = std::fstream(projectPath + "/settings.txt");
 
     if (!file) {
@@ -93,6 +97,8 @@ void Settings::loadSettings() {
     }
 }
 
+// Restores default values (like input's, checkboxes' checks etc.) in PANEL_SETTINGS
+// Sets settingsMap to default values (by calling preLoadSettings(false)) and calls 'update' on UI elements.
 void Settings::restoreDefaultSettings() {
     // Reset values in TextField(s) etc.
     auto settingsPanel = GameInterface::getInstance()->getPanelByType(PANEL_SETTINGS);
@@ -132,23 +138,6 @@ void Settings::restoreDefaultSettings() {
         panel->update();
     }
     GameInterface::getInstance()->updateGameTitle();
-}
-
-void Settings::saveSettingsPanel() {
-    // Update DynamicTextLabel in GameStatistics
-    auto gameStatisticsPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
-    if(gameStatisticsPanel == nullptr) {
-        throw std::runtime_error("Settings::saveSettingsPanel() can't seem to find PANEL_GAMESTATISTICS. Does it exist?");
-    }
-
-    for(auto uielement : gameStatisticsPanel->UIElements) {
-        if(uielement->getType() == DYNAMICTEXTLABEL) {
-            uielement->update();
-        }
-    }
-
-    // Saves settings to .txt
-    saveSettings();
 }
 
 void Settings::setWordsFontName(std::string const& value) {
@@ -361,7 +350,7 @@ void setSettingFromComboBoxes(ComboBox* comboBoxPtr) {
     }
 }
 
-void Settings::saveSettings() {
+void Settings::saveSettingsToTxt() {
     // Allow for both reading AND writing
     auto file = std::fstream(projectPath + "/settings.txt", std::ios::in | std::ios::out);
 

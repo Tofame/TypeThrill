@@ -285,7 +285,7 @@ void GameInterface::setupPanels() {
 
     panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(MENU_DEFAULT); }, {0.1, 0.94}, {100, 40}));
     panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Restore Default", []() -> void { Settings::getInstance()->restoreDefaultSettings(); }, {0.4, 0.94}, {200, 40}));
-    panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsPanel(); }, {0.65, 0.94}, {100, 40}));
+    panelSettings->addElement(UIElementFactory::getInstance()->createMenuButton("Save", []() -> void { Settings::getInstance()->saveSettingsToTxt(); }, {0.65, 0.94}, {100, 40}));
 
     // ================= Setting up the STATE_NEWGAMESETUP Panel
     auto panelNewGameSetup = UIElementFactory::getInstance()->createPanel(panelWindow, {740, 440}, {0.5, 0.30}, PANEL_NEWGAMESETUP);

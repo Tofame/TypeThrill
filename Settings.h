@@ -23,13 +23,12 @@ public:
     std::unordered_map<std::string, std::string> settingsMap;
 
     void preLoadSettings(bool resetDefaultSettings);
-    void loadSettings();
-    void saveSettings();
+    void loadSettingsFromTxt();
+    void saveSettingsToTxt();
 
     void loadSetingsOnNewGame();
 
     void restoreDefaultSettings();
-    void saveSettingsPanel();
 
     void setWordsFontName(std::string const& value);
     std::string getWordsFontName(bool defaultValue);

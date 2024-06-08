@@ -19,7 +19,7 @@ int main() {
     WordLocales::loadLocales();
 
     Settings::getInstance()->preLoadSettings(true); // Setups the std::map (settingsMap)
-    Settings::getInstance()->loadSettings(); // Loads values from Settings.txt
+    Settings::getInstance()->loadSettingsFromTxt(); // Loads values from Settings.txt
     Highscores::getInstance()->loadHighscores();
     GameInterface::getInstance()->setupUI();
 
