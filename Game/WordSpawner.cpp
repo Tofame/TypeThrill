@@ -91,6 +91,9 @@ void WordSpawner::moveWords() {
         return;
     }
 
+    // Updates dynamic label containing info about Time that has passed since start of the game.
+    GameStatistics::getInstance()->updateTimePassedSinceStart();
+
     for(auto word : wordsPanel->UIElements) {
         if(word->posRatio.getX() >= 1.0) {
             wordsPanel->removeElement(word);
@@ -104,7 +107,6 @@ void WordSpawner::moveWords() {
     }
 }
 
-// Updates statistic - time passed since start
 // Takes input from text field in PANEL_GAMESTATISTICS and compares it with all words
 // to set their highlight width.
 // In case an input found a word that matches it 1:1, then the input is cleared, the word is removed and
@@ -131,9 +133,6 @@ void WordSpawner::manageWords() {
     if(panelWords == nullptr) {
         throw std::runtime_error("WordSpawner::manageWords() can't seem to find PANEL_WORDS. Does it exist? (Check GameInterface::getInstance()->setupPanels())");
     }
-
-    // Updates dynamic label containing info about Time that has passed since start of the game.
-    GameStatistics::getInstance()->updateTimePassedSinceStart();
 
     // sf::String converted to utf32 string as we later in code below use e.g.: sf::Uint32 letter = wordString[index];
     auto input = textField->getInputString().toUtf32();
