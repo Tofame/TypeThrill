@@ -38,7 +38,6 @@ Settings* Settings::getInstance() {
     return settings_;
 }
 
-// resetDefaultSettings also could be defined as "bool firstTimePreLoaded" (to give you better grasp of what is it for)
 // This method setups the `defaultSettingsMap` with specified values
 // Each time it is called the 'settingsMap' is set to 'defaultSettingsMap'
 // Meaning it is called not only to setup initial map values, but also to reset 'settingsMap' back to default.
