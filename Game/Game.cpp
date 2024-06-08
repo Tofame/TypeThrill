@@ -187,6 +187,7 @@ GameStates Game::getGameState() {
     return Game::gameState;
 }
 
+// It is called when we are in-game and we type a word (from TextEntered sfml event)
 void Game::handleTextEntered(sf::Uint32 unicode) {
     auto gameState = Game::getGameState();
     if(gameState == STATE_PAUSED || gameState == STATE_GAMEOVER)

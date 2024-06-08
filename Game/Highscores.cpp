@@ -21,6 +21,8 @@ Highscores * Highscores::getInstance() {
     return highscores_;
 }
 
+// Loads highscores from /Resources/GameFiles/highscores.txt, each line of the file being another highscore.
+// In case file doesn't exist it will create a new one filled with 'empty' information.
 void Highscores::loadHighscores() {
     std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
 
@@ -67,8 +69,7 @@ void Highscores::loadHighscores() {
     file.close();
 }
 
-// We dont have to worry that saveHighscores() creates new empty line (\n) at the end of file,
-// because in loadHighscores() we have "if(index == MAXHIGHSCORES_AMOUNT) break;"
+// Saves highscores to highscores.txt file
 void Highscores::saveHighscores() {
     std::string path = projectPath + "/Resources/GameFiles/highscores.txt";
     std::fstream file(path);
@@ -108,7 +109,8 @@ void Highscores::setHighscore(int index, std::vector<std::string> highscoreVecSt
 
 // Tries to update highscores and in case the highscores vector was modified saves them to the txt file.
 // To determine if highscores were modified a temporary variable is used: highscoreBeaten (-1 = untouched)
-// Returns `highscoreBeaten` that is then used in Game::getInstance()->onGameOver()
+// Returns `highscoreBeaten` that is then used in Game::getInstance()->onGameOver() to display information
+// about highscore being beaten.
 int Highscores::updateHighScores() {
     auto score = GameStatistics::getInstance()->getWordsGeneralScore();
 

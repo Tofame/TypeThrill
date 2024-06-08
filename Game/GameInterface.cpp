@@ -19,8 +19,6 @@
 
 #include "fmt/chrono.h"
 
-void setupHighscoresPanel(Panel* panelWindow);
-
 GameInterface* GameInterface::gameInterface_ = nullptr;
 
 GameInterface::GameInterface() {
@@ -63,7 +61,8 @@ void GameInterface::hideAllPanels() {
 }
 
 void GameInterface::setMenuState(MenuStates state) {
-    // We wont make a check for getState != state here as its called in Game:setGameState and we need it to not return prematurely.
+    // We wont make a check for getState != state here like we did in setGameState
+    // as its called in Game:setGameState and we need this method to not return prematurely.
 
     // Hide all panels and in switch we will show whatever panels should be visible
     hideAllPanels();
@@ -173,6 +172,10 @@ void GameInterface::updateGameTitle() {
     setGameTitle(text);
 }
 
+// Setup whole UI that will be used in the game
+// Elements created here are not meant to be deleted at any point (but if they are then proceed with caution)
+// as it may lead to unexpected behaviour. Some of the elements are used by other ones and they as pointers
+// can't detect if object pointed to is still valid.
 void GameInterface::setupPanels() {
     // ================= Setting up the Window Panel
     auto panelWindow = new Panel({(float)originalWindowSize.x, (float)originalWindowSize.y}, {0,0});
@@ -565,6 +568,26 @@ void GameInterface::setupPanels() {
     panelLoadGame->addElement(buttonLoadDescriptionLabel3);
     buttonLoadDescriptionLabel3->setParent(buttonLoad3);
 
+    // Setup Highscores Panel
+    auto panelHighscores = UIElementFactory::getInstance()->createPanel(panelWindow, {880, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
+    auto MAXHIGHSCORES_AMOUNT = 5;
+
+    for(auto i = 0; i < MAXHIGHSCORES_AMOUNT; i++) {
+        // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
+        auto dynamicHighscoreLabel = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
+                {0.03, static_cast<float>(0.19 * i + 0.02)},
+                [i]() -> std::string {
+                    auto highscore = Highscores::getInstance()->getHighscore(i);
+                    return fmt::format("TOP {}\t\t\tScore: {}\nTime Passed: {}\tW. Frequency: {}\tW. Speed: {}\nChosen Locale: {}",
+                        i + 1, highscore[0], highscore[1], highscore[2], highscore[3], highscore[4]);
+                }
+        );
+        dynamicHighscoreLabel->setAlignType(ALIGN_NONE);
+        panelHighscores->addElement(dynamicHighscoreLabel);
+    }
+
+    panelHighscores->addElement(UIElementFactory::getInstance()->createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
+
     // Adding each Panel to Panels Vector
     GameInterface::addPanelToVector(panelWindow);
     GameInterface::addPanelToVector(panelMenu);
@@ -575,8 +598,7 @@ void GameInterface::setupPanels() {
     GameInterface::addPanelToVector(panelGameOver);
     GameInterface::addPanelToVector(panelPause);
     GameInterface::addPanelToVector(panelLoadGame);
-    // Adds Highscores Panel to vector
-    setupHighscoresPanel(panelWindow);
+    GameInterface::addPanelToVector(panelHighscores);
 
     GameInterface::updatePanels();
 }
@@ -627,27 +649,4 @@ Panel* GameInterface::getPanelByType(PanelType panelType) {
     }
 
     return nullptr;
-}
-
-void setupHighscoresPanel(Panel* panelWindow) {
-    auto panel = UIElementFactory::getInstance()->createPanel(panelWindow, {880, 800}, {0.5, 0.18}, PANEL_HIGHSCORES);
-    auto MAXHIGHSCORES_AMOUNT = 5;
-
-    for(auto i = 0; i < MAXHIGHSCORES_AMOUNT; i++) {
-        // score,timepassed,wordFrequency,wordSpeed,chosenLanguage
-        auto dynamicHighscoreLabel = UIElementFactory::getInstance()->createStatisticsDynamicLabel(
-                {0.03, static_cast<float>(0.19 * i + 0.02)},
-                [i]() -> std::string {
-                    auto highscore = Highscores::getInstance()->getHighscore(i);
-                    return fmt::format("TOP {}\t\t\tScore: {}\nTime Passed: {}\tW. Frequency: {}\tW. Speed: {}\nChosen Locale: {}",
-                        i + 1, highscore[0], highscore[1], highscore[2], highscore[3], highscore[4]);
-                }
-        );
-        dynamicHighscoreLabel->setAlignType(ALIGN_NONE);
-        panel->addElement(dynamicHighscoreLabel);
-    }
-
-    panel->addElement(UIElementFactory::getInstance()->createMenuButton("Back", []() -> void { GameInterface::getInstance()->setMenuState(GameInterface::MENU_DEFAULT); }, {0.5, 0.96}, {140, 40}));
-
-    GameInterface::getInstance()->addPanelToVector(panel);
 }

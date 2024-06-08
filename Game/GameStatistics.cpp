@@ -39,6 +39,8 @@ void GameStatistics::updateStatistics(Panel* statisticsPanel) {
     this->checkGameEnd();
 }
 
+// Checks if conditions for game over are met.
+// If they are then it sets game state to STATE_GAMEOVER.
 void GameStatistics::checkGameEnd() {
     if(Settings::getInstance()->getEndGameCriteriumBool("endGame_never_bool") == true) {
         return;
