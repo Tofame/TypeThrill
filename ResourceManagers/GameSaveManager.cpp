@@ -134,7 +134,8 @@ bool GameSaveManager::loadGameFromFile(int saveSlot) {
                     for(auto uielement : statisticsPanel->UIElements) {
                         if(uielement->getType() == TEXTFIELD) {
                             auto textfield = static_cast<TextField*>(uielement);
-                            textfield->setInput(value);
+                            sf::String sfString = sf::String::fromUtf8(value.begin(), value.end());
+                            textfield->setInput(sfString);
                             break;
                         }
                     }
@@ -209,13 +210,13 @@ bool GameSaveManager::saveGameToFile(int saveSlot, std::string timePassed) {
     file << ">>statisticsEnd" << "\n";
 
     file << ">>ingame" << "\n";
-    std::string textInput = "";
+    std::string textInput;
     auto statisticsPanel = GameInterface::getInstance()->getPanelByType(PANEL_GAMESTATISTICS);
     if(statisticsPanel != nullptr) {
         for(auto uielement : statisticsPanel->UIElements) {
             if(uielement->getType() == TEXTFIELD) {
                 auto textfield = static_cast<TextField*>(uielement);
-                textInput = textfield->getInputString();
+                textInput = ws2s(textfield->getInputString().toWideString());
                 break;
             }
         }
