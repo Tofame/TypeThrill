@@ -62,6 +62,3 @@ The project uses default fonts from the Windows OS and the following custom font
 
 The graphical assets used by the project are:
 - [Screaming Brain Studios - Seamless Space Backgrounds](https://screamingbrainstudios.itch.io/seamless-space-backgrounds)
-
-https://github.com/user-attachments/assets/a7fb1cab-5edd-48d3-80b5-3f86ce92a383
-
