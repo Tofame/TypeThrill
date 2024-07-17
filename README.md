@@ -44,6 +44,13 @@ Word font - font that words will use. aleoRegular supports 'polish' letters.
 UIScale - scale of the UI. It can't exceed a certain value.
 If by mistake you set it too high, saved it and now can't change - close the program and change it in Settings.txt
 
+#### Video that showcases all features etc.:
+
+
+https://github.com/user-attachments/assets/1e4a1941-d564-4e61-b863-a3487ad993cf
+
+
+
 ## Assets
 
 The project uses default fonts from the Windows OS and the following custom fonts:
@@ -55,3 +62,6 @@ The project uses default fonts from the Windows OS and the following custom font
 
 The graphical assets used by the project are:
 - [Screaming Brain Studios - Seamless Space Backgrounds](https://screamingbrainstudios.itch.io/seamless-space-backgrounds)
+
+https://github.com/user-attachments/assets/a7fb1cab-5edd-48d3-80b5-3f86ce92a383
+
