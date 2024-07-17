@@ -4,6 +4,10 @@ A game where you have to type words as fast as you can.
 
 Developed by Tofame as part of PJATK education process.
 
+## ***Information***
+
+This project was made as a part of learning process/curriculum of [PJATK](https://pja.edu.pl) University, fully developed by me.
+
 ## Description
 
 TypeThrill is a fast-paced typing game designed to test your typing speed and accuracy. The objective is simple: type the displayed words as quickly and accurately as possible before they disappear.
